@@ -296,8 +296,6 @@ img {
     box-shadow:0 8px 32px rgba(0,0,0,0.2);
     display:flex;
     justify-content: center;
-    /* flex-direction: column; */
-    /* height:15vh; */
     margin:0 auto 0 auto;
 }
 
@@ -405,4 +403,16 @@ details {
 }
 summary {
     height:30px;
+}
+
+
+.info {
+    margin: 29px auto;
+    display:flex;
+    flex-direction: column;
+    height:50vh;
+    width:100vh;
+    text-align: center;
+    justify-content: center;
+
 }

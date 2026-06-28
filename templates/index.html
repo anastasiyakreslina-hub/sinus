@@ -15,7 +15,7 @@
             </ul>
             <ul class="header__list2">
                 <li>
-                    <a href="/" class="lighttext">курсы и тарифы</a>
+                    <a href="{{url_for('error')}}" class="lighttext">курсы и тарифы</a>
                 </li>
                 <li>
                     <a href="{{url_for('profile')}}" class="lighttext">профиль</a>
@@ -32,14 +32,14 @@
                 </div>
                 <div class="rate lightBox">
                     <p>Тариф: pro</p>
-                    <a class="lighttext" style="text-decoration: underline;">Повысить</a>
+                    <a class="lighttext" style="text-decoration: underline;" href="{{url_for('error')}}">Повысить</a>
                 </div>
             </li>
             <li class="secondColumn lightBox">
                 <p class="heading">Чем займемся сегодня?</p>
                 <ul class="toDo">
                 <li><a href="{{url_for('tasks')}}"  class="lighttext">Банк задач</a></li>
-                <li><a href="tests.html" class="lighttext">Варианты</a></li>
+                <li><a href="{{url_for('error')}}" class="lighttext">Варианты</a></li>
                 <li><a href="{{url_for('mistakes')}}"   class="lighttext">Работа над ошибками</a></li>
                 <li></li>
                 </ul>

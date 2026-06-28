@@ -8,7 +8,6 @@
     </head>
     <body>
         <h1 class="questions">вход</h1>
-        
         <form method="POST">
             <div class="logButtons">
                 <input class="buttons lightBox logProfile" type="text" name="username" placeholder="Логин">
@@ -21,13 +20,12 @@
             <p class="error">{{ error }}</p>
         </div>
         {% endif %}
-        
         <a href="{{ url_for('register')}}" class="createAccount">Создать аккаунт?</a>
         <div class="bottom-bar header">
             <ul class="bottom-bar-list">
                 <li class="myLinks">
                     <a href="{{ url_for('project') }}">О проекте</a>
-                    <a href="/">Обо мне</a>
+                    <a href="{{url_for('error')}}">Обо мне</a>
                 </li>
                 <li>2026</li>
             </ul>

@@ -40,14 +40,14 @@
             </div>
         {% endfor %}
         <div class="sidebar">
-            <a href="/" class="name">настя синус</a>
+            <a href="{{url_for('error')}}" class="name">настя синус</a>
             <ul class="listThings">
                 <li><a href="{{url_for('home')}}" class="lighttext">Основная страница</a></li>
                 <li><a href="{{url_for('tasks')}}" class="lighttext">Банк заданий</a></li>
-                <li><a href="/" class="lighttext">Варианты уровня ЕГЭ</a></li>
+                <li><a href="{{url_for('error')}}" class="lighttext">Варианты уровня ЕГЭ</a></li>
                 <li><a href="{{url_for('mistakes')}}" class="lighttext">Работа над ошибками</a></li>
-                <li><a href="/" class="lighttext">Статистика</a></li>
-                <li><a href="/" class="lighttext">Настройки</a></li>
+                <li><a href="{{url_for('error')}}" class="lighttext">Статистика</a></li>
+                <li><a href="{{url_for('error')}}" class="lighttext">Настройки</a></li>
                 <li><a href="{{url_for('logout')}}" class="lighttext">Выход</a></li>
                 <li></li>
             </ul>

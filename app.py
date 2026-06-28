@@ -37,41 +37,41 @@ def init_db():
     conn.commit()
     conn.close()
 
-@app.route("/register", methods=["GET", "POST"])
+@app.route('/register', methods=["GET", "POST"])
 def register():
     if request.method == "POST":
-        username = request.form["username"]
-        password = request.form["password"]
-        conn = sqlite3.connect("users.db")
+        username = request.form['username']
+        password = request.form['password']
+        conn = sqlite3.connect('users.db')
         cur = conn.cursor()
         role='user'
         if username=='myr':
             role='admin'
-        cur.execute("INSERT INTO users(username, password, role) VALUES (?, ?, ?)", (username, password, role))
+        cur.execute('INSERT INTO users(username, password, role) VALUES (?, ?, ?)', (username, password, role))
         conn.commit()
         conn.close()
-        return redirect("/login")
-    return render_template("register.html")
+        return redirect('/login')
+    return render_template('register.html')
 
-@app.route("/login", methods=["GET", "POST"])
+@app.route('/login', methods=['GET', 'POST'])
 def login():
     error=None
-    if request.method == "POST":
-        username = request.form["username"]
-        password = request.form["password"]
-        conn = sqlite3.connect("users.db")
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        conn = sqlite3.connect('users.db')
         cur = conn.cursor()
-        cur.execute("SELECT * FROM users WHERE username=? AND password=?", (username, password))
+        cur.execute('SELECT * FROM users WHERE username=? AND password=?', (username, password))
         user = cur.fetchone()
         conn.close()
         if user:
-            session["user"] = username
+            session['user'] = username
             session['role']=user[4]
             session['user_id']=user[0]
-            return redirect("/")
+            return redirect('/')
         else:
-            error="Неверный логин или пароль"
-    return render_template("login.html", error=error)
+            error='Неверный логин или пароль'
+    return render_template('login.html', error=error)
 
 @app.route('/')
 def home():
@@ -105,6 +105,7 @@ def profile():
 def logout():
     session.clear()
     return redirect('/login')
+
 def get_goal():
     conn=sqlite3.connect('users.db')
     cur=conn.cursor()
@@ -158,24 +159,24 @@ def tasks():
 def check_answer(task_id):
     data = request.get_json()
     user_answer = data.get('answer')
-    user_id = session.get("user_id")
+    user_id = session.get('user_id')
     if user_id is None:
         return {
-            "result": "red",
-            "text": "Сначала войдите в аккаунт."
+            'result': 'red',
+            'text': 'Сначала войдите в аккаунт'
         }
-    conn = sqlite3.connect("users.db")
+    conn = sqlite3.connect('users.db')
     cur = conn.cursor()
     cur.execute(
-        "SELECT answer FROM tasks WHERE id=?",
+        'SELECT answer FROM tasks WHERE id=?',
         (task_id,)
     )
     correct = cur.fetchone()
     if correct is None:
         conn.close()
         return {
-            "result": "red",
-            "text": "задача не найдена"
+            'result': 'red',
+            'text': 'задача не найдена'
         }
     if user_answer.strip() == correct[0].strip():
         status='Правильно!'
@@ -238,7 +239,9 @@ def mistakes():
     conn.close()
     return render_template('mistakes.html', tasks=tasks)
 
-
+@app.route('/error')
+def error():
+    return render_template('error.html')
 
 
 init_db()
