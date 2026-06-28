@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Работа над ошибками</title>
+        <link rel="stylesheet" href="{{ url_for('static',filename='css/styles.css')}}">
+    </head>
+    <body>
+        {% if tasks %}
+            {% for task in tasks %}
+                <div class="task">
+                    <div class="tasksClasses">
+                        <p class="classification">#{{task['id']}}</p>
+                        <p class="classification">#Номер задания:{{task['number']}}
+                        <p class="classification">#{{task['source']}}</p>
+                    </div>
+                    <p class="taskText">{{task['text']}}</p>
+                    <input id="input-{{ task['id'] }}" class="lightBox buttons" placeholder="ответ">
+                    <button onclick="checkAnswer({{ task['id'] }})" class="lightBox buttons">Проверить</button>
+                    <p id="result-{{task['id']}}"
+                    class="answers {% if task['status']=='correct' %}
+                        green
+                    {% elif task['status']=='wrong' %}
+                        red
+                    {% else %}
+                        white
+                    {% endif %}">
+                        {{task['status']}}
+                    </p>
+                </div>
+            {% endfor %}
+        {%else%}
+        <div class="noMistakes">
+            <p class="heading">ошибок пока нет!</p>
+            <a href="{{url_for('tasks')}}" class="lighttext">Банк задач</a>
+            <a href="/" class="lighttext">Варианты уровня ЕГЭ</a>
+        </div>
+        {%endif%}
+        <div class="sidebar">
+            <a href="/" class="name">настя синус</a>
+            <ul class="listThings">
+                <li><a href="{{url_for('home')}}" class="lighttext">Основная страница</a></li>
+                <li><a href="{{url_for('tasks')}}" class="lighttext">Банк заданий</a></li>
+                <li><a href="/" class="lighttext">Варианты уровня ЕГЭ</a></li>
+                <li><a href="/" class="lighttext">Работа над ошибками</a></li>
+                <li><a href="/" class="lighttext">Статистика</a></li>
+                <li><a href="/" class="lighttext">Настройки</a></li>
+                <li><a href="{{url_for('logout')}}" class="lighttext">Выход</a></li>
+                <li></li>
+            </ul>
+        </div>
+        <script src="{{url_for('static',filename='scripts.js')}}"></script>
+    </body>
+    </body>
+</html>

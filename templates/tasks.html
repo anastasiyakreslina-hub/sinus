@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>База заданий</title>
+        <link rel="stylesheet" href="{{ url_for('static',filename='css/styles.css')}}">
+    </head>
+    <body>
+        
+        
+        {% if session.get('role')=='admin' %}
+            <a href="{{url_for('get_task')}}" class="buttons lightBox add_Task">Добавить задачу</a>
+        {%endif%}
+        {% for task in tasks %}
+            <div class="task">
+                <div class="tasksClasses">
+                    <p class="classification">#{{task['id']}}</p>
+                    <p class="classification">#Номер задания:{{task['number']}}
+                    <p class="classification">#{{task['source']}}</p>
+                </div>
+                <p class="taskText">{{task['text']}}</p>
+                <input id="input-{{ task['id'] }}" class="lightBox buttons" placeholder="ответ">
+                <button onclick="checkAnswer({{ task['id'] }})" class="lightBox buttons">Проверить</button>
+                <p id="result-{{task['id']}}"
+                class="answers {% if task['status']=='Правильно!' %}
+                    green
+                {% elif task['status']=='Неправильно!' %}
+                    red
+                {% else %}
+                    white
+                {% endif %}">
+                    {{task['status']}}
+                </p>
+                <!-- <p class="answers" id="result-{{ task[0] }}">задача не решена</p> -->
+                {% if session.get('role')=='admin' %}
+                    <form method="POST" action="{{url_for('delete_task', task_id=task['id'])}}">
+                        <button class="buttons lightBox" type="submit">удалить задание</button>
+                    </form>
+                {%endif%}
+            </div>
+        {% endfor %}
+        <div class="sidebar">
+            <a href="/" class="name">настя синус</a>
+            <ul class="listThings">
+                <li><a href="{{url_for('home')}}" class="lighttext">Основная страница</a></li>
+                <li><a href="{{url_for('tasks')}}" class="lighttext">Банк заданий</a></li>
+                <li><a href="/" class="lighttext">Варианты уровня ЕГЭ</a></li>
+                <li><a href="{{url_for('mistakes')}}" class="lighttext">Работа над ошибками</a></li>
+                <li><a href="/" class="lighttext">Статистика</a></li>
+                <li><a href="/" class="lighttext">Настройки</a></li>
+                <li><a href="{{url_for('logout')}}" class="lighttext">Выход</a></li>
+                <li></li>
+            </ul>
+        </div>
+        <script src="{{url_for('static',filename='scripts.js')}}"></script>
+    </body>
+</html>

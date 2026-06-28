@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Профиль</title>
+        <link rel="stylesheet" href="{{ url_for('static',filename='css/styles.css')}}">
+    </head>
+    <body>
+        
+        <div class="mainProfile">
+               <p>Привет, {{ username }}</p>
+               <p>Твоя цель: {{goal}}</p>
+               <form method="POST" action="/profile">
+                <input type="number" name="goal" placeholder="цель">
+                <button type="submit">Сохранить</button>
+               </form>
+                <label class="upload">
+                    Загрузить фото профиля
+                    <input type="file" accept="image/*" id="fileInput">
+                </label>
+                 <img id="preview" class="studentsPhoto" style="width:250px; border-radius:35px;">
+            </div>
+            <div class="sidebar">
+            <a href="/" class="name">настя синус</a>
+            <ul class="listThings">
+                <li><a href="{{url_for('home')}}" class="lighttext">Основная страница</a></li>
+                <li><a href="{{url_for('tasks')}}" class="lighttext">Банк заданий</a></li>
+                <li><a href="/" class="lighttext">Варианты уровня ЕГЭ</a></li>
+                <li><a href="/" class="lighttext">Работа над ошибками</a></li>
+                <li><a href="/" class="lighttext">Статистика</a></li>
+                <li><a href="{{url_for('logout')}}" class="lighttext">Выход</a></li>
+                <li></li>
+            </ul>
+        </div>
+        <!-- <script src="scripts.js"></script> -->
+    </body>
+</html>

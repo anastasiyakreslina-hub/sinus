@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>О проекте</title>
+        <link rel="stylesheet" href="{{ url_for('static',filename='css/styles.css')}}">
+    </head>
+    <body>
+        <div>
+            <p>Всем привет! Это информация про мой проект - банк задач по профильной математике</p>
+            <details class="information">
+                <summary>О проекте</summary>
+                <p>{{ about_text }}</p>
+            </details>
+            <details class="information">
+                <summary>Функции</summary>
+                <p>{{ functions_text }}</p>
+            </details>
+            <details class="information">
+                <summary>История создания</summary>
+                <p>{{ story_text }}</p>
+            </details>
+        </div>
+    </body>
+</html>
