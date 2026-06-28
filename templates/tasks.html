@@ -32,7 +32,6 @@
                 {% endif %}">
                     {{task['status']}}
                 </p>
-                <!-- <p class="answers" id="result-{{ task[0] }}">задача не решена</p> -->
                 {% if session.get('role')=='admin' %}
                     <form method="POST" action="{{url_for('delete_task', task_id=task['id'])}}">
                         <button class="buttons lightBox" type="submit">удалить задание</button>

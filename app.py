@@ -29,7 +29,7 @@ def init_db():
         id INTEGER PRIMARY KEY AUTOINCREMENt,
         user_id INTEGER NOT NULL,
         task_id INTEGER NOT NULL,
-        solved INTEGER DEFAULT 2,
+        
         status TEXT,
         UNIQUE(user_id,task_id)
         )
@@ -150,11 +150,6 @@ def tasks():
         LEFT JOIN user_tasks ON tasks.id=user_tasks.task_id
         AND user_tasks.user_id=?
     ''',(user_id,))
-    # cur.execute('''
-    #     SELECT tasks.id, tasks.number, tasks.source, tasks.text,user_tasks.status
-    #     FROM tasks LEFT JOIN user_tasks ON tasks.id=user_tasks.task_id
-    #     AND user_tasks.user_id=?
-    # ''', (user_id,))
     tasks=cur.fetchall()
     conn.close()
     return render_template('tasks.html', tasks=tasks)
@@ -183,38 +178,18 @@ def check_answer(task_id):
             "text": "задача не найдена"
         }
     if user_answer.strip() == correct[0].strip():
-        solved = 1
         status='Правильно!'
         result='correct'
     else:
-        solved = 0
         status='Неправильно!'
         result='wrong'
-    # cur.execute('''
-    #     DELETE FROM user_tasks
-    #     WHERE user_id=? AND task_id=?
-    # ''',(user_id, task_id))
-    # cur.execute('''
-    #     INSERT INTO user_tasks(user_id, task_id, solved, status) VALUES(?,?,?,?) 
-    # ''',(user_id,task_id,solved,status))
     cur.execute('''
-        INSERT INTO user_tasks(user_id,task_id,solved,status) VALUES(?,?,?,?)
+        INSERT INTO user_tasks(user_id,task_id,status) VALUES(?,?,?)
         ON CONFLICT(user_id, task_id)
-        DO UPDATE SET solved=excluded.solved, status=excluded.status
-    ''', (user_id, task_id, solved, status))
+        DO UPDATE SET  status=excluded.status
+    ''', (user_id, task_id, status))
     conn.commit()
     conn.close()
-    # if solved:
-    #     return {
-    #         'result':'correct',
-    #         'text':'Правильно!'
-    #     }
-    # else:
-    #     return {
-    #         'result':'wrong',
-    #         'text':'Неправильно!'
-    #     }
-    # return {'result': status}
     return {
         'result':result,
         'text':status
@@ -257,7 +232,7 @@ def mistakes():
     conn.row_factory=sqlite3.Row
     cur=conn.cursor()
     cur.execute('''
-        SELECT tasks.* FROM tasks JOIN user_tasks ON tasks.id=user_tasks.task_id WHERE user_tasks.user_id=? AND user_tasks.solved=0''',(user_id,)
+        SELECT tasks.* FROM tasks JOIN user_tasks ON tasks.id=user_tasks.task_id WHERE user_tasks.user_id=?''',(user_id,)
     )
     tasks=cur.fetchall()
     conn.close()
