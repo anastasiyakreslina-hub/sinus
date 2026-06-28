@@ -18,6 +18,11 @@
             </form>
             <a href="{{url_for ('login',filename='login.html')}}" class="createAccount">Уже есть аккаунт?</a>
         </div>
+        {% if error %}
+            <div class="toast" id="toast">
+                <p class="error">{{ error }}</p>
+            </div>
+        {% endif %}
         <div class="bottom-bar header">
             <ul class="bottom-bar-list">
                 <li class="myLinks headline">
@@ -27,5 +32,6 @@
                 <li>2026</li>
             </ul>
         </div>
+        <script src="{{url_for('static',filename='scripts.js')}}"></script>
     </body>
 </html>

@@ -1,6 +1,12 @@
 from flask import Flask,render_template,request,redirect,session
 import sqlite3
+import os
+from PIL import Image
+
 app=Flask(__name__)
+app.config['MAX_CONTENT_LENGTH']=2*1024*1024
+ALLOWED_IMAGES={'png','jpg','jpeg'}
+ALLOWED_PDFS={'pdf'}
 app.secret_key='12345'
 
 def init_db():
@@ -8,11 +14,12 @@ def init_db():
     cur=conn.cursor()
     cur.execute('''
         CREATE TABLE IF NOT EXISTS users (
-            id INTEGER PRIMARY KEY,
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
             username TEXT,
             password TEXT,
             goal INTEGER DEFAULT 0,
-            role TEXT DEFAULT 'user'
+            role TEXT DEFAULT 'user',
+            avatar TEXT
         )
     ''')
     cur.execute('''
@@ -44,6 +51,11 @@ def register():
         password = request.form['password']
         conn = sqlite3.connect('users.db')
         cur = conn.cursor()
+        cur.execute('SELECT * FROM users WHERE username=?',(username,))
+        user=cur.fetchone()
+        if user:
+            conn.close()
+            return render_template('register.html',error='Упс! Этот логин уже занят')
         role='user'
         if username=='myr':
             role='admin'
@@ -70,13 +82,67 @@ def login():
             session['user_id']=user[0]
             return redirect('/')
         else:
-            error='Неверный логин или пароль'
+            error='Упс! Неверный логин или пароль'
     return render_template('login.html', error=error)
+
+def allowed_file(filename, allowed_set):
+    return '.' in filename and filename.rsplit('.',1)[1].lower() in allowed_set
+
+@app.route('/upload_avatar',methods=['POST'])
+def upload_avatar():
+    file=request.files['avatar']
+    if not file or file.filename=='':
+        return redirect ('/profile')
+    if not allowed_file(file.filename, ALLOWED_IMAGES):
+        return 'Выберите изображение формата png, jpg или jpeg'
+    ext=file.filename.rsplit('.',1)[1].lower()
+    filename=f'user_{session["user_id"]}.{ext}'
+    path=os.path.join('static','avatars',filename)
+    base=f'user_{session["user_id"]}'
+    for old in ALLOWED_IMAGES:
+        old_path=os.path.join('static','avatars',f'{base}.{old}')
+        if os.path.exists(old_path):
+            os.remove(old_path)
+    img=crop(Image.open(file))
+    new_width=250
+    rati=new_width/img.width
+    new_height=int(img.height*rati)
+    img=img.resize((new_width,new_height))
+    img.save(path)
+    conn=sqlite3.connect('users.db')
+    cur=conn.cursor()
+    cur.execute(
+        'UPDATE users SET avatar=? WHERE id=?',
+        (f'avatars/{filename}', session['user_id'])
+    )
+    conn.commit()
+    conn.close()
+    return redirect('/profile')
+
+def crop(img):
+    width,height=img.size
+    target=4/5
+    current=width/height
+    if current>target:
+        new_width=int(height*target)
+        left=(width-new_width)//2
+        img=img.crop((left,0,left+new_width,height))
+    else:
+        new_height=int(width/target)
+        top=(height-new_height)//2
+        img=img.crop((0,top,width,top+new_height))
+    return img
 
 @app.route('/')
 def home():
     if 'user' in session:
-        return render_template('index.html', goal=get_goal())
+        conn=sqlite3.connect('users.db')
+        conn.row_factory=sqlite3.Row
+        cur=conn.cursor()
+        cur.execute('SELECT * FROM users WHERE id=?',(session['user_id'],))
+        user=cur.fetchone()
+        conn.close()
+        return render_template('index.html', goal=get_goal(),user=user)
     return redirect('/login')
 
 @app.route('/profile',methods=['GET','POST'])
@@ -84,22 +150,23 @@ def profile():
     if 'user' not in session:
         return redirect('/login')
     conn=sqlite3.connect('users.db')
+    conn.row_factory=sqlite3.Row
     cur=conn.cursor()
     if request.method=='POST':
         goal=request.form['goal']
         cur.execute(
-            'UPDATE users SET goal=? WHERE username=?',
-            (goal, session['user'],)
+            'UPDATE users SET goal=? WHERE id=?',
+            (goal, session['user_id'],)
         )
         conn.commit()
     cur.execute(
-        'SELECT goal FROM users WHERE username=?',
-        (session['user'],)
+        'SELECT * FROM users WHERE id=?',
+        (session['user_id'],)
     )
-    data=cur.fetchone()
+    user=cur.fetchone()
     conn.close()
-    goal=data[0] if data else 0
-    return render_template('profile.html',username=session['user'], goal=goal)
+    # goal=data[0] if data else 0
+    return render_template('profile.html',username=session['user'], user=user)
 
 @app.route('/logout')
 def logout():

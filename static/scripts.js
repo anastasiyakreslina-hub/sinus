@@ -2,7 +2,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const toast = document.getElementById("toast");
     if (toast) {
         setTimeout(() => {
-            
             toast.style.opacity = "0";
             setTimeout(() => {
                 toast.remove();

@@ -27,7 +27,12 @@
             <li class="firstColumn">
                 <div class="studentsProfile lightBox">
                     <div id="greeting" class="heading"></div>
-                    <img src="{{url_for('static',filename='images/studentsphoto.jpg')}}" style="width:250px; border-radius:35px;">
+                    <!-- <img src="{{url_for('static',filename='images/studentsphoto.jpg')}}" style="width:250px; border-radius:35px;"> -->
+                    {% if user['avatar'] %}
+                    <img src="{{url_for('static',filename=user['avatar'])}}?v={{user['id']}}" class="avatar">
+                {% else %}
+                    <img src="{{url_for('static', filename='images/studentsphoto.jpg')}}" class="studentsPhoto">
+                {% endif %}
                     <p style="color:rgb(215, 173, 195);text-shadow:0 0 20px rgb(205, 10, 108);">Цель: {{goal}}</p>
                 </div>
                 <div class="rate lightBox">

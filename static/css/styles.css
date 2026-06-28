@@ -205,7 +205,11 @@ img {
 
 .studentsPhoto {
     margin: 0 15px 0 auto;
-    max-width:350px;
+    max-width:250px;
+}
+.avatar {
+    border-radius:15px;
+    width: 250px;
 }
 
 
