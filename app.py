@@ -8,6 +8,7 @@ app.config['MAX_CONTENT_LENGTH']=2*1024*1024
 ALLOWED_IMAGES={'png','jpg','jpeg'}
 ALLOWED_PDFS={'pdf'}
 app.secret_key='12345'
+# DB_PATH=os.path.join(os.path.dirname(os.path.abspath(__file__)),'users.db')
 
 def init_db():
     conn=sqlite3.connect('users.db')
@@ -33,10 +34,9 @@ def init_db():
     ''')
     cur.execute('''
         CREATE TABLE IF NOT EXISTS user_tasks(
-        id INTEGER PRIMARY KEY AUTOINCREMENt,
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
         user_id INTEGER NOT NULL,
         task_id INTEGER NOT NULL,
-        
         status TEXT,
         UNIQUE(user_id,task_id)
         )
@@ -142,12 +142,16 @@ def home():
         cur.execute('SELECT * FROM users WHERE id=?',(session['user_id'],))
         user=cur.fetchone()
         conn.close()
-        return render_template('index.html', goal=get_goal(),user=user)
+        goal=user['goal']
+        solved_count=all_count(session['user_id'])
+        correct=correct_count(session['user_id'])
+        percent=int((correct/solved_count)*100) if solved_count else 0
+        return render_template('index.html', goal=goal,user=user,solved_count=solved_count,correct=correct,percent=percent)
     return redirect('/login')
 
 @app.route('/profile',methods=['GET','POST'])
 def profile():
-    if 'user' not in session:
+    if 'user_id' not in session:
         return redirect('/login')
     conn=sqlite3.connect('users.db')
     conn.row_factory=sqlite3.Row
@@ -165,7 +169,6 @@ def profile():
     )
     user=cur.fetchone()
     conn.close()
-    # goal=data[0] if data else 0
     return render_template('profile.html',username=session['user'], user=user)
 
 @app.route('/logout')
@@ -213,8 +216,7 @@ def tasks():
     conn.row_factory=sqlite3.Row
     cur=conn.cursor()
     cur.execute('''
-        SELECT tasks.*, COALESCE(user_tasks.status,'Задача еще не решена') AS status 
-        FROM tasks
+        SELECT tasks.*, COALESCE(user_tasks.status,'Задача еще не решена') AS status FROM tasks
         LEFT JOIN user_tasks ON tasks.id=user_tasks.task_id
         AND user_tasks.user_id=?
     ''',(user_id,))
@@ -300,7 +302,8 @@ def mistakes():
     conn.row_factory=sqlite3.Row
     cur=conn.cursor()
     cur.execute('''
-        SELECT tasks.* FROM tasks JOIN user_tasks ON tasks.id=user_tasks.task_id WHERE user_tasks.user_id=?''',(user_id,)
+        SELECT tasks.* FROM tasks JOIN user_tasks ON tasks.id=user_tasks.task_id WHERE user_tasks.user_id=?
+        AND user_tasks.status="Неправильно!"''',(user_id,)
     )
     tasks=cur.fetchall()
     conn.close()
@@ -309,6 +312,46 @@ def mistakes():
 @app.route('/error')
 def error():
     return render_template('error.html')
+
+@app.route('/statistics')
+def statistics():
+    if 'user_id' not in session:
+        return redirect('/login')
+    conn=sqlite3.connect('users.db')
+    conn.row_factory=sqlite3.Row
+    cur=conn.cursor()
+    cur.execute(
+        'SELECT * FROM users WHERE id=?',
+        (session['user_id'],)
+    )
+    user=cur.fetchone()
+    conn.close()
+    solved_count=all_count(session['user_id'])
+    correct=correct_count(session['user_id'])
+    goal=user['goal']
+    percent=int((correct/solved_count)*100) if solved_count else 0
+    return render_template('statistics.html', user=user, solved_count=solved_count, correct=correct,goal=goal, percent=percent)
+
+def all_count(user_id):
+    conn=sqlite3.connect('users.db')
+    cur=conn.cursor()
+    cur.execute('''
+        SELECT COUNT(*) FROM user_tasks WHERE user_id=?
+    ''', (user_id,))
+    count=cur.fetchone()[0]
+    conn.close()
+    return count
+
+def correct_count(user_id):
+    conn=sqlite3.connect('users.db')
+    cur=conn.cursor()
+    cur.execute('''
+        SELECT COUNT(*) FROM user_tasks WHERE user_id=? AND status LIKE "Правильно%"
+    ''',(user_id,))
+    count=cur.fetchone()[0]
+    conn.close()
+    return count
+
 
 
 init_db()

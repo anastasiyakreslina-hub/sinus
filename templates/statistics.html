@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Статистика</title>
+        <link rel="stylesheet" href="{{ url_for('static',filename='css/styles.css')}}">
+    </head>
+    <body>
+        <div>
+            <p>Цель: {{goal}}</p>
+            <p>Решено задач: {{solved_count}}</p>
+            <p>Решено верно: {{correct}}</p>
+            <p>Процент правильности: {{percent}}%</p>
+        </div>
+    </body>
+</html>

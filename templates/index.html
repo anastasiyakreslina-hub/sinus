@@ -27,7 +27,6 @@
             <li class="firstColumn">
                 <div class="studentsProfile lightBox">
                     <div id="greeting" class="heading"></div>
-                    <!-- <img src="{{url_for('static',filename='images/studentsphoto.jpg')}}" style="width:250px; border-radius:35px;"> -->
                     {% if user['avatar'] %}
                     <img src="{{url_for('static',filename=user['avatar'])}}?v={{user['id']}}" class="avatar">
                 {% else %}
@@ -53,9 +52,9 @@
                 <p  class="heading">Достижения</p>
                 <ul class="toDo">
                     <li><a>0 дней нарешки</a></li>
-                    <li><a>0 задач решено</a></li>
-                    <li><a>0 правильных задач</a></li>
-                    <li><a>правильность:100%</a></li>
+                    <li><a>{{solved_count}} задач решено</a></li>
+                    <li><a>{{correct}} правильных задач</a></li>
+                    <li><a>правильность:{{percent}}%</a></li>
                     </ul>
             </li>
         </ul>

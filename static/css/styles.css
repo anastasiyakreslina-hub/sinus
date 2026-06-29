@@ -204,11 +204,12 @@ img {
 }
 
 .studentsPhoto {
-    margin: 0 15px 0 auto;
+    margin: 0 auto 0 auto;
     max-width:250px;
+    border-radius: 35px;
 }
 .avatar {
-    border-radius:15px;
+    border-radius:35px;
     width: 250px;
 }
 
