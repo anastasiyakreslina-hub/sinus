@@ -8,7 +8,7 @@ app.config['MAX_CONTENT_LENGTH']=2*1024*1024
 ALLOWED_IMAGES={'png','jpg','jpeg'}
 ALLOWED_PDFS={'pdf'}
 app.secret_key='12345'
-# DB_PATH=os.path.join(os.path.dirname(os.path.abspath(__file__)),'users.db')
+
 
 def init_db():
     conn=sqlite3.connect('users.db')
@@ -44,6 +44,7 @@ def init_db():
     conn.commit()
     conn.close()
 
+
 @app.route('/register', methods=["GET", "POST"])
 def register():
     if request.method == "POST":
@@ -65,6 +66,7 @@ def register():
         return redirect('/login')
     return render_template('register.html')
 
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     error=None
@@ -85,8 +87,10 @@ def login():
             error='Упс! Неверный логин или пароль'
     return render_template('login.html', error=error)
 
+
 def allowed_file(filename, allowed_set):
     return '.' in filename and filename.rsplit('.',1)[1].lower() in allowed_set
+
 
 @app.route('/upload_avatar',methods=['POST'])
 def upload_avatar():
@@ -119,6 +123,7 @@ def upload_avatar():
     conn.close()
     return redirect('/profile')
 
+
 def crop(img):
     width,height=img.size
     target=4/5
@@ -132,6 +137,7 @@ def crop(img):
         top=(height-new_height)//2
         img=img.crop((0,top,width,top+new_height))
     return img
+
 
 @app.route('/')
 def home():
@@ -148,6 +154,7 @@ def home():
         percent=int((correct/solved_count)*100) if solved_count else 0
         return render_template('index.html', goal=goal,user=user,solved_count=solved_count,correct=correct,percent=percent)
     return redirect('/login')
+
 
 @app.route('/profile',methods=['GET','POST'])
 def profile():
@@ -170,6 +177,7 @@ def profile():
     user=cur.fetchone()
     conn.close()
     return render_template('profile.html',username=session['user'], user=user)
+
 
 @app.route('/logout')
 def logout():
@@ -223,6 +231,7 @@ def tasks():
     tasks=cur.fetchall()
     conn.close()
     return render_template('tasks.html', tasks=tasks)
+
 
 @app.route('/check_answer/<int:task_id>', methods=['POST'])
 def check_answer(task_id):
@@ -278,6 +287,7 @@ def delete_task(task_id):
     conn.close()
     return redirect('/tasks')
 
+
 @app.route('/project')
 def project():
     with open('static/texts/about.txt','r',encoding='utf-8') as f:
@@ -292,6 +302,7 @@ def project():
         functions_text=functions_text,
         story_text=story_text
     )
+
 
 @app.route('/mistakes')
 def mistakes():
@@ -309,9 +320,11 @@ def mistakes():
     conn.close()
     return render_template('mistakes.html', tasks=tasks)
 
+
 @app.route('/error')
 def error():
     return render_template('error.html')
+
 
 @app.route('/statistics')
 def statistics():
@@ -332,6 +345,7 @@ def statistics():
     percent=int((correct/solved_count)*100) if solved_count else 0
     return render_template('statistics.html', user=user, solved_count=solved_count, correct=correct,goal=goal, percent=percent)
 
+
 def all_count(user_id):
     conn=sqlite3.connect('users.db')
     cur=conn.cursor()
@@ -341,6 +355,7 @@ def all_count(user_id):
     count=cur.fetchone()[0]
     conn.close()
     return count
+
 
 def correct_count(user_id):
     conn=sqlite3.connect('users.db')
@@ -353,6 +368,6 @@ def correct_count(user_id):
     return count
 
 
-
-init_db()
-app.run(debug=True)
+if __name__=='__main__':
+    init_db()
+    app.run(debug=True)
