@@ -47,11 +47,15 @@ function checkAnswer(taskId) {
     .then(res => res.json())
     .then(data => {
         resultBox.innerText = data.text;
+        const solution = document.getElementById(`solution-${taskId}`);
+        if (solution) {
+            solution.style.display='block';
+        }
         resultBox.classList.remove('green','red','white');
         if (data.result==='correct') {
             resultBox.classList.add('green');
             if (window.location.pathname==='/mistakes') {
-                const taskBlock=document.getElementById(`task-${taskID}`);
+                const taskBlock=document.getElementById(`task-${taskId}`);
                 if (taskBlock) taskBlock.remove();
             }
         } else {

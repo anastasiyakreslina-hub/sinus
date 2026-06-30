@@ -1,6 +1,10 @@
 @font-face {
-    font-family: MyFont;
+    font-family: 'MyFont';
     src: url('../fonts/PublicPixel.ttf');
+}
+@font-face {
+    font-family: 'Task';
+    src: url('../fonts/Montserrat\ Alternates.ttf');
 }
 * {
     padding:0;
@@ -238,10 +242,12 @@ img {
     margin:0 0 0 20px;
 }
 .taskText {
-    font-size: 14px;
+    font-family: 'Task';
+    font-size: 18px;
     font-weight:200;
     width:95%;
     padding:20px;
+    white-space:pre-wrap;
 }
 .answers {
     font-size:10px;
@@ -270,6 +276,15 @@ img {
     justify-content: center;
     width: 30%;
     margin: 10px auto 0 auto;
+}
+.textareas {
+    width:50%;
+    white-space: pre-wrap;
+}
+summary {
+    padding:5px;
+    color:#9b6881;
+    padding:10px;
 }
 .noMistakes {
     width: 50%;

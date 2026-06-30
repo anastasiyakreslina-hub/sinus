@@ -29,6 +29,7 @@ def init_db():
                 number INTEGER,
                 source TEXT,
                 text TEXT,
+                solution TEXT,
                 answer TEXT
         )
     ''')
@@ -197,18 +198,18 @@ def get_goal():
 
 
 @app.route('/add_tasks', methods=['GET','POST'])
-def get_task():
-    print('METHOD:', request.method)
+def add_task():
     if request.method=='POST':
         number=request.form['number']
         source=request.form['source']
         text=request.form['text']
+        solution=request.form['solution']
         answer=request.form['answer']
         conn=sqlite3.connect('users.db')
         cur=conn.cursor()
         cur.execute(
-            'INSERT INTO tasks(number, source, text, answer) VALUES(?,?,?,?)',
-            (number,source,text,answer)
+            'INSERT INTO tasks(number, source, text,solution, answer) VALUES(?,?,?,?,?)',
+            (number,source,text,solution,answer)
         )
         conn.commit()
         conn.close()

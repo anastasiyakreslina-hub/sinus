@@ -10,7 +10,7 @@
         
         
         {% if session.get('role')=='admin' %}
-            <a href="{{url_for('get_task')}}" class="buttons lightBox add_Task">Добавить задачу</a>
+            <a href="{{url_for('add_task')}}" class="buttons lightBox add_Task">Добавить задачу</a>
         {%endif%}
         {% for task in tasks %}
             <div class="task">
@@ -32,6 +32,14 @@
                 {% endif %}">
                     {{task['status']}}
                 </p>
+                <details
+                    id="solution-{{ task['id'] }}"
+                    {% if task['status'] != 'Правильно!' and task['status'] != 'Неправильно!' %}
+                        style="display:none;"
+                    {% endif %}>
+                    <summary>Решение задачи</summary>
+                    <p class="taskText">{{ task['solution'] }}</p>
+                </details>
                 {% if session.get('role')=='admin' %}
                     <form method="POST" action="{{url_for('delete_task', task_id=task['id'])}}">
                         <button class="buttons lightBox" type="submit">удалить задание</button>
