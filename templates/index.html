@@ -32,7 +32,7 @@
                 {% else %}
                     <img src="{{url_for('static', filename='images/studentsphoto.jpg')}}" class="studentsPhoto">
                 {% endif %}
-                    <p style="color:rgb(215, 173, 195);text-shadow:0 0 20px rgb(205, 10, 108);">Цель: {{goal}}</p>
+                    <p class="goal">Цель: {{goal}}</p>
                 </div>
                 <div class="rate lightBox">
                     <p>Тариф: pro</p>
@@ -54,7 +54,7 @@
                     <li><a href="{{url_for('statistics')}}">0 дней нарешки</a></li>
                     <li><a href="{{url_for('statistics')}}">{{solved_count}} задач решено</a></li>
                     <li><a href="{{url_for('statistics')}}">{{correct}} правильных задач</a></li>
-                    <li><a href="{{url_for('statistics')}}">правильность:{{percent}}%</a></li>
+                    <li><a href="{{url_for('statistics')}}">успех: {{percent}}%</a></li>
                 </ul>
             </li>
         </ul>

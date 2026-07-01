@@ -25,7 +25,7 @@ body {
         );
     font-family: 'MyFont',sans-serif;
     color:white;
-    margin:0;
+    margin:0 0 0 0;
 }
 body::before {
     content:"";
@@ -88,7 +88,7 @@ a {
     flex-direction: column;
     flex:1;
     gap:10px;
-    margin-left:15px;
+    margin-left:5px;
 }
 .studentsProfile {
     background-color: #00000051;
@@ -162,7 +162,7 @@ img {
   position:fixed;
   top:0;
   left:-220px;
-  width:220px;
+  width:210px;
   height:100%;
   background: #000000;
   padding:20px;
@@ -213,9 +213,14 @@ img {
 }
 .avatar {
     border-radius:35px;
-    width: 250px;
+    width: 90%;
+    max-width:250px;
 }
-
+.goal {
+    text-align:center;
+    text-shadow:0 0 20px rgb(205, 10, 108);
+    color: white;
+}
 
 
 
@@ -277,14 +282,27 @@ img {
     width: 30%;
     margin: 10px auto 0 auto;
 }
+textarea::placeholder {
+    font-family: 'Task';
+    color:#9b6881;
+}
 .textareas {
     width:50%;
     white-space: pre-wrap;
+    border-radius: 15px;
+    width: 70%;
+    height:60px;
 }
 summary {
     padding:5px;
     color:#9b6881;
     padding:10px;
+}
+.task_adding {
+    display: flex;
+    flex-direction: column;
+    align-items:center;
+    gap: 20px;
 }
 .noMistakes {
     width: 50%;
@@ -425,13 +443,49 @@ summary {
 }
 
 
-.info {
-    margin: 29px auto;
-    display:flex;
-    flex-direction: column;
-    height:50vh;
-    width:100vh;
-    text-align: center;
-    justify-content: center;
 
+
+.infoBlock {
+    position: relative;
+    width: 100%;
+    height:110vh;
+    display:flex;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+}
+.infoBlock::after {
+    content:"";
+    position:absolute;
+    left: 50%;
+    bottom:0;
+    transform:translateX(-50%);
+    width:70%;
+    height: 2px;
+    background-color:#ffffff42;
+}
+.actualInformation {
+    white-space:pre-wrap;
+    width:60%;
+    margin: 0 auto 20px auto;
+    text-align:start
+}
+.infoImage {
+    width: 60%;
+    margin-top: 20px;
+    border-radius: 35px;
+}
+.info {
+    width: 40%;
+}
+.smallInfo {
+    margin: auto auto 20px auto;
+    font-size: 10px;
+    list-style: none;
+}
+.smallInfo a,li {
+    color:#ffffff42;
+}
+.smallInfo li+li {
+    margin-top: 5px;
 }

@@ -297,11 +297,32 @@ def project():
         functions_text=f.read()
     with open('static/texts/story.txt','r',encoding='utf-8') as f:
         story_text=f.read()
+    with open('static/texts/forWho.txt','r', encoding='utf-8') as f:
+        forWho_text=f.read()
     return render_template(
         'project.html',
         about_text=about_text,
         functions_text=functions_text,
-        story_text=story_text
+        story_text=story_text,
+        forWho_text=forWho_text
+    )
+
+@app.route('/about')
+def about():
+    with open('static/texts/about.txt','r',encoding='utf-8') as f:
+        about_text=f.read()
+    with open('static/texts/functions.txt','r',encoding='utf-8') as f:
+        functions_text=f.read()
+    with open('static/texts/forWho.txt','r', encoding='utf-8') as f:
+        forWho_text=f.read()
+    with open('static/texts/include.txt', 'r', encoding='utf-8') as f:
+        include_text=f.read()
+    return render_template(
+        'about.html',
+        about_text=about_text,
+        functions_text=functions_text,
+        forWho_text=forWho_text,
+        include_text=include_text
     )
 
 

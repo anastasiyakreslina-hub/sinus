@@ -9,21 +9,30 @@
     <body>
         
         <div class="mainProfile">
-               <p>Привет, {{ username }}</p>
-               <p>Твоя цель: {{user['goal']}}</p>
+               <h2 class="heading">Привет, {{ username }}</h2>
+               <p class="goal">Твоя цель: {{user['goal']}}</p>
                <form method="POST" action="/profile">
-                <input type="number" name="goal" placeholder="цель">
+                <input type="number" name="goal" placeholder="поменять цель">
                 <button type="submit">Сохранить</button>
                </form>
+                <div class="profileContainer">
+                    <ul>
+                        <li>
+                            {% if user['avatar'] %}
+                                <img src="{{url_for('static',filename=user['avatar'])}}?v={{user['id']}}" class="avatar">
+                            {% else %}
+                                <img src="{{url_for('static', filename='images/studentsphoto.jpg')}}" class="studentsPhoto">
+                            {% endif %}
+                        </li>
+                        <li>
+                            <p> Логин: {{ user['username'] }}</p>
+                        </li>
+                    </ul>
+                </div>
                 <form action="/upload_avatar" method="POST" enctype="multipart/form-data">
                     <input type="file" name="avatar" accept="image/*">
                     <button type="submit">Загрузить фото профиля</button>
                 </form>
-                {% if user['avatar'] %}
-                    <img src="{{url_for('static',filename=user['avatar'])}}?v={{user['id']}}" class="avatar">
-                {% else %}
-                    <img src="{{url_for('static', filename='images/studentsphoto.jpg')}}" class="studentsPhoto">
-                {% endif %}
             </div>
             <div class="sidebar">
             <a href="{{url_for('error')}}" class="name">настя синус</a>
