@@ -169,6 +169,7 @@ img {
   transition:0.3s ease;
   display: flex;
   flex-direction: column;
+  z-index: 9999;
 }
 .sidebar:hover {
   left:0;
@@ -209,10 +210,10 @@ img {
 .studentsPhoto {
     margin: 0 auto 0 auto;
     max-width:250px;
-    border-radius: 35px;
+    border-radius: 25px;
 }
 .avatar {
-    border-radius:35px;
+    border-radius:25px;
     width: 90%;
     max-width:250px;
 }
@@ -319,7 +320,26 @@ summary {
     -webkit-backdrop-filter: blur(15px);
     box-shadow:0 8px 32px rgba(0,0,0,0.2);
 }
-
+.filterForm {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    background-color: #a9686813;
+    width: 70%;
+    padding:20px;
+    margin: 10px auto 0 auto;
+    border-radius: 25px;
+    border:2px solid #ffffff42;
+    backdrop-filter:blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    box-shadow:0 8px 32px rgba(0,0,0,0.2);
+}
+.filter_labels {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    text-align: center;
+}
 
 
 
@@ -479,6 +499,10 @@ summary {
     width: 40%;
 }
 .smallInfo {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     margin: auto auto 20px auto;
     font-size: 10px;
     list-style: none;

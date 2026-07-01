@@ -221,14 +221,26 @@ def tasks():
     user_id=session.get('user_id')
     if user_id is None:
         return redirect('/login')
+    number=request.args.get('number')
+    task_id=request.args.get('task_id')
     conn=sqlite3.connect('users.db')
     conn.row_factory=sqlite3.Row
     cur=conn.cursor()
-    cur.execute('''
+    query='''
         SELECT tasks.*, COALESCE(user_tasks.status,'Задача еще не решена') AS status FROM tasks
-        LEFT JOIN user_tasks ON tasks.id=user_tasks.task_id
+        LEFT JOIN user_tasks
+        ON tasks.id=user_tasks.task_id
         AND user_tasks.user_id=?
-    ''',(user_id,))
+        WHERE 1=1
+    '''
+    options=[user_id]
+    if number:
+        query+='AND tasks.number=?'
+        options.append(number)
+    if task_id:
+        query+='AND tasks.id=?'
+        options.append(task_id)
+    cur.execute(query, options)
     tasks=cur.fetchall()
     conn.close()
     return render_template('tasks.html', tasks=tasks)

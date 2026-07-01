@@ -10,7 +10,7 @@
         <header class="header">
             <ul class="header__list1">
                 <li>
-                    <p>sinus ^_^</p>
+                    <p class="classification" style="font-size:16px">sinus ^_^</p>
                 </li>
             </ul>
             <ul class="header__list2">
@@ -45,6 +45,7 @@
                     <li><a href="{{url_for('tasks')}}"  class="lighttext">Банк задач</a></li>
                     <li><a href="{{url_for('error')}}" class="lighttext">Варианты</a></li>
                     <li><a href="{{url_for('mistakes')}}"   class="lighttext">Работа над ошибками</a></li>
+                    <li><a href="{{url_for('error')}}" class="lighttext">Теория</a></li>
                     <li></li>
                 </ul>
             </li>
@@ -57,6 +58,14 @@
                     <li><a href="{{url_for('statistics')}}">успех: {{percent}}%</a></li>
                 </ul>
             </li>
+        </ul>
+        <ul class="smallInfo">
+            <li><a href="https://t.me/karznl">Телеграмм-канал</a></li>
+            <li><a href="/">FAQ</a></li>
+            <li><a href="/">Контакты</a></li>
+            <li><a href="/">Поддержка</a></li>
+            <li><a href="/">Политика конфиденциальности</a></li>
+            <li>2026</li>
         </ul>
         <script src="{{url_for('static',filename='scripts.js')}}"></script> 
     </body>

@@ -7,7 +7,55 @@
         <link rel="stylesheet" href="{{ url_for('static',filename='css/styles.css')}}">
     </head>
     <body>
-        
+        <header class="header" style="width:80%">
+            <ul class="header__list1">
+                <li>
+                    <p class="classification" style="font-size:16px">sinus ^_^</p>
+                </li>
+            </ul>
+            <ul class="header__list2">
+                <li>
+                    <a href="{{url_for('error')}}" class="lighttext">курсы и тарифы</a>
+                </li>
+                <li>
+                    <a href="{{url_for('profile')}}" class="lighttext">профиль</a>
+                </li>
+            </ul>
+        </header>
+        <form method="GET" action="{{url_for('tasks')}}" class="filterForm">
+            <label style="font-size:12px; margin: auto 0 auto 0">Фильтр по номеру задания:</label>
+            <select name="number" class="buttons lightBox">
+                <option value="">Все</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
+                <option value="11">11</option>
+                <option value="12">12</option>
+                <option value="13">13</option>
+                <option value="14">14</option>
+                <option value="15">15</option>
+                <option value="16">16</option>
+                <option value="17">17</option>
+                <option value="18">18</option>
+                <option value="19">19</option>
+            </select>
+            <button type="submit" class="buttons lightBox">Применить фильтр</button>
+        </form>
+        <form method="GET" action="{{url_for('tasks')}}" class="filterForm">
+            <div class="filter_labels">
+                <label style="font-size:12px;">Поиск по ID задания:</label>
+                <label class="heading" style="font-size:10px;">ID задания - первое число сверху каждого задания</label>
+            </div>
+            <input type="number" name="task_id" class="lightBox buttons" placeholder="Введите ID">
+            <button type="submit" class="buttons lightBox">Найти задание</button>
+        </form>
         
         {% if session.get('role')=='admin' %}
             <a href="{{url_for('add_task')}}" class="buttons lightBox add_Task">Добавить задачу</a>
@@ -47,6 +95,14 @@
                 {%endif%}
             </div>
         {% endfor %}
+        <ul class="smallInfo">
+            <li><a href="https://t.me/karznl">Телеграмм-канал</a></li>
+            <li><a href="/">FAQ</a></li>
+            <li><a href="/">Контакты</a></li>
+            <li><a href="/">Поддержка</a></li>
+            <li><a href="/">Политика конфиденциальности</a></li>
+            <li>2026</li>
+        </ul>
         <div class="sidebar">
             <a href="{{url_for('error')}}" class="name">настя синус</a>
             <ul class="listThings">
