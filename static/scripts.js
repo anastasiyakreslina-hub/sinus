@@ -1,3 +1,56 @@
+const ctx=document.getElementById('Chart');
+
+new Chart(ctx, {
+    type:'bar',
+    data: {
+        labels: numbers,
+        datasets: [{
+            label: 'Процент правильных решений',
+            data: percents,
+            backgroundColor: 'rgb(215, 173, 195)',
+            hoverBackgroundColor:'#d70668',
+            borderRadius:10
+        }]
+    },
+    options: {
+        color:'#ffffff42',
+        font: {
+            family:'MyFont',
+        },
+        scales: {
+            y: {
+                beginAtZero: true,
+                max: 100,
+                ticks: {
+                    color:'#ffffff42',
+                    font: {
+                        family:'MyFont'
+                    }
+                }
+            },
+            x: {
+                ticks: {
+                    color:'#ffffff42',
+                    font: {
+                        family:'MyFont'
+                    }
+                }
+            }
+        },
+        plugins: {
+            legend: {
+                labels: {
+                    color:'#ffffff42',
+                    font: {
+                        family:'MyFont'
+                    }
+                }
+            }
+        }
+    }
+});
+
+
 document.addEventListener("DOMContentLoaded", () => {
     const toast = document.getElementById("toast");
     if (toast) {
@@ -63,3 +116,4 @@ function checkAnswer(taskId) {
         }
     });
 }
+

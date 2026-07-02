@@ -372,12 +372,23 @@ def statistics():
         (session['user_id'],)
     )
     user=cur.fetchone()
-    conn.close()
+    # conn.close()
     solved_count=all_count(session['user_id'])
     correct=correct_count(session['user_id'])
     goal=user['goal']
     percent=int((correct/solved_count)*100) if solved_count else 0
-    return render_template('statistics.html', user=user, solved_count=solved_count, correct=correct,goal=goal, percent=percent)
+    cur.execute('''
+        SELECT tasks.number, ROUND((SUM(CASE WHEN user_tasks.status LIKE 'Правильно!' THEN 1 ELSE 0 END)/COUNT(*))*100, 1) AS percent
+        FROM user_tasks JOIN tasks ON user_tasks.task_id=tasks.id 
+        WHERE user_tasks.user_id=?
+        GROUP BY tasks.number
+        ORDER BY tasks.number 
+    ''', (session['user_id'],))
+    data=cur.fetchall()
+    numbers=[row['number'] for row in data]
+    percents=[row['percent'] for row in data]
+    conn.close()
+    return render_template('statistics.html', user=user, solved_count=solved_count, correct=correct,goal=goal, percent=percent,numbers=numbers,percents=percents)
 
 
 def all_count(user_id):

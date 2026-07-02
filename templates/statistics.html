@@ -7,11 +7,32 @@
         <link rel="stylesheet" href="{{ url_for('static',filename='css/styles.css')}}">
     </head>
     <body>
-        <div>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <div class="task">
             <p>Цель: {{goal}}</p>
             <p>Решено задач: {{solved_count}}</p>
             <p>Решено верно: {{correct}}</p>
             <p>Процент правильности: {{percent}}%</p>
         </div>
+        <div class="task">
+            <canvas id="Chart"></canvas>
+        </div>
+        <div class="sidebar">
+            <a href="{{url_for('error')}}" class="name">настя синус</a>
+            <ul class="listThings">
+                <li><a href="{{url_for('home')}}" class="lighttext">Основная страница</a></li>
+                <li><a href="{{url_for('tasks')}}" class="lighttext">Банк заданий</a></li>
+                <li><a href="{{url_for('error')}}" class="lighttext">Варианты уровня ЕГЭ</a></li>
+                <li><a href="{{url_for('mistakes')}}" class="lighttext">Работа над ошибками</a></li>
+                <li><a href="{{url_for('statistics')}}" class="lighttext">Статистика</a></li>
+                <li><a href="{{url_for('logout')}}" class="lighttext">Выход</a></li>
+                <li></li>
+            </ul>
+        </div>
+        <script>
+            const numbers={{ numbers | tojson }};
+            const percents={{ percents | tojson }};
+        </script>
+        <script src="{{url_for('static',filename='scripts.js')}}"></script>
     </body>
 </html>
