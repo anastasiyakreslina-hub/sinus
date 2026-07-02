@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Теория</title>
+        <link rel="stylesheet" href="{{ url_for('static',filename='css/styles.css')}}">
+    </head>
+    <body>
+        <header class="header" style="width:80%">
+            <ul class="header__list1">
+                <li>
+                    <p class="classification" style="font-size:16px">sinus ^_^</p>
+                </li>
+            </ul>
+            <ul class="header__list2">
+                <li>
+                    <a href="{{url_for('error')}}" class="lighttext">курсы и тарифы</a>
+                </li>
+                <li>
+                    <a href="{{url_for('profile')}}" class="lighttext">профиль</a>
+                </li>
+            </ul>
+        </header>
+        {% if session['role']=='admin' %}
+            <button onclick="openTheoryAdding()" class="buttons lightBox add_Task">Добавить теорию</button>
+        {% endif %}
+        <div id="theoryAdding" style="display: none" class="modal">
+            <form method="POST" id="theoryForm"  enctype="multipart/form-data" class="modalObjects">
+                <input id="title" name="title" placeholder="название темы" class="buttons">
+                <input id="task_number" name="task_number" placeholder="введите номер задания" class="buttons">
+                <textarea id="text" name="text" placeholder="напишите теорию" class="textareas buttons"></textarea>
+                <input type="file" name="pdf" class="buttons">
+                <button type="submit" class="buttons">Сохранить</button>
+                <button type="button" onclick="closeTheoryAdding()" class="buttons">Закрыть</button>
+            </form>
+        </div>
+        {% for block in blocks %}
+            <div class="task">
+                <div class="tasksClasses">
+                    <p class="classification">#{{block['block_id']}}</p>
+                    <p class="classification">#Теория к заданию:{{block['task_number']}}</p>
+                </div>
+                <h3 class="heading">{{block['title']}}</h3>
+                <p class="taskText">{{block['text']}}</p>
+                {% if block['pdf_path'] %}
+                    <a class="heading lighttext" style="font-size:12px" href="{{block['pdf_path']}}" target="_blank">PDF к теме</a>
+                {% endif %}
+                {% if session.get('role')=='admin' %}
+                    <form method="POST" action="/delete_theory/{{block['block_id']}}">
+                        <button class="buttons lightBox" onclick="return confirm('Удалить тему?')" type="submit">удалить тему</button>
+                    </form>
+                    <button class="buttons lightBox" onclick="editTheory(this)"
+                        data-id="{{block['block_id']}}"
+                        data-title="{{block['title']}}"
+                        data-task="{{block['task_number']}}"
+                        data-text="{{block['text']}}"
+                    >Редактировать теорию</button>
+                {%endif%}
+            </div>
+        {% endfor %}
+        <ul class="smallInfo">
+            <li><a href="https://t.me/karznl">Телеграмм-канал</a></li>
+            <li><a href="/">FAQ</a></li>
+            <li><a href="/">Контакты</a></li>
+            <li><a href="/">Поддержка</a></li>
+            <li><a href="/">Политика конфиденциальности</a></li>
+            <li>2026</li>
+        </ul>
+        <div class="sidebar">
+            <a href="{{url_for('error')}}" class="name">настя синус</a>
+                <ul class="listThings">
+                    <li><a href="{{url_for('home')}}" class="lighttext">Основная страница</a></li>
+                    <li><a href="{{url_for('tasks')}}" class="lighttext">Банк заданий</a></li>
+                    <li><a href="{{url_for('error')}}" class="lighttext">Варианты уровня ЕГЭ</a></li>
+                    <li><a href="{{url_for('mistakes')}}" class="lighttext">Работа над ошибками</a></li>
+                    <li><a href="{{url_for('statistics')}}" class="lighttext">Статистика</a></li>
+                    <li><a href="{{url_for('logout')}}" class="lighttext">Выход</a></li>
+                    <li></li>
+                </ul>
+        </div>
+        <script src="{{url_for('static',filename='scripts.js')}}"></script>
+    </body>
+</html>

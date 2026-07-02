@@ -30,7 +30,7 @@
                     {% if user['avatar'] %}
                     <img src="{{url_for('static',filename=user['avatar'])}}?v={{user['id']}}" class="avatar">
                 {% else %}
-                    <img src="{{url_for('static', filename='images/studentsphoto.jpg')}}" class="studentsPhoto">
+                    <img src="{{url_for('static', filename='images/studentsphoto.jpg')}}" class="avatar">
                 {% endif %}
                     <p class="goal">Цель: {{goal}}</p>
                 </div>
@@ -44,8 +44,8 @@
                 <ul class="toDo">
                     <li><a href="{{url_for('tasks')}}"  class="lighttext">Банк задач</a></li>
                     <li><a href="{{url_for('error')}}" class="lighttext">Варианты</a></li>
-                    <li><a href="{{url_for('mistakes')}}"   class="lighttext">Работа над ошибками</a></li>
-                    <li><a href="{{url_for('error')}}" class="lighttext">Теория</a></li>
+                    <li><a href="{{url_for('mistakes')}}"   class="lighttext">РНО</a></li>
+                    <li><a href="{{url_for('theory')}}" class="lighttext">Теория</a></li>
                     <li></li>
                 </ul>
             </li>

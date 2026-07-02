@@ -2,13 +2,30 @@ from flask import Flask,render_template,request,redirect,session
 import sqlite3
 import os
 from PIL import Image
+from functools import wraps
+
 
 app=Flask(__name__)
-app.config['MAX_CONTENT_LENGTH']=2*1024*1024
+app.config['MAX_CONTENT_LENGTH']=8*1024*1024
 ALLOWED_IMAGES={'png','jpg','jpeg'}
 ALLOWED_PDFS={'pdf'}
 app.secret_key='12345'
 
+def admin_only(f):
+    @wraps(f)
+    def wrapper(*args,**kwags):
+        if session.get('role') != 'admin':
+            return redirect('/')
+        return f(*args,**kwags)
+    return wrapper
+
+def regs_only(f):
+    @wraps(f)
+    def wrapper(*args,**kwags):
+        if 'user_id' not in session:
+            return redirect('/login')
+        return f(*args,**kwags)
+    return wrapper
 
 def init_db():
     conn=sqlite3.connect('users.db')
@@ -25,21 +42,30 @@ def init_db():
     ''')
     cur.execute('''
         CREATE TABLE IF NOT EXISTS tasks(
-                id INTEGER PRIMARY KEY,
-                number INTEGER,
-                source TEXT,
-                text TEXT,
-                solution TEXT,
-                answer TEXT
+            id INTEGER PRIMARY KEY,
+            number INTEGER,
+            source TEXT,
+            text TEXT,
+            solution TEXT,
+            answer TEXT
         )
     ''')
     cur.execute('''
         CREATE TABLE IF NOT EXISTS user_tasks(
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        user_id INTEGER NOT NULL,
-        task_id INTEGER NOT NULL,
-        status TEXT,
-        UNIQUE(user_id,task_id)
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            user_id INTEGER NOT NULL,
+            task_id INTEGER NOT NULL,
+            status TEXT,
+            UNIQUE(user_id,task_id)
+        )
+    ''')
+    cur.execute('''
+        CREATE TABLE IF NOT EXISTS theory_table(
+            block_id INTEGER PRIMARY KEY,
+            title TEXT,
+            task_number INTEGER,
+            text TEXT,
+            pdf_path TEXT
         )
     ''')
     conn.commit()
@@ -94,6 +120,7 @@ def allowed_file(filename, allowed_set):
 
 
 @app.route('/upload_avatar',methods=['POST'])
+@regs_only
 def upload_avatar():
     file=request.files['avatar']
     if not file or file.filename=='':
@@ -141,6 +168,7 @@ def crop(img):
 
 
 @app.route('/')
+@regs_only
 def home():
     if 'user' in session:
         conn=sqlite3.connect('users.db')
@@ -158,6 +186,7 @@ def home():
 
 
 @app.route('/profile',methods=['GET','POST'])
+@regs_only
 def profile():
     if 'user_id' not in session:
         return redirect('/login')
@@ -198,6 +227,7 @@ def get_goal():
 
 
 @app.route('/add_tasks', methods=['GET','POST'])
+@admin_only
 def add_task():
     if request.method=='POST':
         number=request.form['number']
@@ -217,6 +247,7 @@ def add_task():
     return render_template('add_tasks.html')
 
 @app.route('/tasks')
+@regs_only
 def tasks():
     user_id=session.get('user_id')
     if user_id is None:
@@ -302,6 +333,7 @@ def delete_task(task_id):
 
 
 @app.route('/project')
+@regs_only
 def project():
     with open('static/texts/about.txt','r',encoding='utf-8') as f:
         about_text=f.read()
@@ -320,6 +352,7 @@ def project():
     )
 
 @app.route('/about')
+@regs_only
 def about():
     with open('static/texts/about.txt','r',encoding='utf-8') as f:
         about_text=f.read()
@@ -339,6 +372,7 @@ def about():
 
 
 @app.route('/mistakes')
+@regs_only
 def mistakes():
     user_id=session.get('user_id')
     if user_id is None:
@@ -356,11 +390,13 @@ def mistakes():
 
 
 @app.route('/error')
+@regs_only
 def error():
     return render_template('error.html')
 
 
 @app.route('/statistics')
+@regs_only
 def statistics():
     if 'user_id' not in session:
         return redirect('/login')
@@ -372,7 +408,6 @@ def statistics():
         (session['user_id'],)
     )
     user=cur.fetchone()
-    # conn.close()
     solved_count=all_count(session['user_id'])
     correct=correct_count(session['user_id'])
     goal=user['goal']
@@ -411,6 +446,69 @@ def correct_count(user_id):
     count=cur.fetchone()[0]
     conn.close()
     return count
+
+
+@app.route('/add_theory', methods=['GET','POST'])
+@admin_only
+def add_theory():
+    if request.method=='POST':
+        title=request.form['title']
+        task_number=request.form['task_number']
+        text=request.form['text']
+        pdf=request.files.get('pdf')
+        pdf_path=None
+        if pdf:
+            pdf_path=f'static/theory/{pdf.filename}'
+            pdf.save(pdf_path)
+        conn=sqlite3.connect('users.db')
+        cur=conn.cursor()
+        cur.execute('''
+            INSERT INTO theory_table(title,task_number,text,pdf_path) VALUES(?,?,?,?)
+        ''',(title,task_number,text,pdf_path))
+        conn.commit()
+        conn.close()
+    return redirect('/theory')
+
+
+@app.route('/theory')
+@regs_only
+def theory():
+    conn=sqlite3.connect('users.db')
+    conn.row_factory=sqlite3.Row 
+    cur=conn.cursor()
+    cur.execute('SELECT block_id, title, task_number, text, pdf_path FROM theory_table')
+    blocks=cur.fetchall()
+    conn.close()
+    return render_template('theory.html', blocks=blocks)
+
+
+@app.route('/delete_theory/<int:theory_id>',methods=['POST'])
+@admin_only
+def delete_theory(theory_id):
+    conn=sqlite3.connect('users.db')
+    cur=conn.cursor()
+    cur.execute(
+        'DELETE FROM theory_table WHERE block_id=?',
+        (theory_id,)
+    )
+    conn.commit()
+    conn.close()
+    return redirect('/theory')
+
+@app.route('/edit_theory/<int:block_id>',methods=['POST'])
+@admin_only
+def edit_theory(block_id):
+    title=request.form['title']
+    task_number=request.form['task_number']
+    text=request.form['text']
+    conn=sqlite3.connect('users.db')
+    cur=conn.cursor()
+    cur.execute('''
+        UPDATE theory_table SET title=?, task_number=?, text=? WHERE block_id=?
+    ''',(title,task_number,text,block_id))
+    conn.commit()
+    conn.close()
+    return redirect('/theory')
 
 
 if __name__=='__main__':

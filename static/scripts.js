@@ -1,55 +1,5 @@
 const ctx=document.getElementById('Chart');
 
-new Chart(ctx, {
-    type:'bar',
-    data: {
-        labels: numbers,
-        datasets: [{
-            label: 'Процент правильных решений',
-            data: percents,
-            backgroundColor: 'rgb(215, 173, 195)',
-            hoverBackgroundColor:'#d70668',
-            borderRadius:10
-        }]
-    },
-    options: {
-        color:'#ffffff42',
-        font: {
-            family:'MyFont',
-        },
-        scales: {
-            y: {
-                beginAtZero: true,
-                max: 100,
-                ticks: {
-                    color:'#ffffff42',
-                    font: {
-                        family:'MyFont'
-                    }
-                }
-            },
-            x: {
-                ticks: {
-                    color:'#ffffff42',
-                    font: {
-                        family:'MyFont'
-                    }
-                }
-            }
-        },
-        plugins: {
-            legend: {
-                labels: {
-                    color:'#ffffff42',
-                    font: {
-                        family:'MyFont'
-                    }
-                }
-            }
-        }
-    }
-});
-
 
 document.addEventListener("DOMContentLoaded", () => {
     const toast = document.getElementById("toast");
@@ -65,25 +15,60 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
-function updateTime() {
-    const now = new Date();
-    document.getElementById('time').textContent=now.toLocaleTimeString();
-    const hour = now.getHours();
-    let greeting='';
-    if (hour>=5 && hour<12) {
-        greeting = 'доброе утро'
-    } else if (hour>=12 && hour<18) {
-        greeting = 'добрый день'
-    } else if (hour>=18 && hour<23) {
-        greeting='добрый вечер'
-    } else {
-        greeting = 'доброй ночи'
-    }
 
-    document.getElementById('greeting').textContent=greeting;
+
+if (ctx) {
+    new Chart(ctx, {
+        type:'bar',
+        data: {
+            labels: numbers,
+            datasets: [{
+                label: 'Процент правильных решений',
+                data: percents,
+                backgroundColor: 'rgb(215, 173, 195)',
+                hoverBackgroundColor:'#d70668',
+                borderRadius:10
+            }]
+        },
+        options: {
+            color:'#ffffff42',
+            font: {
+                family:'MyFont',
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    max: 100,
+                    ticks: {
+                        color:'#ffffff42',
+                        font: {
+                            family:'MyFont'
+                        }
+                    }
+                },
+                x: {
+                    ticks: {
+                        color:'#ffffff42',
+                        font: {
+                            family:'MyFont'
+                        }
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    labels: {
+                        color:'#ffffff42',
+                        font: {
+                            family:'MyFont'
+                        }
+                    }
+                }
+            }
+        }
+    });
 }
-updateTime()
-setInterval(updateTime,1000)
+
 
 function checkAnswer(taskId) {
     const input = document.getElementById(`input-${taskId}`);
@@ -117,3 +102,42 @@ function checkAnswer(taskId) {
     });
 }
 
+
+function  openTheoryAdding() {
+    document.getElementById('theoryAdding').style.display='block';
+}
+function closeTheoryAdding() {
+    document.getElementById('theoryAdding').style.display='none'
+}
+function editTheory(btn) {
+    const id=btn.dataset.id;
+    const title = btn.dataset.title;
+    const task = btn.dataset.task;
+    const text = btn.dataset.text;
+    document.getElementById('title').value=title;
+    document.getElementById('task_number').value=task;
+    document.getElementById('text').value=text
+    const form = document.getElementById('theoryForm');
+    form.action='/edit_theory/'+id
+    openTheoryAdding();
+}
+function updateTime() {
+    const timeEl = document.getElementById('time');
+    const greetingEl = document.getElementById('greeting');
+    if (!timeEl && !greetingEl) return;
+    const now = new Date();
+    if (timeEl) {
+        timeEl.textContent = now.toLocaleTimeString();
+    }
+    if (greetingEl) {
+        const hour = now.getHours();
+        let greeting = '';
+        if (hour >= 5 && hour < 12) greeting = 'доброе утро';
+        else if (hour < 18) greeting = 'добрый день';
+        else if (hour < 23) greeting = 'добрый вечер';
+        else greeting = 'доброй ночи';
+        greetingEl.textContent = greeting;
+    }
+}
+updateTime()
+setInterval(updateTime,1000)

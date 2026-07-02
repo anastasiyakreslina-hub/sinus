@@ -288,11 +288,9 @@ textarea::placeholder {
     color:#9b6881;
 }
 .textareas {
-    width:50%;
     white-space: pre-wrap;
     border-radius: 15px;
-    width: 70%;
-    height:60px;
+    height:40%;
 }
 summary {
     padding:5px;
@@ -513,3 +511,26 @@ summary {
 .smallInfo li+li {
     margin-top: 5px;
 }
+.modal {
+    position:fixed;
+    inset:0;
+    border:2px solid #ffffff42;
+    backdrop-filter:blur(15px);
+    box-shadow:0 8px 32px rgba(0,0,0,0.2);
+    padding:10px;
+    background:#a9686813;
+    width: 90%;
+    height:90%;
+    border-radius: 35px;
+    margin: auto auto auto auto;
+    z-index:9999;
+}
+.modalObjects {
+    display:flex;
+    flex-direction: column;
+    width:80%;
+    height:90%;
+    gap:5%;
+    margin: 0 auto 0 auto;
+}
+
