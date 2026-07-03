@@ -7,27 +7,27 @@
         <link rel="stylesheet" href="{{ url_for('static',filename='css/styles.css')}}">
     </head>
     <body>
-        <header class="header" style="width:80%">
+        <header class="header" style="width:80%; margin-left: 45px;">
             <ul class="header__list1">
                 <li>
-                    <p class="classification" style="font-size:16px">sinus ^_^</p>
+                    <p class="classification main_Thing">sinus ^_^</p>
                 </li>
             </ul>
             <ul class="header__list2">
                 <li>
-                    <a href="{{url_for('error')}}" class="lighttext">о проекте</a>
+                    <a href="{{url_for('error')}}" class="lighttext main_Thing">о проекте</a>
                 </li>
                 <li>
-                    <a href="{{url_for('profile')}}" class="lighttext">профиль</a>
+                    <a href="{{url_for('profile')}}" class="lighttext main_Thing">профиль</a>
                 </li>
             </ul>
         </header>
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         <div class="task">
-            <p>Цель: {{goal}}</p>
-            <p>Решено задач: {{solved_count}}</p>
-            <p>Решено верно: {{correct}}</p>
-            <p>Процент правильности: {{percent}}%</p>
+            <p class="main_Thing">Цель: {{goal}}</p>
+            <p class="main_Thing">Решено задач: {{solved_count}}</p>
+            <p class="main_Thing">Решено верно: {{correct}}</p>
+            <p class="main_Thing">Процент правильности: {{percent}}%</p>
         </div>
         <div class="task">
             <canvas id="Chart"></canvas>

@@ -7,23 +7,23 @@
         <link rel="stylesheet" href="{{ url_for('static',filename='css/styles.css')}}">
     </head>
     <body>
-        <header class="header" style="width:80%">
+        <header class="header" style="width:80%; margin-left:45px;">
             <ul class="header__list1">
                 <li>
-                    <p class="classification" style="font-size:16px">sinus ^_^</p>
+                    <p class="classification main_Thing">sinus ^_^</p>
                 </li>
             </ul>
             <ul class="header__list2">
                 <li>
-                    <a href="{{url_for('error')}}" class="lighttext">о проекте</a>
+                    <a href="{{url_for('error')}}" class="lighttext main_Thing">о проекте</a>
                 </li>
                 <li>
-                    <a href="{{url_for('profile')}}" class="lighttext">профиль</a>
+                    <a href="{{url_for('profile')}}" class="lighttext main_Thing">профиль</a>
                 </li>
             </ul>
         </header>
         {% if tasks %}
-            <h2 class="heading">Работа над ошибками</h2>
+            <h2 class="heading h2heading">Работа над ошибками</h2>
             {% for task in tasks %}
                 <div class="task">
                     <div class="tasksClasses">
@@ -32,8 +32,10 @@
                         <p class="classification">#{{task['source']}}</p>
                     </div>
                     <p class="taskText">{{task['text']}}</p>
-                    <input id="input-{{ task['id'] }}" class="lightBox buttons" placeholder="ответ">
-                    <button onclick="checkAnswer({{ task['id'] }})" class="lightBox buttons">Проверить</button>
+                    <div class="phoneButtons">
+                        <input id="input-{{ task['id'] }}" class="lightBox buttons" placeholder="ответ">
+                        <button onclick="checkAnswer({{ task['id'] }})" class="lightBox buttons">Проверить</button>
+                    </div>
                     <p id="result-{{task['id']}}"
                     class="answers {% if task['status']=='correct' %}
                         green
