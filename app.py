@@ -9,7 +9,8 @@ app=Flask(__name__)
 app.config['MAX_CONTENT_LENGTH']=8*1024*1024
 ALLOWED_IMAGES={'png','jpg','jpeg'}
 ALLOWED_PDFS={'pdf'}
-app.secret_key='12345'
+# app.secret_key='12345'
+app.secret_key=os.environ.get('secret_key')
 
 def admin_only(f):
     @wraps(f)
@@ -413,13 +414,15 @@ def statistics():
     goal=user['goal']
     percent=int((correct/solved_count)*100) if solved_count else 0
     cur.execute('''
-        SELECT tasks.number, ROUND((SUM(CASE WHEN user_tasks.status LIKE 'Правильно!' THEN 1 ELSE 0 END)/COUNT(*))*100, 1) AS percent
+        SELECT tasks.number, ROUND(100*SUM(CASE WHEN user_tasks.status LIKE 'Правильно!' THEN 1 ELSE 0 END)/COUNT(*), 1) AS percent
         FROM user_tasks JOIN tasks ON user_tasks.task_id=tasks.id 
         WHERE user_tasks.user_id=?
         GROUP BY tasks.number
         ORDER BY tasks.number 
     ''', (session['user_id'],))
     data=cur.fetchall()
+    for row in data:
+        print(dict(row))
     numbers=[row['number'] for row in data]
     percents=[row['percent'] for row in data]
     conn.close()

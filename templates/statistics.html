@@ -7,6 +7,21 @@
         <link rel="stylesheet" href="{{ url_for('static',filename='css/styles.css')}}">
     </head>
     <body>
+        <header class="header" style="width:80%">
+            <ul class="header__list1">
+                <li>
+                    <p class="classification" style="font-size:16px">sinus ^_^</p>
+                </li>
+            </ul>
+            <ul class="header__list2">
+                <li>
+                    <a href="{{url_for('error')}}" class="lighttext">о проекте</a>
+                </li>
+                <li>
+                    <a href="{{url_for('profile')}}" class="lighttext">профиль</a>
+                </li>
+            </ul>
+        </header>
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         <div class="task">
             <p>Цель: {{goal}}</p>

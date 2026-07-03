@@ -466,7 +466,7 @@ summary {
 .infoBlock {
     position: relative;
     width: 100%;
-    height:110vh;
+    height:90vh;
     display:flex;
     justify-content: center;
     flex-direction: column;
@@ -533,4 +533,6 @@ summary {
     gap:5%;
     margin: 0 auto 0 auto;
 }
-
+.mascot {
+    width:10%;
+}

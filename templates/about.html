@@ -8,22 +8,25 @@
 </head>
 <body>
     <div class="infoBlock">
+        <img src="{{url_for('static', filename='images/mascot/mainMascot.png')}}" class="mascot">
         <h1 style="color:rgb(205, 48, 95);">Sinus</h1>
         <p class="actualInformation" style="text-align: center; width:70%;">{{ about_text }}</p>
         <a href="{{url_for('login')}}" class="buttons lightBox lighttext" style="width:30%; margin: 0 auto 0 auto; padding:10px">Войти на платформу</a>
     </div>
     <div class="infoBlock" style="height:120vh;">
-        <img src="{{url_for('static',filename='images/mainPicture.jpeg')}}" class="infoImage">
+        <img src="{{url_for('static',filename='images/mainPicture.png')}}" class="infoImage">
         <h2>Платформа включает в себя:</h2>
         <p class="actualInformation">{{ include_text }}</p>
     </div>
     <div class="infoBlock">
+        <img src="{{url_for('static', filename='images/mascot/coolMascot.png')}}" class="mascot">
         <h2>Платформа для тех, кто:</h2>
         <p class="actualInformation">{{ forWho_text }}</p>
     </div>
     <div class="infoBlock">
         <a href="{{url_for('register')}}" class="buttons lightBox lighttext" style="width:30%; margin: 10% auto 20px auto; padding:10px">Создание аккаунта</a>
         <a href="{{url_for('login')}}" class="buttons lightBox lighttext" style="width:30%; margin: 0 auto 20px auto; padding:10px">Вход на платформу</a>
+        <img src="{{url_for('static', filename='images/mascot/lyingMascot.png')}}" class="mascot">
         <ul class="smallInfo">
             <li><a href="https://t.me/karznl">Телеграмм-канал</a></li>
             <li><a href="/">FAQ</a></li>

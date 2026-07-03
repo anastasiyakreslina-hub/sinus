@@ -16,7 +16,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
-
 if (ctx) {
     new Chart(ctx, {
         type:'bar',

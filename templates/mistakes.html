@@ -15,7 +15,7 @@
             </ul>
             <ul class="header__list2">
                 <li>
-                    <a href="{{url_for('error')}}" class="lighttext">курсы и тарифы</a>
+                    <a href="{{url_for('error')}}" class="lighttext">о проекте</a>
                 </li>
                 <li>
                     <a href="{{url_for('profile')}}" class="lighttext">профиль</a>
@@ -23,6 +23,7 @@
             </ul>
         </header>
         {% if tasks %}
+            <h2 class="heading">Работа над ошибками</h2>
             {% for task in tasks %}
                 <div class="task">
                     <div class="tasksClasses">
@@ -51,6 +52,7 @@
                 <ul class="toDo" style="text-align: center;">
                     <li><a href="{{url_for('tasks')}}" class="lighttext">Банк задач</a></li>
                     <li><a href="/" class="lighttext">Варианты уровня ЕГЭ</a></li>
+                    <li><img src="{{url_for('static', filename='images/mascot/runningMascot.png')}}" style="width:30%"></li>
                 </ul>
             </div>
         {%endif%}
