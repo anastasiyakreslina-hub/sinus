@@ -9,8 +9,9 @@ app=Flask(__name__)
 app.config['MAX_CONTENT_LENGTH']=8*1024*1024
 ALLOWED_IMAGES={'png','jpg','jpeg'}
 ALLOWED_PDFS={'pdf'}
-# app.secret_key='12345'
+
 app.secret_key=os.environ.get('secret_key')
+app.secret_key='12345'
 
 def admin_only(f):
     @wraps(f)

@@ -55,9 +55,12 @@ body::before {
 }
 .header__list2 {
     display:flex;
-    gap:60px;
+    gap:50px;
     list-style:none;
     margin: auto 0 auto auto;
+}
+.main_Thing {
+    font-size:12px;
 }
 a {
     text-decoration: none;
@@ -79,7 +82,7 @@ a {
 }
 .main {
     display: flex;
-    justify-content: space-between;
+    /* justify-content: space-between; */
     list-style:none;
     gap:20px;
 }
@@ -207,11 +210,6 @@ img {
     width:93%
 }
 
-.studentsPhoto {
-    margin: 0 auto 0 auto;
-    max-width:250px;
-    border-radius: 25px;
-}
 .avatar {
     border-radius:25px;
     width: 90%;
@@ -267,6 +265,7 @@ img {
 }
 .buttons {
     background-color: #75234551;
+    font-family: 'MyFont';
     color:rgb(215, 173, 195);
     border-radius: 10px;
     border:2px solid #ffffff42;
@@ -535,4 +534,59 @@ summary {
 }
 .mascot {
     width:10%;
+}
+
+
+@media (max-width:768px) {
+    /* * {
+        box-sizing: border-box;
+    } */
+    /* body {
+        overflow-x: hidden;
+    } */
+    .header {
+        padding:8px;
+        width:100%;
+        max-width: 92%;
+    }
+    .main_Thing {
+        font-size:9px;
+    }
+    .time {
+        font-size:24px;
+    }
+    .main {
+        flex-direction: column;
+        margin: 0 auto 0 auto;
+        width:100%;
+        gap:10px;
+    }
+    .firstColumn {
+        width: 92%;
+        padding:5px;
+        margin:0 auto 0 auto;
+    }
+    .avatar {
+        max-height:150px;
+        width: 100%;
+        max-width: 210px;
+    }
+    .secondColumn {
+        width: 92%;
+        padding:5px;
+        margin:0 auto 0 auto;
+    }
+    .main > * {
+        min-width: 0;
+    }
+    .toDo {
+        height: 20vh;
+        width:100%;
+        padding:0;
+    }
+    .thirdColumn {
+        width:92%;
+        padding:5px;
+        margin: 0 auto 20px auto;
+    }
 }
