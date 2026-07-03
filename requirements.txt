@@ -12,3 +12,5 @@ pillow==11.3.0
 six @ file:///AppleInternal/Library/BuildRoots/4~CNlKugBUuKM58FJFHeNR3wcmLXUyWlLa_MEj66k/Library/Caches/com.apple.xbs/TemporaryDirectory.BQzQ7o/Sources/python3/six-1.15.0-py2.py3-none-any.whl
 Werkzeug==3.1.8
 zipp==3.23.1
+flask
+gunicorn
