@@ -549,6 +549,7 @@ summary {
         padding:8px;
         width:100%;
         max-width: 92%;
+        margin: 10px 45px auto auto;
     }
     .main_Thing {
         font-size:9px;
