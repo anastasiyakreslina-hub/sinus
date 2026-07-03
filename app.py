@@ -74,12 +74,6 @@ def init_db():
     conn.commit()
     conn.close()
 
-conn=sqlite3.connect('users.db')
-cur=conn.cursor()
-cur.execute('UPDATE users SET reg_date=?' , ('03.07.2026',))
-conn.commit()
-conn.close()
-print('ok')
 
 
 @app.route('/register', methods=["GET", "POST"])

@@ -22,7 +22,7 @@
                             {% if user['avatar'] %}
                                 <img src="{{url_for('static',filename=user['avatar'])}}?v={{user['id']}}" class="avatar">
                             {% else %}
-                                <img src="{{url_for('static', filename='images/studentsphoto.jpg')}}" class="studentsPhoto">
+                                <img src="{{url_for('static', filename='images/studentsphoto.jpg')}}" class="avatar">
                             {% endif %}
                         </li>
                         <li>

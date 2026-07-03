@@ -2,30 +2,30 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>О проекте</title>
     <link rel="stylesheet" href="{{ url_for('static',filename='css/styles.css')}}">
 </head>
 <body>
     <div class="infoBlock">
         <img src="{{url_for('static', filename='images/mascot/mainMascot.png')}}" class="mascot">
-        <h1 style="color:rgb(205, 48, 95);">Sinus</h1>
+        <h1 style="color:rgb(205, 48, 95);" class="center">Sinus</h1>
         <p class="actualInformation" style="text-align: center; width:70%;">{{ about_text }}</p>
-        <a href="{{url_for('login')}}" class="buttons lightBox lighttext" style="width:30%; margin: 0 auto 0 auto; padding:10px">Войти на платформу</a>
+        <a href="{{url_for('login')}}" class="buttons lightBox lighttext main_Thing" style="width:30%; margin: 0 auto 0 auto; padding:10px">Войти на платформу</a>
     </div>
-    <div class="infoBlock" style="height:120vh;">
+    <div class="infoBlock">
         <img src="{{url_for('static',filename='images/mainPicture.png')}}" class="infoImage">
-        <h2>Платформа включает в себя:</h2>
+        <p class="h2heading center">Платформа включает в себя:</p>
         <p class="actualInformation">{{ include_text }}</p>
     </div>
     <div class="infoBlock">
         <img src="{{url_for('static', filename='images/mascot/coolMascot.png')}}" class="mascot">
-        <h2>Платформа для тех, кто:</h2>
+        <p class="h2heading center">Платформа для тех, кто:</p>
         <p class="actualInformation">{{ forWho_text }}</p>
     </div>
     <div class="infoBlock">
-        <a href="{{url_for('register')}}" class="buttons lightBox lighttext" style="width:30%; margin: 10% auto 20px auto; padding:10px">Создание аккаунта</a>
-        <a href="{{url_for('login')}}" class="buttons lightBox lighttext" style="width:30%; margin: 0 auto 20px auto; padding:10px">Вход на платформу</a>
+        <a href="{{url_for('register')}}" class="buttons lightBox lighttext main_Thing" style="width:30%; margin: 10% auto 20px auto; padding:10px">Создание аккаунта</a>
+        <a href="{{url_for('login')}}" class="buttons lightBox lighttext main_Thing" style="width:30%; margin: 0 auto 20px auto; padding:10px">Вход на платформу</a>
         <img src="{{url_for('static', filename='images/mascot/lyingMascot.png')}}" class="mascot">
         <ul class="smallInfo">
             <li><a href="https://t.me/karznl">Телеграмм-канал</a></li>
