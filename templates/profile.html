@@ -11,6 +11,7 @@
         <div class="mainProfile">
                <h2 class="heading">Привет, {{ username }}</h2>
                <p class="goal">Твоя цель: {{user['goal']}}</p>
+               <p class="heading">Дата регистрации: {{user['reg_date']}}</p>
                <form method="POST" action="/profile">
                 <input type="number" name="goal" placeholder="поменять цель">
                 <button type="submit">Сохранить</button>
@@ -46,6 +47,6 @@
                 <li></li>
             </ul>
         </div>
-        <script src="scripts.js"></script>
+        <script src="{{url_for('static',filename='scripts.js')}}"></script>
     </body>
 </html>

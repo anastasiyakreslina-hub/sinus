@@ -3,6 +3,7 @@ import sqlite3
 import os
 from PIL import Image
 from functools import wraps
+from datetime import datetime
 
 
 app=Flask(__name__)
@@ -73,6 +74,13 @@ def init_db():
     conn.commit()
     conn.close()
 
+conn=sqlite3.connect('users.db')
+cur=conn.cursor()
+cur.execute('UPDATE users SET reg_date=?' , ('03.07.2026',))
+conn.commit()
+conn.close()
+print('ok')
+
 
 @app.route('/register', methods=["GET", "POST"])
 def register():
@@ -89,7 +97,8 @@ def register():
         role='user'
         if username=='myr':
             role='admin'
-        cur.execute('INSERT INTO users(username, password, role) VALUES (?, ?, ?)', (username, password, role))
+        reg_date=datetime.now().strftime('%d.%m.%Y')
+        cur.execute('INSERT INTO users(username, password, role, reg_date) VALUES (?, ?, ?, ?)', (username, password, role, reg_date))
         conn.commit()
         conn.close()
         return redirect('/login')

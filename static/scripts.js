@@ -13,8 +13,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 });
 
-
-
 if (sidebar) {
     sidebar.addEventListener('click',()=> {
         sidebar.classList.toggle('open');
