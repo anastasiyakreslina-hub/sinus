@@ -7,58 +7,62 @@
         <link rel="stylesheet" href="{{ url_for('static',filename='css/styles.css')}}">
     </head>
     <body>
-        <header class="header" style="width:80%">
+        <header class="header" style="width:80%; margin-left:45px;">
             <ul class="header__list1">
                 <li>
-                    <p class="classification" style="font-size:16px">sinus ^_^</p>
+                    <p class="classification main_Thing">sinus ^_^</p>
                 </li>
             </ul>
             <ul class="header__list2">
                 <li>
-                    <a href="{{url_for('error')}}" class="lighttext">о проекте</a>
+                    <a href="{{url_for('error')}}" class="lighttext main_Thing">о проекте</a>
                 </li>
                 <li>
-                    <a href="{{url_for('profile')}}" class="lighttext">профиль</a>
+                    <a href="{{url_for('profile')}}" class="lighttext main_Thing">профиль</a>
                 </li>
             </ul>
         </header>
         <form method="GET" action="{{url_for('tasks')}}" class="filterForm">
             <label style="font-size:12px; margin: auto 0 auto 0">Фильтр по номеру задания:</label>
-            <select name="number" class="buttons lightBox">
-                <option value="">Все</option>
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-                <option value="6">6</option>
-                <option value="7">7</option>
-                <option value="8">8</option>
-                <option value="9">9</option>
-                <option value="10">10</option>
-                <option value="11">11</option>
-                <option value="12">12</option>
-                <option value="13">13</option>
-                <option value="14">14</option>
-                <option value="15">15</option>
-                <option value="16">16</option>
-                <option value="17">17</option>
-                <option value="18">18</option>
-                <option value="19">19</option>
-            </select>
-            <button type="submit" class="buttons lightBox">Применить фильтр</button>
+            <div class="filterButtons">
+                <select name="number" class="buttons lightBox main_Thing">
+                    <option value="">Все</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                    <option value="11">11</option>
+                    <option value="12">12</option>
+                    <option value="13">13</option>
+                    <option value="14">14</option>
+                    <option value="15">15</option>
+                    <option value="16">16</option>
+                    <option value="17">17</option>
+                    <option value="18">18</option>
+                    <option value="19">19</option>
+                </select>
+                <button type="submit" class="buttons lightBox main_Thing">Применить фильтр</button>
+            </div>
         </form>
         <form method="GET" action="{{url_for('tasks')}}" class="filterForm">
             <div class="filter_labels">
                 <label style="font-size:12px;">Поиск по ID:</label>
                 <label class="heading" style="font-size:10px;">ID задания - первое число сверху каждого задания</label>
             </div>
-            <input type="number" name="task_id" class="lightBox buttons" placeholder="Введите ID">
-            <button type="submit" class="buttons lightBox">Найти задание</button>
+            <div class="filterButtons">
+                <input type="number" name="task_id" class="lightBox buttons main_Thing" placeholder="ID">
+                <button type="submit" class="buttons lightBox main_Thing">Найти задание</button>
+            </div>
         </form>
         
         {% if session.get('role')=='admin' %}
-            <a href="{{url_for('add_task')}}" class="buttons lightBox add_Task">Добавить задачу</a>
+            <a href="{{url_for('add_task')}}" class="buttons lightBox add_Task main_Thing">Добавить задачу</a>
         {%endif%}
         {% for task in tasks %}
             <div class="task">
@@ -68,8 +72,10 @@
                     <p class="classification">#{{task['source']}}</p>
                 </div>
                 <p class="taskText">{{task['text']}}</p>
-                <input id="input-{{ task['id'] }}" class="lightBox buttons" placeholder="ответ">
-                <button onclick="checkAnswer({{ task['id'] }})" class="lightBox buttons">Проверить</button>
+                <div class="phoneButtons">
+                    <input id="input-{{ task['id'] }}" class="lightBox buttons main_Thing" placeholder="ответ">
+                    <button onclick="checkAnswer({{ task['id'] }})" class="lightBox buttons main_Thing">Проверить</button>
+                </div>
                 <p id="result-{{task['id']}}"
                 class="answers {% if task['status']=='Правильно!' %}
                     green
@@ -85,12 +91,12 @@
                     {% if task['status'] != 'Правильно!' and task['status'] != 'Неправильно!' %}
                         style="display:none;"
                     {% endif %}>
-                    <summary>Решение задачи</summary>
+                    <summary class="main_Thing">Решение задачи</summary>
                     <p class="taskText">{{ task['solution'] }}</p>
                 </details>
                 {% if session.get('role')=='admin' %}
                     <form method="POST" action="{{url_for('delete_task', task_id=task['id'])}}">
-                        <button class="buttons lightBox" type="submit">удалить задание</button>
+                        <button class="buttons lightBox main_Thing" type="submit">удалить задание</button>
                     </form>
                 {%endif%}
             </div>
