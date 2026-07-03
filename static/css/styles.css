@@ -175,6 +175,9 @@ img {
   flex-direction: column;
   z-index: 9999;
 }
+.sidebar.open {
+    transform:translateX(0);
+}
 .sidebar:hover {
   left:0;
 }
@@ -616,5 +619,12 @@ summary {
     .h2heading {
         font-size:14px;
         margin-left: 50px;
+    }
+    .sidebar {
+        left: 0;
+        transform: translateX(-90%);
+    }
+    .sidebar.open {
+    transform:translateX(0);
     }
 }

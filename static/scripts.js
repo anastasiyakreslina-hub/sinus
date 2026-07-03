@@ -1,5 +1,5 @@
 const ctx=document.getElementById('Chart');
-
+const sidebar = document.getElementById('sidebar');
 
 document.addEventListener("DOMContentLoaded", () => {
     const toast = document.getElementById("toast");
@@ -15,6 +15,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
+if (sidebar) {
+    sidebar.addEventListener('click',()=> {
+        sidebar.classList.toggle('open');
+    });
+}
 
 if (ctx) {
     new Chart(ctx, {
