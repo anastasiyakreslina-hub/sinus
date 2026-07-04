@@ -7,35 +7,66 @@
         <link rel="stylesheet" href="{{ url_for('static',filename='css/styles.css')}}">
     </head>
     <body>
-        
+        <div id="settingsModal" style="display: none" class="modal">
+            <span onclick="closeSettings()">&times;</span>
+            <form method="POST" action="/change_profile" class="modalObjects main_Thing">
+                <label class="main_Thing mainCenter">Новый логин</label>
+                <input type="text" name="username" value="{{user['username']}}" class="buttons main_Thing">
+                <label class="main_Thing mainCenter">Текущий пароль</label>
+                <input type="password" name="old_password" class="buttons main_Thing" required>
+                <label class="main_Thing mainCenter">Новый пароль</label>
+                <input type="password" class="buttons main_Thing" name="new_password">
+                <label class="main_Thing mainCenter">Повторите новый пароль</label>
+                <input type="password" class="buttons main_Thing" name="repeat_password">
+                <button type="submit" class="changeButtons main_Thing">Сохранить изменения</button>
+            </form>
+        </div>
+        {% with messages = get_flashed_messages() %}
+            {% for message in messages %}
+                <div class="toast" id="toast">
+                    <p>{{ message }}</p>
+                    <img src="{{url_for('static', filename='images/mascot/errorMascot.png')}}" class="mascot">
+                </div>
+            {% endfor %}
+        {% endwith %}
         <div class="mainProfile">
-               <h2 class="heading">Привет, {{ username }}</h2>
-               <p class="goal">Твоя цель: {{user['goal']}}</p>
-               <p class="heading">Дата регистрации: {{user['reg_date']}}</p>
-               <form method="POST" action="/profile">
-                <input type="number" name="goal" placeholder="поменять цель">
-                <button type="submit">Сохранить</button>
-               </form>
+            <div class="infoBlock" style="height:30vh;">
+               <h2 class="heading main_Thing">Привет, {{ username }}</h2>
+               <p class="goal main_Thing">Твоя цель: {{user['goal']}}</p>
+            </div>
+               
                 <div class="profileContainer">
-                    <ul>
+                    {% if user['avatar'] %}
+                        <img src="{{url_for('static',filename=user['avatar'])}}?v={{user['id']}}" class="avatar">
+                    {% else %}
+                        <img src="{{url_for('static', filename='images/studentsphoto.jpg')}}" class="avatar">
+                    {% endif %}
+                    <ul class="profileList">
                         <li>
-                            {% if user['avatar'] %}
-                                <img src="{{url_for('static',filename=user['avatar'])}}?v={{user['id']}}" class="avatar">
-                            {% else %}
-                                <img src="{{url_for('static', filename='images/studentsphoto.jpg')}}" class="avatar">
-                            {% endif %}
+                            <p class="main_Thing"> Логин: {{ user['username'] }}</p>
                         </li>
                         <li>
-                            <p> Логин: {{ user['username'] }}</p>
+                            <p class="heading main_Thing">Дата регистрации: {{user['reg_date']}}</p>
+                        </li>
+                        <li>
+                            <form method="POST" action="/profile">
+                                <input type="number" name="goal" placeholder="поменять цель">
+                                <button type="submit" class="changeButtons lightBox main_Thing">Сохранить</button>
+                            </form>
+                        </li>
+                        <li>
+                            <button onclick="openSettings()" class="changeButtons  lightBox main_Thing">Изменить данные</button>
+                        </li>
+                        <li>
+                            <form action="/upload_avatar" method="POST" enctype="multipart/form-data" class="profileButtons" >
+                                <input type="file" name="avatar" accept="image/*" class="buttons lightBox main_Thing">
+                                <button type="submit" class="changeButtons lightBox main_Thing">Загрузить фото профиля</button>
+                            </form>
                         </li>
                     </ul>
                 </div>
-                <form action="/upload_avatar" method="POST" enctype="multipart/form-data">
-                    <input type="file" name="avatar" accept="image/*">
-                    <button type="submit">Загрузить фото профиля</button>
-                </form>
             </div>
-            <div class="sidebar" id="sidebar">
+        <div class="sidebar" id="sidebar">
             <a href="{{url_for('error')}}" class="name">настя синус</a>
             <ul class="listThings">
                 <li><a href="{{url_for('home')}}" class="lighttext">Основная страница</a></li>
@@ -47,6 +78,14 @@
                 <li></li>
             </ul>
         </div>
+        <ul class="smallInfo">
+            <li><a href="https://t.me/karznl">Телеграмм-канал</a></li>
+            <li><a href="/">FAQ</a></li>
+            <li><a href="/">Контакты</a></li>
+            <li><a href="/">Поддержка</a></li>
+            <li><a href="/">Политика конфиденциальности</a></li>
+            <li>2026</li>
+        </ul>
         <script src="{{url_for('static',filename='scripts.js')}}"></script>
     </body>
 </html>

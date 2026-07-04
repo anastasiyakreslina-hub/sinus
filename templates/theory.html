@@ -26,13 +26,13 @@
             <button onclick="openTheoryAdding()" class="buttons lightBox add_Task main_Thing">Добавить теорию</button>
         {% endif %}
         <div id="theoryAdding" style="display: none" class="modal">
+            <span onclick="closeTheoryAdding()">&times;</span>
             <form method="POST" id="theoryForm"  enctype="multipart/form-data" class="modalObjects main_Thing">
                 <input id="title" name="title" placeholder="название темы" class="buttons main_Thing">
                 <input id="task_number" name="task_number" placeholder="введите номер задания" class="buttons main_Thing">
                 <textarea id="text" name="text" placeholder="напишите теорию" class="textareas buttons main_Thing"></textarea>
                 <input type="file" name="pdf" class="buttons main_Thing">
                 <button type="submit" class="buttons main_Thing">Сохранить</button>
-                <button type="button" onclick="closeTheoryAdding()" class="buttons main_Thing">Закрыть</button>
             </form>
         </div>
         {% for block in blocks %}

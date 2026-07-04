@@ -1,9 +1,10 @@
-from flask import Flask,render_template,request,redirect,session
+from flask import Flask,render_template,request,redirect,session,flash
 import sqlite3
 import os
 from PIL import Image
 from functools import wraps
 from datetime import datetime
+from werkzeug.security import generate_password_hash, check_password_hash
 
 
 app=Flask(__name__)
@@ -74,24 +75,32 @@ def init_db():
     conn.commit()
     conn.close()
 
-
+conn=sqlite3.connect('users.db')
+cur=conn.cursor()
+cur.execute('SELECT * FROM users')
+for r in cur.fetchall():
+    print(r)
 
 @app.route('/register', methods=["GET", "POST"])
 def register():
+    error=None
     if request.method == "POST":
         username = request.form['username']
         password = request.form['password']
         conn = sqlite3.connect('users.db')
+        conn.row_factory=sqlite3.Row
         cur = conn.cursor()
         cur.execute('SELECT * FROM users WHERE username=?',(username,))
         user=cur.fetchone()
         if user:
             conn.close()
-            return render_template('register.html',error='Упс! Этот логин уже занят')
+            error='Упс! Этот логин уже занят'
+            return render_template('register.html',error=error)
         role='user'
         if username=='myr':
             role='admin'
         reg_date=datetime.now().strftime('%d.%m.%Y')
+        password=generate_password_hash(password, method='pbkdf2:sha256')
         cur.execute('INSERT INTO users(username, password, role, reg_date) VALUES (?, ?, ?, ?)', (username, password, role, reg_date))
         conn.commit()
         conn.close()
@@ -106,18 +115,41 @@ def login():
         username = request.form['username']
         password = request.form['password']
         conn = sqlite3.connect('users.db')
+        conn.row_factory = sqlite3.Row
         cur = conn.cursor()
-        cur.execute('SELECT * FROM users WHERE username=? AND password=?', (username, password))
+        cur.execute('SELECT * FROM users WHERE username=?', (username,))
         user = cur.fetchone()
-        conn.close()
+        # conn.close()
         if user:
-            session['user'] = username
-            session['role']=user[4]
-            session['user_id']=user[0]
-            return redirect('/')
+            if not str(user['password']).startswith('pbkdf2:'):
+                if user['password'] == password:
+                    new_hash = generate_password_hash(password,method='pbkdf2:sha256')
+                    cur.execute(
+                        "UPDATE users SET password=? WHERE id=?",
+                        (new_hash, user['id'])
+                    )
+                    conn.commit()
+                    session['user'] = username
+                    session['role'] = user['role']
+                    session['user_id'] = user['id']
+                    conn.close()
+                    return redirect('/')
+                else:
+                    error = 'Упс! Неверный логин или пароль'
+            else:
+                if check_password_hash(user['password'], password):
+                    session['user'] = username
+                    session['role'] = user['role']
+                    session['user_id'] = user['id']
+                    conn.close()
+                    return redirect('/')
+                else:
+                    error = 'Упс! Неверный логин или пароль'
         else:
             error='Упс! Неверный логин или пароль'
-    return render_template('login.html', error=error)
+            return render_template('login.html', error=error)
+        conn.close()
+    return render_template('login.html',error=error)
 
 
 def allowed_file(filename, allowed_set):
@@ -213,6 +245,53 @@ def profile():
     conn.close()
     return render_template('profile.html',username=session['user'], user=user)
 
+
+@app.route('/change_profile', methods=['POST'])
+@regs_only
+def change_profile():
+    error=None
+    conn = sqlite3.connect('users.db')
+    conn.row_factory = sqlite3.Row
+    cur = conn.cursor()
+    cur.execute(
+        'SELECT * FROM users WHERE id=?',
+        (session['user_id'],)
+    )
+    user = cur.fetchone()
+    username = request.form['username'].strip()
+    old_password = request.form['old_password']
+    new_password = request.form['new_password']
+    repeat_password = request.form['repeat_password']
+    if username != user['username']:
+        cur.execute(
+            'SELECT id FROM users WHERE username=?',
+            (username,)
+        )
+        if cur.fetchone():
+            error='Упс! Такой логин уже существует!'
+            flash(error)
+            return redirect('/profile')
+        cur.execute(
+            'UPDATE users SET username=? WHERE id=?',
+            (username, session["user_id"])
+        )
+    if new_password:
+        if not check_password_hash(user['password'], old_password):
+            error='Упс! Неверный пароль!'
+            flash(error)
+            return redirect('/profile')
+        if new_password != repeat_password:
+            error='Упс! Пароли не совпадают'
+            flash(error)
+            return redirect('/profile')
+        cur.execute(
+            'UPDATE users SET password=? WHERE id=?',
+            (generate_password_hash(new_password,method='pbkdf2:sha256'), session['user_id'])
+        )
+    conn.commit()
+    conn.close()
+    print(user['username'],old_password,new_password)
+    return redirect('/profile')
 
 @app.route('/logout')
 def logout():
@@ -336,25 +415,6 @@ def delete_task(task_id):
     conn.close()
     return redirect('/tasks')
 
-
-@app.route('/project')
-@regs_only
-def project():
-    with open('static/texts/about.txt','r',encoding='utf-8') as f:
-        about_text=f.read()
-    with open('static/texts/functions.txt','r',encoding='utf-8') as f:
-        functions_text=f.read()
-    with open('static/texts/story.txt','r',encoding='utf-8') as f:
-        story_text=f.read()
-    with open('static/texts/forWho.txt','r', encoding='utf-8') as f:
-        forWho_text=f.read()
-    return render_template(
-        'project.html',
-        about_text=about_text,
-        functions_text=functions_text,
-        story_text=story_text,
-        forWho_text=forWho_text
-    )
 
 @app.route('/about')
 @regs_only

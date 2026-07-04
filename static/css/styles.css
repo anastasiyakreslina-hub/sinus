@@ -210,8 +210,39 @@ img {
     -webkit-backdrop-filter: blur(15px);
     box-shadow:0 8px 32px rgba(0,0,0,0.2);
     padding: 10px;
-    margin:15px 15px 0 auto;
-    width:93%
+    margin:15px auto 15px auto;
+    width:90%
+}
+.profileContainer {
+    margin-top: 20px;
+    display: flex;
+    gap:50px;
+}
+.profileList {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    width: 67%;
+    gap:20px;
+    text-align: center;
+}
+.profileButtons {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    gap: 5px;
+}
+.changeButtons {
+    background-color:#94034772;
+    border-radius: 15px;
+    color:#d70668;
+    padding:5px;
+    font-family: 'MyFont';
+    border:2px solid #ffffff42;
+    backdrop-filter:blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    box-shadow:0 8px 32px rgba(0,0,0,0.2);
+    margin: 0 auto 0 auto;
 }
 
 .avatar {
@@ -379,6 +410,14 @@ a {
     position: relative;
     z-index:9999;
 }
+.login {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height:80vh;
+}
 .logButtons {
     display:flex;
     flex-direction: column;
@@ -424,10 +463,10 @@ a {
     display:flex;
     justify-content: center;
     align-items: center;
-    top: 27%;
+    top: 50%;
     left:50%;
     transition: opacity 0.3s ease;
-    
+    flex-direction: column;
 }
 .bottom-bar {
     position:fixed;
@@ -542,6 +581,9 @@ summary {
 }
 .mascot {
     width:10%;
+}
+.mainCenter {
+    margin: 0 auto 0 auto;
 }
 
 
@@ -658,5 +700,19 @@ summary {
     .center {
         width:50%;
         margin: 10px auto 10px auto;
+    }
+    .mainProfile {
+        width:80%;
+        margin-right: 15px;
+    }
+    .profileContainer {
+        flex-direction: column;
+        gap: 7px;
+    }
+    .profileList {
+        width: 100%;
+    }
+    .sidebar {
+        z-index: 10999;
     }
 }

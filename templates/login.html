@@ -7,29 +7,31 @@
         <link rel="stylesheet" href="{{ url_for('static',filename='css/styles.css')}}">
     </head>
     <body>
-        <h1 class="questions">вход</h1>
-        <form method="POST">
-            <div class="logButtons">
-                <input class="buttons lightBox logProfile" type="text" name="username" placeholder="Логин">
-                <input class="buttons lightBox logProfile" type="password" name="password" placeholder="Пароль">
-                <button class="enterButton lightBox"   type="submit">Войти</button>
+        <div class="login">
+            <h1 class="questions">вход</h1>
+            <form method="POST">
+                <div class="logButtons">
+                    <input class="buttons lightBox logProfile" type="text" name="username" placeholder="Логин">
+                    <input class="buttons lightBox logProfile" type="password" name="password" placeholder="Пароль">
+                    <a href="{{ url_for('register')}}" class="createAccount main_Thing">Создать аккаунт?</a>
+                    <button class="enterButton lightBox"   type="submit">Войти</button>
+                </div>
+            </form>
+            {% if error %}
+            <div class="toast" id="toast">
+                <p class="error">{{ error }}</p>
+                <img src="{{url_for('static', filename='images/mascot/errorMascot.png')}}" class="mascot">
             </div>
-        </form>
-        {% if error %}
-        <div class="toast" id="toast">
-            <p class="error">{{ error }}</p>
+            {% endif %}
         </div>
-        {% endif %}
-        <a href="{{ url_for('register')}}" class="createAccount">Создать аккаунт?</a>
-        <div class="bottom-bar header">
-            <ul class="bottom-bar-list">
-                <li class="myLinks">
-                    <a href="{{ url_for('project') }}">О проекте</a>
-                    <a href="{{url_for('error')}}">Обо мне</a>
-                </li>
-                <li>2026</li>
-            </ul>
-        </div>
+        <ul class="smallInfo">
+            <li><a href="https://t.me/karznl">Телеграмм-канал</a></li>
+            <li><a href="/">FAQ</a></li>
+            <li><a href="/">Контакты</a></li>
+            <li><a href="/">Поддержка</a></li>
+            <li><a href="/">Политика конфиденциальности</a></li>
+            <li>2026</li>
+        </ul>
         <script src="{{url_for('static',filename='scripts.js')}}"></script>
     </body>
 </html>

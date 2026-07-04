@@ -71,6 +71,13 @@ if (ctx) {
     });
 }
 
+function openSettings() {
+    document.getElementById("settingsModal").style.display = "flex";
+}
+function closeSettings() {
+    document.getElementById("settingsModal").style.display = "none";
+}
+
 
 function checkAnswer(taskId) {
     const input = document.getElementById(`input-${taskId}`);
