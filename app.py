@@ -284,6 +284,10 @@ def change_profile():
             error='Упс! Пароли не совпадают'
             flash(error)
             return redirect('/profile')
+        if session['user']=='testacc':
+            error='Упс! Это тестовый аккаунт'
+            flash(error)
+            return redirect('/profile')
         cur.execute(
             'UPDATE users SET password=? WHERE id=?',
             (generate_password_hash(new_password,method='pbkdf2:sha256'), session['user_id'])
