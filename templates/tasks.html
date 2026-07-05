@@ -4,7 +4,10 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>База заданий</title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
         <link rel="stylesheet" href="{{ url_for('static',filename='css/styles.css')}}">
+        <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+        <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body);"></script>
     </head>
     <body>
         <header class="header" style="width:80%">
@@ -56,7 +59,7 @@
                 <label class="heading" style="font-size:10px;">ID задания - первое число сверху каждого задания</label>
             </div>
             <div class="filterButtons">
-                <input type="number" name="task_id" class="lightBox buttons main_Thing" placeholder="ID">
+                <input type="number" name="task_id" class="lightBox buttons main_Thing" style="width:20%" placeholder="ID">
                 <button type="submit" class="buttons lightBox main_Thing">Найти задание</button>
             </div>
         </form>
@@ -121,6 +124,16 @@
                 <li></li>
             </ul>
         </div>
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                renderMathInElement(document.body, {
+                    delimiters: [
+                        {left: "$$", right: "$$", display: true},
+                        {left: "$", right: "$", display: false}
+                    ]
+                });
+            });
+        </script>
         <script src="{{url_for('static',filename='scripts.js')}}"></script>
     </body>
 </html>

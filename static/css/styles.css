@@ -309,6 +309,7 @@ img {
     box-shadow:0 8px 32px rgba(0,0,0,0.2);
     height:30px;
     margin:0 0 0 20px;
+    padding:5px;
 }
 .add_Task {
     padding:20px;
@@ -436,12 +437,12 @@ a {
     height: 34px;
 }
 .logProfile {
-    width: 70%;
+    width: 100%;
     height: 34px;
 }
 .questions {
     text-align: center;
-    margin-top: 20px;
+    margin: 20px auto 15px auto;
 }
 .createAccount {
     display: block;
@@ -456,8 +457,8 @@ a {
     box-shadow:0 8px 32px rgba(0,0,0,0.2);
     padding:10px;
     border-radius:15px;
-    width:30%;
-    height:30%;
+    width:40%;
+    height:40%;
     z-index:9999;
     transform:translate(-50%, -50%);
     display:flex;
@@ -468,19 +469,7 @@ a {
     transition: opacity 0.3s ease;
     flex-direction: column;
 }
-.bottom-bar {
-    position:fixed;
-    bottom:0;
-    left:50%;
-    transform:translateX(-50%);
-}
-.bottom-bar-list {
-    display:flex;
-    width:92%;
-    list-style: none;
-    justify-content: space-between;
-    padding:15px;
-}
+
 .myLinks {
     display: flex;
     flex-direction: column;
@@ -539,9 +528,6 @@ summary {
     margin-top: 20px;
     border-radius: 35px;
 }
-.info {
-    width: 40%;
-}
 .smallInfo {
     display: flex;
     flex-direction: column;
@@ -580,7 +566,7 @@ summary {
     margin: 0 auto 0 auto;
 }
 .mascot {
-    width:10%;
+width: 50px;
 }
 .mainCenter {
     margin: 0 auto 0 auto;
@@ -623,7 +609,7 @@ summary {
         margin:0 auto 0 auto;
     }
     .avatar {
-        max-height:150px;
+        max-height:210px;
         width: 100%;
         max-width: 210px;
     }
@@ -651,7 +637,7 @@ summary {
     .filterButtons {
         display: flex;
         flex-direction: column;
-        gap:2px;
+        gap:5px;
         width: 40%;
     }
     .task {
