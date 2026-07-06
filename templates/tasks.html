@@ -77,15 +77,13 @@
                 <button type="submit" class="buttons main_Thing">Сохранить</button>
             </form>
         </div>
-        <!-- {% if session.get('role')=='admin' %}
-            <a href="{{url_for('add_task')}}" class="buttons lightBox add_Task main_Thing">Добавить задачу</a>
-        {%endif%} -->
         {% for task in tasks %}
             <div class="task">
                 <div class="tasksClasses">
                     <p class="classification">#{{task['id']}}</p>
                     <p class="classification">#Номер задания:{{task['number']}}
                     <p class="classification">#{{task['source']}}</p>
+                    <p class="classification" style="color:rgb(92, 110, 152)">#C первой попытки: {{ stats[task['id']] }}%</p>
                 </div>
                 <p class="taskText">{{task['text']}}</p>
                 <div class="phoneButtons">
@@ -94,7 +92,7 @@
                 </div>
                 <p id="result-{{task['id']}}"
                 class="answers {% if task['status']=='Правильно!' %}
-                    green
+                    blue
                 {% elif task['status']=='Неправильно!' %}
                     red
                 {% else %}

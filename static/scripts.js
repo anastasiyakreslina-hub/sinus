@@ -98,9 +98,9 @@ function checkAnswer(taskId) {
         if (solution) {
             solution.style.display='block';
         }
-        resultBox.classList.remove('green','red','white');
+        resultBox.classList.remove('blue','red','white');
         if (data.result==='correct') {
-            resultBox.classList.add('green');
+            resultBox.classList.add('blue');
             if (window.location.pathname==='/mistakes') {
                 const taskBlock=document.getElementById(`task-${taskId}`);
                 if (taskBlock) taskBlock.remove();

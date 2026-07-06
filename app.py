@@ -72,12 +72,21 @@ def init_db():
             pdf_path TEXT
         )
     ''')
+    cur.execute('''
+        CREATE TABLE IF NOT EXISTS task_attempts (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            task_id INTEGER,
+            user_id INTEGER,
+            correct INTEGER,
+            attempt_number INTEGER
+        )
+    ''')
     conn.commit()
     conn.close()
 
 conn=sqlite3.connect('users.db')
 cur=conn.cursor()
-cur.execute('SELECT * FROM users')
+cur.execute('SELECT * FROM task_attempts')
 for r in cur.fetchall():
     print(r)
 
@@ -378,8 +387,21 @@ def tasks():
         options.append(task_id)
     cur.execute(query, options)
     tasks=cur.fetchall()
+    cur.execute('''
+        SELECT task_id, COUNT(*) AS total, SUM(CASE WHEN attempt_number=1 AND correct=1 THEN 1 ELSE 0 END) AS correct_first_attempts
+        FROM task_attempts
+        GROUP BY task_id
+    ''')
+    stats_raw=cur.fetchall()
+    stats={}
+    for r in stats_raw:
+        task_id=r['task_id']
+        total=r[1]
+        first_attempts=r[2]
+        percent=(first_attempts/total)*100 if total>0 else 0
+        stats[task_id]=round(percent,2)
     conn.close()
-    return render_template('tasks.html', tasks=tasks)
+    return render_template('tasks.html', tasks=tasks, stats=stats)
 
 
 @app.route('/check_answer/<int:task_id>', methods=['POST'])
@@ -405,12 +427,20 @@ def check_answer(task_id):
             'result': 'red',
             'text': 'задача не найдена'
         }
-    if user_answer.strip() == correct[0].strip():
+    is_correct = int(user_answer.strip() == correct[0].strip())
+    if is_correct:
         status='Правильно!'
         result='correct'
     else:
         status='Неправильно!'
         result='wrong'
+    cur.execute('''
+        SELECT COUNT(*) FROM task_attempts WHERE user_id=? AND task_id=?
+    ''', (user_id,task_id))
+    attempt_number = cur.fetchone()[0] + 1
+    cur.execute('''
+        INSERT INTO task_attempts(user_id,task_id,correct,attempt_number) VALUES(?,?,?,?)
+    ''', (user_id,task_id,is_correct,attempt_number))
     cur.execute('''
         INSERT INTO user_tasks(user_id,task_id,status) VALUES(?,?,?)
         ON CONFLICT(user_id, task_id)
@@ -420,7 +450,8 @@ def check_answer(task_id):
     conn.close()
     return {
         'result':result,
-        'text':status
+        'text':status,
+        'attempt_number':attempt_number
     }
     
     
