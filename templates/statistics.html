@@ -32,6 +32,9 @@
         <div class="task">
             <canvas id="Chart"></canvas>
         </div>
+        <div class="task">
+            <canvas id="firstTryChart"></canvas>
+        </div>
         <div class="sidebar" id="sidebar">
             <a href="{{url_for('error')}}" class="name">настя синус</a>
             <ul class="listThings">
@@ -47,6 +50,8 @@
         <script>
             const numbers={{ numbers | tojson }};
             const percents={{ percents | tojson }};
+            const first_attempts_numbers={{ first_attempts_numbers | tojson }};
+            const first_attempts_percents={{ first_attempts_percents | tojson }};
         </script>
         <script src="{{url_for('static',filename='scripts.js')}}"></script>
     </body>

@@ -541,8 +541,35 @@ def statistics():
         print(dict(row))
     numbers=[row['number'] for row in data]
     percents=[row['percent'] for row in data]
+    cur.execute('''
+        SELECT tasks.number, COUNT(*) AS total, SUM(CASE WHEN task_attempts.attempt_number=1 AND task_attempts.correct=1 THEN 1 ELSE 0 END) AS correct_first_attempts
+        FROM task_attempts JOIN tasks ON tasks.id=task_attempts.task_id
+        WHERE task_attempts.user_id=?
+        GROUP BY tasks.number
+        ORDER BY tasks.number
+    ''', (session['user_id'],))
+    raw=cur.fetchall()
+    first_attempts_numbers=[]
+    first_attempts_percents=[]
+    for r in raw:
+        number=r['number']
+        total=r['total']
+        first_attempts=r['correct_first_attempts']
+        percent_first=(first_attempts/total)*100 if total>0 else 0
+        first_attempts_numbers.append(number)
+        first_attempts_percents.append(round(percent_first,2))
     conn.close()
-    return render_template('statistics.html', user=user, solved_count=solved_count, correct=correct,goal=goal, percent=percent,numbers=numbers,percents=percents)
+    return render_template(
+        'statistics.html', 
+        user=user, 
+        solved_count=solved_count,
+        correct=correct,
+        goal=goal,
+        percent=percent,
+        numbers=numbers,
+        percents=percents,
+        first_attempts_numbers=first_attempts_numbers,
+        first_attempts_percents=first_attempts_percents)
 
 
 def all_count(user_id):

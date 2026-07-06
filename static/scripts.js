@@ -44,7 +44,8 @@ if (ctx) {
                     ticks: {
                         color:'#ffffff42',
                         font: {
-                            family:'MyFont'
+                            family:'MyFont',
+                            size:7
                         }
                     }
                 },
@@ -69,6 +70,59 @@ if (ctx) {
             }
         }
     });
+}
+
+if (document.getElementById('firstTryChart')) {
+    new Chart(document.getElementById('firstTryChart'),{
+        type:'bar',
+        data: {
+            labels: first_attempts_numbers,
+            datasets: [{
+                label: 'Процент правильных ответов с первого раза',
+                data: first_attempts_percents,
+                backgroundColor: 'rgb(215, 173, 195)',
+                hoverBackgroundColor:'#d70668',
+                borderRadius:10
+            }]
+        },
+        options: {
+            color:'#ffffff42',
+            font: {
+                family:'MyFont',
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    max: 100,
+                    ticks: {
+                        color:'#ffffff42',
+                        font: {
+                            family:'MyFont',
+                            size:7
+                        }
+                    }
+                },
+                x: {
+                    ticks: {
+                        color:'#ffffff42',
+                        font: {
+                            family:'MyFont'
+                        }
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    labels: {
+                        color:'#ffffff42',
+                        font: {
+                            family:'MyFont'
+                        }
+                    }
+                }
+            }
+        }
+    }); 
 }
 
 function openSettings() {
