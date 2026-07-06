@@ -207,6 +207,13 @@ function editTheory(btn) {
     form.action='/edit_theory/'+id
     openTheoryAdding();
 }
+function openContacts() {
+    document.getElementById('contacts').style.display='block'
+}
+function closeContacts() {
+    document.getElementById('contacts').style.display='none'
+}
+
 function updateTime() {
     const timeEl = document.getElementById('time');
     const greetingEl = document.getElementById('greeting');

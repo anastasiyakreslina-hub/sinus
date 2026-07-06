@@ -570,6 +570,13 @@ summary {
 .mainCenter {
     margin: 0 auto 0 auto;
 }
+.textButton {
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    color: inherit;
+}
 
 
 @media (max-width:768px) {

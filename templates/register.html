@@ -7,6 +7,14 @@
         <link rel="stylesheet" href="{{ url_for('static',filename='css/styles.css')}}">
     </head>
     <body>
+        <div id="contacts" style="display: none; width:40%;height:40%" class="modal">
+            <span onclick="closeContacts()">&times;</span>
+            <p class="main_Thing questions">почта: anastasiyakreslina@gmail.com</p>
+            <p class="main_Thing questions">телеграмм: @krazern</p>
+            <p class="main_Thing questions">Время ответа: 1-2 дня</p>
+            <p class="main_Thing questions">Отвечаю исключительно на вопросы о платформе, предложения, сообщения об ошибке и отзывы</p>
+            <p class="main_Thing questions">^_^</p>
+        </div>
         <div class="login">
             <h1 class="questions">регистрация</h1>
             <form method="POST">
@@ -27,9 +35,9 @@
         <ul class="smallInfo">
             <li><a href="https://t.me/karznl">Телеграмм-канал</a></li>
             <li><a href="/">FAQ</a></li>
-            <li><a href="/">Контакты</a></li>
+            <li><button class="textButton buttons" onclick="openContacts()">Контакты</button></li>
             <li><a href="/">Поддержка</a></li>
-            <li><a href="/">Политика конфиденциальности</a></li>
+            <li><a href="{{url_for('privacypolicy')}}">Политика конфиденциальности</a></li>
             <li>2026</li>
         </ul>
         <script src="{{url_for('static',filename='scripts.js')}}"></script>

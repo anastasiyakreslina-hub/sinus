@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Политика конфиденциальности</title>
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/styles.css')}}">
+</head>
+<body>
+    <div id="contacts" style="display: none; width:40%;height:40%" class="modal">
+            <span onclick="closeContacts()">&times;</span>
+            <p class="main_Thing questions">почта: anastasiyakreslina@gmail.com</p>
+            <p class="main_Thing questions">телеграмм: @krazern</p>
+            <p class="main_Thing questions">Время ответа: 1-2 дня</p>
+            <p class="main_Thing questions">Отвечаю исключительно на вопросы о платформе, предложения, сообщения об ошибке и отзывы</p>
+            <p class="main_Thing questions">^_^</p>
+        </div>
+    <div class="task">
+        <img src="{{url_for('static',filename='images/mascot/mainMascot.png')}}" class="mascot">
+        <p class="taskText">{{ policy_text }}</p>
+    </div>
+    <div class="sidebar" id="sidebar">
+        <a href="{{url_for('error')}}" class="name">настя синус</a>
+        <ul class="listThings">
+            <li><a href="{{url_for('home')}}" class="lighttext">Основная страница</a></li>
+            <li><a href="{{url_for('tasks')}}" class="lighttext">Банк заданий</a></li>
+            <li><a href="{{url_for('error')}}" class="lighttext">Варианты уровня ЕГЭ</a></li>
+            <li><a href="{{url_for('mistakes')}}" class="lighttext">Работа над ошибками</a></li>
+            <li><a href="{{url_for('statistics')}}" class="lighttext">Статистика</a></li>
+            <li><a href="{{url_for('logout')}}" class="lighttext">Выход</a></li>
+            <li></li>
+        </ul>
+    </div>
+    <ul class="smallInfo">
+            <li><a href="https://t.me/karznl">Телеграмм-канал</a></li>
+            <li><a href="/">FAQ</a></li>
+            <li><button class="textButton buttons" onclick="openContacts()">Контакты</button></li>
+            <li><a href="/">Поддержка</a></li>
+            <li><a href="{{url_for('privacypolicy')}}">Политика конфиденциальности</a></li>
+            <li>2026</li>
+        </ul>
+    <script src="{{url_for('static',filename='scripts.js')}}"></script>
+</body>
+</html>

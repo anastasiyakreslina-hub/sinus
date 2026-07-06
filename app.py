@@ -656,6 +656,11 @@ def edit_theory(block_id):
     conn.close()
     return redirect('/theory')
 
+@app.route('/privacypolicy')
+def privacypolicy():
+    with open('static/texts/policy.txt','r',encoding='utf-8') as f:
+        policy_text=f.read()
+    return render_template('privacypolicy.html',policy_text=policy_text)
 
 if __name__=='__main__':
     init_db()

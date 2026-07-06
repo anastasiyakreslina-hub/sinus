@@ -10,6 +10,14 @@
         <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body);"></script>
     </head>
     <body>
+        <div id="contacts" style="display: none; width:40%;height:40%" class="modal">
+            <span onclick="closeContacts()">&times;</span>
+            <p class="main_Thing questions">почта: anastasiyakreslina@gmail.com</p>
+            <p class="main_Thing questions">телеграмм: @krazern</p>
+            <p class="main_Thing questions">Время ответа: 1-2 дня</p>
+            <p class="main_Thing questions">Отвечаю исключительно на вопросы о платформе, предложения, сообщения об ошибке и отзывы</p>
+            <p class="main_Thing questions">^_^</p>
+        </div>
         <header class="header" style="width:80%">
             <ul class="header__list1">
                 <li>
@@ -126,9 +134,9 @@
         <ul class="smallInfo">
             <li><a href="https://t.me/karznl">Телеграмм-канал</a></li>
             <li><a href="/">FAQ</a></li>
-            <li><a href="/">Контакты</a></li>
+            <li><button class="textButton buttons" onclick="openContacts()">Контакты</button></li>
             <li><a href="/">Поддержка</a></li>
-            <li><a href="/">Политика конфиденциальности</a></li>
+            <li><a href="{{url_for('privacypolicy')}}">Политика конфиденциальности</a></li>
             <li>2026</li>
         </ul>
         <div class="sidebar" id="sidebar">
