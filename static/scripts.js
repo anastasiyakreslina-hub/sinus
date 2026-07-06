@@ -111,6 +111,12 @@ function checkAnswer(taskId) {
     });
 }
 
+function openTaskAdding() {
+    document.getElementById('taskAdding').style.display='block';
+}
+function closeTaskAdding() {
+    document.getElementById('taskAdding').style.display='none'
+}
 
 function  openTheoryAdding() {
     document.getElementById('theoryAdding').style.display='block';
@@ -118,6 +124,23 @@ function  openTheoryAdding() {
 function closeTheoryAdding() {
     document.getElementById('theoryAdding').style.display='none'
 }
+function editTask(btn) {
+    const id=btn.dataset.id;
+    const number = btn.dataset.number;
+    const source = btn.dataset.source;
+    const text = btn.dataset.text;
+    const solution = btn.dataset.solution;
+    const answer = btn.dataset.answer;
+    document.getElementById('number').value=number;
+    document.getElementById('source').value=source;
+    document.getElementById('text').value=text;
+    document.getElementById('solution').value=solution;
+    document.getElementById('answer').value=answer;
+    const form = document.getElementById('taskForm');
+    form.action='/edit_task/'+id
+    openTaskAdding();
+}
+
 function editTheory(btn) {
     const id=btn.dataset.id;
     const title = btn.dataset.title;

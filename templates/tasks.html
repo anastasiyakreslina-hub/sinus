@@ -63,10 +63,23 @@
                 <button type="submit" class="buttons lightBox main_Thing">Найти задание</button>
             </div>
         </form>
-        
-        {% if session.get('role')=='admin' %}
+        {% if session['role']=='admin' %}
+            <button onclick="openTaskAdding()" class="buttons lightBox add_Task main_Thing">Добавить задание</button>
+        {% endif %}
+        <div id="taskAdding" style="display: none" class="modal">
+            <span onclick="closeTaskAdding()">&times;</span>
+            <form method="POST" action="{{url_for('add_task')}}" id="taskForm" class="modalObjects main_Thing">
+                <input id="number" name="number" placeholder="номер задания" class="buttons main_Thing">
+                <input id="source" name="source" placeholder="источник" class="buttons main_Thing">
+                <textarea id="text" name="text" placeholder="текст" class="textareas buttons main_Thing"></textarea>
+                <textarea id="solution" name="solution" placeholder="решение задачи" class="textareas buttons main_Thing"></textarea>
+                <input id="answer" name="answer" placeholder="ответ" class="buttons main_Thing">
+                <button type="submit" class="buttons main_Thing">Сохранить</button>
+            </form>
+        </div>
+        <!-- {% if session.get('role')=='admin' %}
             <a href="{{url_for('add_task')}}" class="buttons lightBox add_Task main_Thing">Добавить задачу</a>
-        {%endif%}
+        {%endif%} -->
         {% for task in tasks %}
             <div class="task">
                 <div class="tasksClasses">
@@ -101,6 +114,14 @@
                     <form method="POST" action="{{url_for('delete_task', task_id=task['id'])}}">
                         <button class="buttons lightBox main_Thing" type="submit">удалить задание</button>
                     </form>
+                    <button class="buttons lightBox main_Thing" onclick="editTask(this)"
+                        data-id="{{task['id']}}"
+                        data-number="{{task['number']}}"
+                        data-source="{{task['source']}}"
+                        data-text="{{task['text']}}"
+                        data-solution="{{task['solution']}}"
+                        data-answer="{{task['answer']}}"
+                    >Редактировать задание</button>
                 {%endif%}
             </div>
         {% endfor %}

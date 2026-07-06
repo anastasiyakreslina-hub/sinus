@@ -314,7 +314,7 @@ def get_goal():
     return data[0] if data else 0
 
 
-@app.route('/add_tasks', methods=['GET','POST'])
+@app.route('/add_task', methods=['POST'])
 @admin_only
 def add_task():
     if request.method=='POST':
@@ -331,8 +331,25 @@ def add_task():
         )
         conn.commit()
         conn.close()
-        return redirect('/tasks')
-    return render_template('add_tasks.html')
+    return redirect('/tasks')
+
+@app.route('/edit_task/<int:task_id>', methods=['POST'])
+def edit_task(task_id):
+    if request.method=='POST':
+        number=request.form['number']
+        source=request.form['source']
+        text=request.form['text']
+        solution=request.form['solution']
+        answer=request.form['answer']
+        conn=sqlite3.connect('users.db')
+        cur=conn.cursor()
+        cur.execute(
+            'UPDATE tasks SET number=?, source=?, text=?, solution=?, answer=? WHERE id=?',
+            (number,source,text,solution,answer,task_id)
+        )
+        conn.commit()
+        conn.close()
+    return redirect('/tasks')
 
 @app.route('/tasks')
 @regs_only
