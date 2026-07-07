@@ -577,6 +577,17 @@ summary {
     margin: 0;
     color: inherit;
 }
+.filterButtons {
+    display: flex;
+    gap: 10px;
+}
+.filter_button {
+    width: 30vh;
+   padding:5px;
+   margin: auto 0 auto 0;
+   display: flex;
+   align-items: center;
+}
 
 
 @media (max-width:768px) {
@@ -643,8 +654,8 @@ summary {
     .filterButtons {
         display: flex;
         flex-direction: column;
-        gap:5px;
-        width: 40%;
+        gap:2px;
+        width: 30%;
     }
     .task {
         width:70%;
@@ -707,4 +718,12 @@ summary {
     .sidebar {
         z-index: 10999;
     }
+    .filter_labels {
+        width:40%
+    }
+    .filter_button {
+        width: 11vh;
+        padding:2px;
+    }
+    
 }

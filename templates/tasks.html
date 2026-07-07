@@ -34,9 +34,11 @@
             </ul>
         </header>
         <form method="GET" action="{{url_for('tasks')}}" class="filterForm">
-            <label style="font-size:12px; margin: auto 0 auto 0">Фильтр по номеру задания:</label>
+            <div class="filter_labels">
+                <label style="font-size:12px; margin: auto 0 auto 0">Фильтр по номеру задания:</label>
+            </div>
             <div class="filterButtons">
-                <select name="number" class="buttons lightBox main_Thing">
+                <select name="number" class="buttons lightBox main_Thing filter_button">
                     <option value="">Все</option>
                     <option value="1">1</option>
                     <option value="2">2</option>
@@ -58,7 +60,7 @@
                     <option value="18">18</option>
                     <option value="19">19</option>
                 </select>
-                <button type="submit" class="buttons lightBox main_Thing">Применить фильтр</button>
+                <button type="submit" class="buttons lightBox main_Thing filter_button">Применить фильтр</button>
             </div>
         </form>
         <form method="GET" action="{{url_for('tasks')}}" class="filterForm">
@@ -67,8 +69,8 @@
                 <label class="heading" style="font-size:10px;">ID задания - первое число сверху каждого задания</label>
             </div>
             <div class="filterButtons">
-                <input type="number" name="task_id" class="lightBox buttons main_Thing" style="width:20%" placeholder="ID">
-                <button type="submit" class="buttons lightBox main_Thing">Найти задание</button>
+                <input type="number" name="task_id" class="lightBox buttons main_Thing filter_button" placeholder="ID">
+                <button type="submit" class="buttons lightBox main_Thing filter_button">Найти задание</button>
             </div>
         </form>
         {% if session['role']=='admin' %}
