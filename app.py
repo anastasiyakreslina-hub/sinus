@@ -223,6 +223,9 @@ def home():
         cur.execute('SELECT * FROM users WHERE id=?',(session['user_id'],))
         user=cur.fetchone()
         conn.close()
+        if user is None:
+            session.clear()
+            return redirect('/login')
         goal=user['goal']
         solved_count=all_count(session['user_id'])
         correct=correct_count(session['user_id'])

@@ -130,7 +130,7 @@ a {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height:50vh;
+    height:60vh;
 }
 .toDo li+li {
     margin-top:15px;
@@ -247,7 +247,7 @@ img {
 
 .avatar {
     border-radius:25px;
-    max-width:240px;
+    max-width:220px;
 }
 .goal {
     text-align:center;
@@ -576,6 +576,7 @@ summary {
     padding: 0;
     margin: 0;
     color: inherit;
+    font-size: 10px;
 }
 .filterButtons {
     display: flex;
