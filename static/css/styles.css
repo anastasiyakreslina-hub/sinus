@@ -536,6 +536,7 @@ summary {
     margin: auto auto 20px auto;
     font-size: 10px;
     list-style: none;
+    z-index: 9999;
 }
 .smallInfo a,li {
     color:#ffffff42;

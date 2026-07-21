@@ -84,12 +84,6 @@ def init_db():
     conn.commit()
     conn.close()
 
-conn=sqlite3.connect('users.db')
-cur=conn.cursor()
-cur.execute('SELECT * FROM task_attempts')
-for r in cur.fetchall():
-    print(r)
-
 @app.route('/register', methods=["GET", "POST"])
 def register():
     error=None
