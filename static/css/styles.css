@@ -520,7 +520,8 @@ summary {
     width:60%;
     font-size:13px;
     margin: 0 auto 20px auto;
-    text-align:start
+    text-align:start;
+    font-family: Task;
 }
 .infoImage {
     width: 60%;
