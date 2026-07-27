@@ -26,7 +26,7 @@
             </ul>
             <ul class="header__list2">
                 <li>
-                    <a href="{{url_for('error')}}" class="lighttext main_Thing">о проекте</a>
+                    <a href="{{url_for('about')}}" class="lighttext main_Thing">о проекте</a>
                 </li>
                 <li>
                     <a href="{{url_for('profile')}}" class="lighttext main_Thing">профиль</a>
@@ -78,12 +78,17 @@
         {% endif %}
         <div id="taskAdding" style="display: none" class="modal">
             <span onclick="closeTaskAdding()">&times;</span>
-            <form method="POST" action="{{url_for('add_task')}}" id="taskForm" class="modalObjects main_Thing">
+            <form method="POST" 
+                action="{{url_for('add_task')}}"
+                id="taskForm" 
+                class="modalObjects main_Thing"
+                enctype="multipart/form-data">
                 <input id="number" name="number" placeholder="номер задания" class="buttons main_Thing">
                 <input id="source" name="source" placeholder="источник" class="buttons main_Thing">
                 <textarea id="text" name="text" placeholder="текст" class="textareas buttons main_Thing"></textarea>
                 <textarea id="solution" name="solution" placeholder="решение задачи" class="textareas buttons main_Thing"></textarea>
                 <input id="answer" name="answer" placeholder="ответ" class="buttons main_Thing">
+                <input type="file" name="image" accept=".png, .jpg, .jpeg">
                 <button type="submit" class="buttons main_Thing">Сохранить</button>
             </form>
         </div>
@@ -96,6 +101,9 @@
                     <p class="classification" style="color:rgb(92, 110, 152)">#C первой попытки: {{ stats[task['id']] }}%</p>
                 </div>
                 <p class="taskText">{{task['text']}}</p>
+                {% if task['image'] %}
+                    <img src="{{url_for('static',filename=task['image'])}}?v={{task['id']}}" class="task_image">
+                {% endif %}
                 <div class="phoneButtons">
                     <input id="input-{{ task['id'] }}" class="lightBox buttons main_Thing" placeholder="ответ">
                     <button onclick="checkAnswer({{ task['id'] }})" class="lightBox buttons main_Thing">Проверить</button>

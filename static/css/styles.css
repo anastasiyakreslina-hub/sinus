@@ -287,6 +287,11 @@ img {
     padding:20px;
     white-space:pre-wrap;
 }
+.task_image {
+    width:50%;
+    border-radius: 25px;
+    padding: 10px;
+}
 .answers {
     font-size:10px;
     margin-left: 25px;

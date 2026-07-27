@@ -84,6 +84,13 @@ def init_db():
     conn.commit()
     conn.close()
 
+conn=sqlite3.connect('users.db')
+cur=conn.cursor()
+cur.execute('SELECT * FROM tasks')
+table=cur.fetchall()
+for r in table:
+    print(r)
+
 @app.route('/register', methods=["GET", "POST"])
 def register():
     error=None
@@ -323,18 +330,37 @@ def get_goal():
 @app.route('/add_task', methods=['POST'])
 @admin_only
 def add_task():
+    error=None
     if request.method=='POST':
         number=request.form['number']
         source=request.form['source']
         text=request.form['text']
         solution=request.form['solution']
+        image=request.files.get('image')
         answer=request.form['answer']
         conn=sqlite3.connect('users.db')
         cur=conn.cursor()
         cur.execute(
-            'INSERT INTO tasks(number, source, text,solution, answer) VALUES(?,?,?,?,?)',
+            'INSERT INTO tasks(number, source, text, solution, answer) VALUES(?,?,?,?,?)',
             (number,source,text,solution,answer)
         )
+        task_id=cur.lastrowid
+        image_path=None
+        if image and image.filename!='':
+            if not allowed_file(image.filename, ALLOWED_IMAGES):
+                error='Упс! Неверный формат изображения!'
+                flash(error)
+                return redirect('/profile')
+            ext=image.filename.rsplit('.',1)[1].lower()
+            image_name=f'task_{task_id}.{ext}'
+            folder=os.path.join('static','task_images')
+            os.makedirs(folder, exist_ok=True)
+            path=os.path.join(folder, image_name)
+            image.save(path)
+            image_path=f'task_images/{image_name}'
+            cur.execute(
+                'UPDATE tasks SET image=? WHERE id=?',(image_path,task_id)
+            )
         conn.commit()
         conn.close()
     return redirect('/tasks')
@@ -347,6 +373,7 @@ def edit_task(task_id):
         text=request.form['text']
         solution=request.form['solution']
         answer=request.form['answer']
+        image=request.files.get('image')
         conn=sqlite3.connect('users.db')
         cur=conn.cursor()
         cur.execute(
@@ -356,6 +383,7 @@ def edit_task(task_id):
         conn.commit()
         conn.close()
     return redirect('/tasks')
+
 
 @app.route('/tasks')
 @regs_only
