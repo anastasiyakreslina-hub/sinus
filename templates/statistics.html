@@ -43,12 +43,47 @@
         <div class="task">
             <canvas id="firstTryChart"></canvas>
         </div>
+        <div class="task">
+            <h3>история вариантов</h3>
+            <table class="variant_table">
+                {% for var_id, variant in variant_table.items() %}
+                    <tr>
+                        <td>
+                            <p class="table_text">вариант {{var_id}}</p>
+                            <small class="table_text">{{variant.created_at}}</small>
+                        </td>
+                        {% for i in range(1,20) %}
+                            <td>
+                                {% if i in variant.tasks %}
+                                    <a href="tasks?task_id={{variant.tasks[i].task_id}}" class="table_text">
+                                        {% if variant.tasks[i].correct %}
+                                            ✅
+                                        {% else %}
+                                            ❌
+                                        {% endif %}
+                                        {{ variant.tasks[i].answer }}
+                                    </a>
+                                    <small class="table_text">
+                                        ответ: {{variant.tasks[i].correct_answer}}
+                                    </small>
+                                {% else %}
+                                    -
+                                {% endif %}
+                            </td>  
+                        {% endfor %}
+                        <td >
+                            {{variant.score}}/19
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
         <div class="sidebar" id="sidebar">
             <a href="{{url_for('error')}}" class="name">настя синус</a>
             <ul class="listThings">
                 <li><a href="{{url_for('home')}}" class="lighttext">Основная страница</a></li>
                 <li><a href="{{url_for('tasks')}}" class="lighttext">Банк заданий</a></li>
-                <li><a href="{{url_for('error')}}" class="lighttext">Варианты уровня ЕГЭ</a></li>
+                <li><a href="{{url_for('tests')}}" class="lighttext">Варианты уровня ЕГЭ</a></li>
                 <li><a href="{{url_for('mistakes')}}" class="lighttext">Работа над ошибками</a></li>
                 <li><a href="{{url_for('statistics')}}" class="lighttext">Статистика</a></li>
                 <li><a href="{{url_for('logout')}}" class="lighttext">Выход</a></li>

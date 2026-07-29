@@ -1,10 +1,11 @@
-from flask import Flask,render_template,request,redirect,session,flash
+from flask import Flask,render_template,request,redirect,session,flash, jsonify
 import sqlite3
 import os
 from PIL import Image
 from functools import wraps
 from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
+import random
 
 
 app=Flask(__name__)
@@ -81,15 +82,29 @@ def init_db():
             attempt_number INTEGER
         )
     ''')
+    cur.execute('''
+        CREATE TABLE IF NOT EXISTS variants (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            user_id INTEGER,
+            score INTEGER,
+            created_at
+        )
+    ''')
+    cur.execute('''
+        CREATE TABLE IF NOT EXISTS variant_tasks (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            var_id INTEGER,
+            task_id INTEGER,
+            task_number,
+            user_id INTEGER,
+            user_answer TEXT,
+            correct_answer TEXT,
+            correct NUMBER
+        )
+    ''')
     conn.commit()
     conn.close()
 
-conn=sqlite3.connect('users.db')
-cur=conn.cursor()
-cur.execute('SELECT * FROM tasks')
-table=cur.fetchall()
-for r in table:
-    print(r)
 
 @app.route('/register', methods=["GET", "POST"])
 def register():
@@ -583,6 +598,41 @@ def statistics():
         percent_first=(first_attempts/total)*100 if total>0 else 0
         first_attempts_numbers.append(number)
         first_attempts_percents.append(round(percent_first,2))
+    cur.execute('''
+        SELECT 
+            variant_tasks.var_id,
+            tasks.number AS task_number,
+            variant_tasks.task_id,
+            variant_tasks.user_answer,
+            variant_tasks.correct_answer,
+            variant_tasks.correct,
+            variants.score,
+            variants.created_at
+        FROM variant_tasks
+        JOIN variants
+        ON variant_tasks.var_id=variants.id
+        JOIN tasks
+        ON variant_tasks.task_id=tasks.id
+        WHERE variants.user_id=?
+        ORDER BY variant_tasks.var_id, tasks.number
+    ''', (session['user_id'],)
+    )
+    variant_data=cur.fetchall()
+    variant_table={}
+    for row in variant_data:
+        var_id=row['var_id']
+        if var_id not in variant_table:
+            variant_table[var_id]={
+                'score':row['score'],
+                'created_at':row['created_at'],
+                'tasks':{}
+            }
+        variant_table[var_id]['tasks'][row['task_number']]={
+            'task_id':row['task_id'],
+            'answer':row['user_answer'],
+            'correct_answer': row['correct_answer'],
+            'correct':row['correct']
+        }
     conn.close()
     return render_template(
         'statistics.html', 
@@ -594,7 +644,8 @@ def statistics():
         numbers=numbers,
         percents=percents,
         first_attempts_numbers=first_attempts_numbers,
-        first_attempts_percents=first_attempts_percents)
+        first_attempts_percents=first_attempts_percents,
+        variant_table=variant_table)
 
 
 def all_count(user_id):
@@ -686,6 +737,149 @@ def privacypolicy():
     with open('static/texts/policy.txt','r',encoding='utf-8') as f:
         policy_text=f.read()
     return render_template('privacypolicy.html',policy_text=policy_text)
+
+@app.route('/tests')
+@regs_only
+def tests():
+    return render_template('tests.html')
+
+@app.route('/generate_var')
+@regs_only
+def generate_var():
+    conn=sqlite3.connect('users.db')
+    conn.row_factory=sqlite3.Row
+    cur=conn.cursor()
+    var_tasks=[]
+    nums=list(range(1,20))
+    for number in nums:
+        cur.execute(
+            'SELECT * FROM tasks WHERE number=?',
+            (number,)
+        )
+        tasks=cur.fetchall()
+        if tasks:
+            var_tasks.append(random.choice(tasks))
+    conn.close()
+    return render_template('var.html', var_tasks=var_tasks)
+
+# @app.route('/check_var', methods=['POST'])
+# @regs_only
+# def check_var():
+#     conn=sqlite3.connect('users.db')
+#     conn.row_factory=sqlite3.Row
+#     cur=conn.cursor()
+#     task_ids=request.form.getlist('task_id')
+#     results=[]
+#     score=0
+#     cur.execute(
+#         'INSERT INTO variants(user_id, score, total, created_at) VALUES (?, ?, ?, ?)',(session['user_id'], score, datetime.now().strftime("%d.%m.%Y %H:%M")
+#     ))
+#     var_id=cur.lastrowid
+#     for task_id in task_ids:
+#         cur.execute(
+#             'SELECT * FROM tasks WHERE id=?',
+#             (task_id,)
+#         )
+#         task=cur.fetchone()
+#         user_answer=request.form.get(f'answer_{task_id}','').strip()
+#         correct=task['answer'].strip()
+#         if user_answer==correct:
+#             score+=1
+#         cur.execute('''
+#             INSERT INTO var_tasks(
+#                 var_id, task_id,user_id, user_answer, correct_answer, correct
+#             )
+#             VALUES(?,?,?,?,?)
+#         ''')
+#         results.append({
+#             'task':task,
+#             'user_answer':user_answer,
+#             'correct_answer':correct,
+#         })
+
+#     conn.commit()
+#     conn.close()
+#     return jsonify({
+#         'score':score
+#     })
+
+@app.route('/check_var', methods=['POST'])
+@regs_only
+def check_var():
+    conn = sqlite3.connect('users.db')
+    conn.row_factory = sqlite3.Row
+    cur = conn.cursor()
+    task_ids = request.form.getlist('task_id')
+    results = []
+    score = 0
+    answers = []
+    for task_id in task_ids:
+        cur.execute(
+            'SELECT * FROM tasks WHERE id=?',
+            (task_id,)
+        )
+        task = cur.fetchone()
+        user_answer = request.form.get(
+            f'answer_{task_id}',
+            ''
+        ).strip()
+        correct = task['answer'].strip()
+        is_correct = int(user_answer == correct)
+        if is_correct:
+            score += 1
+        answers.append({
+            'task_id': task_id,
+            'task_number': task['number'],
+            'user_answer': user_answer,
+            'correct_answer': correct,
+            'correct': is_correct
+        })
+    cur.execute(
+        '''
+        INSERT INTO variants(
+            user_id,
+            score,
+            created_at
+        )
+        VALUES(?,?,?)
+        ''',
+        (
+            session['user_id'],
+            score,
+            datetime.now().strftime("%d.%m.%Y %H:%M")
+        )
+    )
+    var_id = cur.lastrowid
+    for answer in answers:
+        cur.execute(
+            '''
+            INSERT INTO variant_tasks(
+                var_id,
+                task_id,
+                task_number,
+                user_id,
+                user_answer,
+                correct_answer,
+                correct
+            )
+            VALUES(?,?,?,?,?,?,?)
+            ''',
+            (
+                var_id,
+                answer['task_id'],
+                answer['task_number'],
+                session['user_id'],
+                answer['user_answer'],
+                answer['correct_answer'],
+                answer['correct']
+            )
+        )
+    conn.commit()
+    conn.close()
+    return {
+        'score': score,
+        'total': len(task_ids)
+    }
 
 if __name__=='__main__':
     init_db()

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Варианты</title>
+        <link rel="stylesheet" href="{{ url_for('static',filename='css/styles.css')}}">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+        <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+        <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body);"></script>
+    </head>
+    </head>
+    <body>
+        <div id="result_modal" style="display: none; width:50%;height:35%" class="modal">
+            <span onclick="closeResults()">&times;</span>
+            <h3>результат</h3>
+            <p id="result_text"></p>
+        </div>
+        <form id="var_form">
+            {% for task in var_tasks %}
+                <div class="task">
+                    <div class="tasksClasses">
+                        <p class="classification">#{{task['id']}}</p>
+                        <p class="classification">#Номер задания:{{task['number']}}
+                    </div>
+                    <p class="taskText">{{task['text']}}</p>
+                    {% if task['image'] %}
+                        <img src="{{url_for('static',filename=task['image'])}}?v={{task['id']}}" class="task_image">
+                    {% endif %}
+                    <input type="text"
+                        name="answer_{{task.id}}"
+                        placeholder="ответ">
+                </div>
+                <input type="hidden" name="task_id" value="{{ task.id }}">
+            {% endfor %}
+            <button type="submit">отправить на проверку</button>
+        </form>
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                renderMathInElement(document.body, {
+                    delimiters: [
+                        {left: "$$", right: "$$", display: true},
+                        {left: "$", right: "$", display: false}
+                    ]
+                });
+            });
+        </script>
+        <script src="{{url_for('static',filename='scripts.js')}}"></script>
+    </body>
+</html>

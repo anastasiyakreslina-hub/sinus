@@ -1,5 +1,24 @@
 const ctx=document.getElementById('Chart');
 const sidebar = document.getElementById('sidebar');
+const var_form=document.getElementById('var_form');
+
+
+if (var_form) {
+    var_form.addEventListener('submit', async function(event){
+        event.preventDefault();
+        const formData=new FormData(var_form);
+        const response=await fetch('/check_var',{
+            method:'POST',
+            body:formData
+        });
+        const data=await response.json();
+        document.getElementById('result_text').textContent=`Правильных ответов: ${data.score} из 19`;
+        document.getElementById('result_modal').style.display='block';
+    })
+}
+function closeResults() {
+    document.getElementById('result_modal').style.display='none';
+}
 
 document.addEventListener("DOMContentLoaded", () => {
     const toast = document.getElementById("toast");
