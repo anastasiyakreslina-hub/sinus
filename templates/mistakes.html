@@ -43,7 +43,7 @@
                         <p class="classification">#{{task['source']}}</p>
                     </div>
                     <p class="taskText">{{task['text']}}</p>
-                    <div class="phoneButtons">
+                    <div class="phoneButtons filterButtons">
                         <input id="input-{{ task['id'] }}" class="lightBox buttons" placeholder="ответ">
                         <button onclick="checkAnswer({{ task['id'] }})" class="lightBox buttons">Проверить</button>
                     </div>

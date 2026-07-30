@@ -292,6 +292,12 @@ img {
     border-radius: 25px;
     padding: 10px;
 }
+.phoneButtons {
+    width:30%;
+    display:flex;
+   align-items: center;
+   margin-left:20px;
+}
 .answers {
     font-size:10px;
     margin-left: 25px;
@@ -306,14 +312,16 @@ img {
     background-color: #75234551;
     font-family: 'MyFont';
     color:rgb(215, 173, 195);
-    border-radius: 10px;
+    border-radius: 15px;
     border:2px solid #ffffff42;
     backdrop-filter:blur(15px);
     -webkit-backdrop-filter: blur(15px);
     box-shadow:0 8px 32px rgba(0,0,0,0.2);
     height:30px;
-    margin:0 0 0 20px;
     padding:5px;
+    font-size:10px;
+    display: flex;
+    justify-content: center;
 }
 .add_Task {
     padding:20px;

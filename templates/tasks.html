@@ -104,7 +104,7 @@
                 {% if task['image'] %}
                     <img src="{{url_for('static',filename=task['image'])}}?v={{task['id']}}" class="task_image">
                 {% endif %}
-                <div class="phoneButtons">
+                <div class="phoneButtons filterButtons">
                     <input id="input-{{ task['id'] }}" class="lightBox buttons main_Thing" placeholder="ответ">
                     <button onclick="checkAnswer({{ task['id'] }})" class="lightBox buttons main_Thing">Проверить</button>
                 </div>
