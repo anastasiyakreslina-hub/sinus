@@ -1,0 +1,54 @@
+.buttons {
+    background-color: #75234551;
+    font-family: 'MyFont';
+    color: rgb(215, 173, 195);
+    border-radius: 15px;
+    border: 2px solid #ffffff42;
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+    height: 30px;
+    padding: 5px;
+    font-size: 10px;
+    display: flex;
+    justify-content: center;
+}
+
+.changeButtons {
+    background-color: #94034772;
+    border-radius: 15px;
+    color: #d70668;
+    padding: 5px;
+    font-family: 'MyFont';
+    border: 2px solid #ffffff42;
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+    margin: 0 auto;
+}
+
+.textButton {
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    color: inherit;
+    font-size: 10px;
+}
+
+.enterButton {
+    background-color: #0c420b;
+    border-radius: 15px;
+    color: #158113;
+    position: relative;
+    z-index: 9999;
+    width: 30%;
+    height: 34px;
+}
+
+.phoneButtons {
+    width: 30%;
+    display: flex;
+    align-items: center;
+    margin-left: 20px;
+}

@@ -1,0 +1,30 @@
+form {
+    position: relative;
+    z-index: 9999;
+}
+
+input {
+    background-color: #440925;
+    border-radius: 15px;
+    color: #d70668;
+    position: relative;
+    z-index: 9999;
+}
+
+input::placeholder {
+    font-family: 'MyFont', sans-serif;
+    color: #9b6881;
+    text-align: center;
+    font-size: 10px;
+}
+
+textarea::placeholder {
+    font-family: 'Task';
+    color: #9b6881;
+}
+
+.textareas {
+    white-space: pre-wrap;
+    border-radius: 15px;
+    height: 40%;
+}

@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Варианты</title>
-        <link rel="stylesheet" href="{{ url_for('static',filename='css/styles.css')}}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     </head>
     <body>
         <header class="header" style="width:80%">
@@ -15,10 +15,10 @@
             </ul>
             <ul class="header__list2">
                 <li>
-                    <a href="{{url_for('about')}}" class="lighttext main_Thing">о проекте</a>
+                    <a href="{{url_for('main.about')}}" class="lighttext main_Thing">о проекте</a>
                 </li>
                 <li>
-                    <a href="{{url_for('profile')}}" class="lighttext main_Thing">профиль</a>
+                    <a href="{{url_for('auth.profile')}}" class="lighttext main_Thing">профиль</a>
                 </li>
             </ul>
         </header>
@@ -26,14 +26,14 @@
             <button type="submit" class="buttons lightbox add_Task main_Thing">сгенерировать вариант</button>
         </form>
         <div class="sidebar" id="sidebar">
-            <a href="{{url_for('error')}}" class="name">настя синус</a>
+            <a href="{{url_for('main.error')}}" class="name">настя синус</a>
             <ul class="listThings">
-                <li><a href="{{url_for('home')}}" class="lighttext">Основная страница</a></li>
-                <li><a href="{{url_for('tasks')}}" class="lighttext">Банк заданий</a></li>
-                <li><a href="{{url_for('tests')}}" class="lighttext">Варианты уровня ЕГЭ</a></li>
-                <li><a href="{{url_for('mistakes')}}" class="lighttext">Работа над ошибками</a></li>
-                <li><a href="{{url_for('statistics')}}" class="lighttext">Статистика</a></li>
-                <li><a href="{{url_for('logout')}}" class="lighttext">Выход</a></li>
+                <li><a href="{{url_for('main.home')}}" class="lighttext">Основная страница</a></li>
+                <li><a href="{{url_for('tasks.tasks')}}" class="lighttext">Банк заданий</a></li>
+                <li><a href="{{url_for('tasks.tests')}}" class="lighttext">Варианты уровня ЕГЭ</a></li>
+                <li><a href="{{url_for('tasks.mistakes')}}" class="lighttext">Работа над ошибками</a></li>
+                <li><a href="{{url_for('tasks.statistics')}}" class="lighttext">Статистика</a></li>
+                <li><a href="{{url_for('auth.logout')}}" class="lighttext">Выход</a></li>
                 <li></li>
             </ul>
         </div>

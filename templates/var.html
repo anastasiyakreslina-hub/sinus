@@ -4,14 +4,14 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Варианты</title>
-        <link rel="stylesheet" href="{{ url_for('static',filename='css/styles.css')}}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
         <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
         <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body);"></script>
     </head>
     </head>
     <body>
-        <a href="{{url_for('tests')}}" class="buttons lighbox lightText" style="width:10%; margin:10px 0 0 10px;">Завершить без сохранения</a>
+        <a href="{{url_for('tasks.tests')}}" class="buttons lighbox lightText" style="width:10%; margin:10px 0 0 10px;">Завершить без сохранения</a>
         <div id="result_modal" style="display: none; width:50%;height:35%" class="modal">
             <span onclick="closeResults()">&times;</span>
             <h3>результат</h3>

@@ -1,0 +1,15 @@
+table {
+    border-collapse: collapse;
+    max-width: fit-content;
+}
+
+.variant_table th, 
+.variant_table td {
+    border: 2px solid #ffffff42;
+    padding: 5px;
+    text-align: center;
+}
+
+.table_text {
+    font-size: 7px;
+}

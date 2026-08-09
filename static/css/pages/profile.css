@@ -1,0 +1,42 @@
+.name {
+    margin-bottom: auto;
+}
+
+.mainProfile {
+    padding: 10px;
+    margin: 15px auto;
+    width: 90%;
+}
+
+.profileContainer {
+    margin-top: 20px;
+    display: flex;
+    gap: 50px;
+}
+
+.profileList {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    width: 67%;
+    gap: 20px;
+    text-align: center;
+}
+
+.profileButtons {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    gap: 5px;
+}
+
+.avatar {
+    border-radius: 25px;
+    max-width: 220px;
+}
+
+.goal {
+    text-align: center;
+    text-shadow: 0 0 20px rgb(205, 10, 108);
+    color: white;
+}

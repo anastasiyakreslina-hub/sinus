@@ -1,0 +1,162 @@
+@media (max-width: 768px) {
+    * {
+        min-width: 0;
+        word-break: break-word;
+    }
+
+    html, body {
+        overflow-x: hidden !important;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+    }
+
+    .header {
+        padding: 8px;
+        width: 100%;
+        max-width: 92%;
+        margin: 10px auto auto 45px;
+    }
+
+    .main_Thing {
+        font-size: 9px;
+    }
+
+    .time {
+        font-size: 24px;
+    }
+
+    .main {
+        flex-direction: column;
+        margin: 0 auto;
+        width: 100%;
+        gap: 10px;
+    }
+
+    .firstColumn {
+        width: 92%;
+        padding: 5px;
+        margin: 0 auto;
+    }
+
+    .avatar {
+        max-height: 210px;
+        width: 100%;
+        max-width: 210px;
+    }
+
+    .secondColumn {
+        width: 92%;
+        padding: 5px;
+        margin: 0 auto;
+    }
+
+    .main > * {
+        min-width: 0;
+    }
+
+    .toDo {
+        height: 20vh;
+        width: 100%;
+        padding: 0;
+    }
+
+    .thirdColumn {
+        width: 92%;
+        padding: 5px;
+        margin: 0 auto 20px auto;
+    }
+
+    .filterForm {
+        margin-left: 55px;
+    }
+
+    .filterButtons {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        width: 30%;
+    }
+
+    .task {
+        width: 70%;
+        margin-left: 50px;
+    }
+
+    .classification {
+        font-size: 8px;
+    }
+
+    .taskText {
+        font-size: 14px;
+        margin: 0 auto;
+    }
+
+    .phoneButtons {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        margin: 0 auto;
+    }
+
+    .h2heading {
+        font-size: 14px;
+        margin-left: 50px;
+    }
+
+    .sidebar {
+        left: 0;
+        transform: translateX(-90%);
+        z-index: 10999;
+    }
+
+    .sidebar.open {
+        transform: translateX(0);
+    }
+
+    .infoBlock {
+        height: 50vh;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .infoBlock::after {
+        content: "";
+        display: block;
+        width: 50%;
+        margin: 0 auto;
+        max-width: 100%;
+    }
+
+    .mascot {
+        width: 15%;
+    }
+
+    .center {
+        width: 50%;
+        margin: 10px auto;
+    }
+
+    .mainProfile {
+        width: 80%;
+        margin-right: 15px;
+    }
+
+    .profileContainer {
+        flex-direction: column;
+        gap: 7px;
+    }
+
+    .profileList {
+        width: 100%;
+    }
+
+    .filter_labels {
+        width: 40%;
+    }
+
+    .filter_button {
+        width: 11vh;
+        padding: 2px;
+    }
+}

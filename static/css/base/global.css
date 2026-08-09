@@ -1,0 +1,72 @@
+* {
+    padding: 0;
+}
+
+html, body {
+    inset: 0;
+    background:
+        radial-gradient(
+            circle at center,
+            #4409253c 0%,
+            #4409253c 30%,
+            transparent 70%
+        ),
+        radial-gradient(
+            circle at 30% 40%,
+            #440925,
+            #0f1117
+        );
+    font-family: 'MyFont', sans-serif;
+    color: white;
+    margin: 0;
+    background-color: #000000;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background-image: radial-gradient(white 1px, transparent 1px);
+    background-size: 20px 25px;
+    opacity: 0.1;
+}
+
+a {
+    text-decoration: none;
+    color: white;
+    position: relative;
+    z-index: 9999;
+}
+
+.lighttext {
+    transition: 0.3s;
+}
+
+.lighttext:hover {
+    color: rgb(215, 173, 195);
+    text-shadow: 0 0 20px rgb(205, 10, 108);
+}
+
+.heading {
+    display: flex;
+    justify-content: center;
+    padding: 5px;
+    color: #ffffff42;
+}
+
+.h2heading {
+    font-size: 24px;
+}
+
+img {
+    display: block;
+    margin: 0 auto;
+}
+
+.mascot {
+    width: 50px;
+}
+
+.mainCenter {
+    margin: 0 auto;
+}

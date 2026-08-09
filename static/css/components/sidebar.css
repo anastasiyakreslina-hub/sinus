@@ -1,0 +1,44 @@
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: -220px;
+    width: 210px;
+    height: 100%;
+    background: #000000;
+    padding: 20px;
+    transition: 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    z-index: 9999;
+}
+
+.sidebar.open {
+    transform: translateX(0);
+}
+
+.sidebar:hover {
+    left: 0;
+}
+
+.sidebar button {
+    white-space: nowrap;
+    opacity: 0;
+    transition: 0.2s;
+}
+
+.sidebar:hover button {
+    opacity: 1;
+}
+
+.content {
+    margin-left: 49px;
+}
+
+.listThings {
+    margin-top: auto;
+    list-style: none;
+}
+
+.listThings li+li {
+    margin-top: 25px;
+}

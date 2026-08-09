@@ -1,0 +1,56 @@
+.time {
+    font-size: 40px;
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+    color: #5c394a;
+}
+
+.main {
+    display: flex;
+    list-style: none;
+    gap: 20px;
+}
+
+.firstColumn {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    gap: 10px;
+    margin-left: 5px;
+}
+
+.studentsProfile {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.rate {
+    text-align: center;
+    padding: 10px;
+}
+
+.secondColumn {
+    padding: 10px;
+    flex: 2;
+}
+
+.thirdColumn {
+    padding: 10px;
+    flex: 1;
+    margin-right: 15px;
+}
+
+.toDo {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 60vh;
+}
+
+.toDo li+li {
+    margin-top: 15px;
+}

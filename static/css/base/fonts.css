@@ -1,0 +1,9 @@
+@font-face {
+    font-family: 'MyFont';
+    src: url('../../fonts/PublicPixel.ttf');
+}
+
+@font-face {
+    font-family: 'Task';
+    src: url('../../fonts/Montserrat\ Alternates.ttf');
+}

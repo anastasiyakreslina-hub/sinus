@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Профиль</title>
-        <link rel="stylesheet" href="{{ url_for('static',filename='css/styles.css')}}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     </head>
     <body>
         <div id="contacts" style="display: none; width:50%;height:35%" class="modal">
@@ -75,14 +75,14 @@
                 </div>
             </div>
         <div class="sidebar" id="sidebar">
-            <a href="{{url_for('error')}}" class="name">настя синус</a>
+            <a href="{{url_for('main.error')}}" class="name">настя синус</a>
             <ul class="listThings">
-                <li><a href="{{url_for('home')}}" class="lighttext">Основная страница</a></li>
-                <li><a href="{{url_for('tasks')}}" class="lighttext">Банк заданий</a></li>
-                <li><a href="{{url_for('tests')}}" class="lighttext">Варианты уровня ЕГЭ</a></li>
-                <li><a href="{{url_for('mistakes')}}" class="lighttext">Работа над ошибками</a></li>
-                <li><a href="{{url_for('statistics')}}" class="lighttext">Статистика</a></li>
-                <li><a href="{{url_for('logout')}}" class="lighttext">Выход</a></li>
+                <li><a href="{{url_for('main.home')}}" class="lighttext">Основная страница</a></li>
+                <li><a href="{{url_for('tasks.tasks')}}" class="lighttext">Банк заданий</a></li>
+                <li><a href="{{url_for('tasks.tests')}}" class="lighttext">Варианты уровня ЕГЭ</a></li>
+                <li><a href="{{url_for('tasks.mistakes')}}" class="lighttext">Работа над ошибками</a></li>
+                <li><a href="{{url_for('tasks.statistics')}}" class="lighttext">Статистика</a></li>
+                <li><a href="{{url_for('auth.logout')}}" class="lighttext">Выход</a></li>
                 <li></li>
             </ul>
         </div>
@@ -91,7 +91,7 @@
             <li><a href="/">FAQ</a></li>
             <li><button class="textButton buttons" onclick="openContacts()">Контакты</button></li>
             <li><a href="/">Поддержка</a></li>
-            <li><a href="{{url_for('privacypolicy')}}">Политика конфиденциальности</a></li>
+            <li><a href="{{url_for('main.privacypolicy')}}">Политика конфиденциальности</a></li>
             <li>2026</li>
         </ul>
         <script src="{{url_for('static',filename='scripts.js')}}"></script>

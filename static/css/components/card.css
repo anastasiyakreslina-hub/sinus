@@ -1,0 +1,28 @@
+/* Общий стеклянный эффект для карточек и блоков */
+.studentsProfile,
+.rate,
+.secondColumn,
+.thirdColumn,
+.mainProfile,
+.task,
+.noMistakes,
+.filterForm,
+.typeTasks,
+.information,
+.toast,
+.header {
+    background-color: #00000051;
+    border-radius: 25px;
+    border: 2px solid #ffffff42;
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+.lightBox {
+    transition: 0.3s;    
+}
+
+.lightBox:hover {
+    box-shadow: 0 0 20px rgb(205, 10, 108);
+}

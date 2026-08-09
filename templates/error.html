@@ -4,14 +4,14 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Ошибка страницы</title>
-        <link rel="stylesheet" href="{{ url_for('static',filename='css/styles.css')}}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     </head>
     <body>
         <div class="task">
             <h1 class="lighttext heading">Упс...</h1>
             <p class="heading main_Thing">Страница находится в разработке</p>
             <p class=" heading main_Thing">Совсем скоро все будет работать</p>
-            <a href="{{url_for('home')}}" class="lighttext main_Thing heading">Вернуться на главную</a>
+            <a href="{{url_for('main.home')}}" class="lighttext main_Thing heading">Вернуться на главную</a>
             <img src="{{url_for('static', filename='images/mascot/errorMascot.png')}}" class="mascot">
         </div>
     </body>

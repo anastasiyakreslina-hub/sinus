@@ -1,0 +1,25 @@
+.header {
+    margin: 10px auto 0 auto;
+    border-radius: 35px;
+    padding: 20px;
+    width: 92%;
+    display: flex;
+    align-items: center;
+}
+
+.header__list1 {
+    display: flex;
+    list-style: none;
+    color: #d70668;
+}
+
+.header__list2 {
+    display: flex;
+    gap: 50px;
+    list-style: none;
+    margin: auto 0 auto auto;
+}
+
+.main_Thing {
+    font-size: 12px;
+}

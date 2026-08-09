@@ -1,0 +1,21 @@
+/* Базовые стили */
+@import url('base/fonts.css');
+@import url('base/global.css');
+
+/* Переиспользуемые компоненты */
+@import url('components/card.css');
+@import url('components/header.css');
+@import url('components/sidebar.css');
+@import url('components/buttons.css');
+@import url('components/forms.css');
+
+/* Страницы */
+@import url('pages/home.css');
+@import url('pages/profile.css');
+@import url('pages/tasks.css');
+@import url('pages/auth.css');
+@import url('pages/about.css');
+@import url('pages/stats.css');
+
+/* Адаптивность (подключаем последним) */
+@import url('responsive.css');

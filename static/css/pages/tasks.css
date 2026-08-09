@@ -1,0 +1,107 @@
+.tasksClasses {
+    display: flex;
+}
+
+.task {
+    width: 80%;
+    padding: 20px;
+    margin: 10px auto;
+}
+
+.classification {
+    font-size: 10px;
+    font-weight: 100;
+    color: rgb(205, 48, 95);
+    margin: 0 0 0 20px;
+}
+
+.taskText {
+    font-family: 'Task';
+    font-size: 18px;
+    font-weight: 200;
+    width: 95%;
+    padding: 20px;
+    white-space: pre-wrap;
+}
+
+.task_image {
+    width: 50%;
+    border-radius: 25px;
+    padding: 10px;
+}
+
+.answers {
+    font-size: 10px;
+    margin-left: 25px;
+}
+
+.blue {
+    color: rgb(71, 102, 158);
+}
+
+.red {
+    color: red;
+}
+
+.add_Task {
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    width: 30%;
+    margin: 10px auto 0 auto;
+}
+
+.task_adding {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.noMistakes {
+    width: 50%;
+    margin: 20px auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 50vh;
+}
+
+.filterForm {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    background-color: #a9686813;
+    width: 70%;
+    padding: 20px;
+    margin: 10px auto 0 auto;
+}
+
+.filter_labels {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    text-align: center;
+}
+
+.typeTasks {
+    width: 94%;
+    border-radius: 35px;
+    display: flex;
+    justify-content: center;
+    margin: 0 auto;
+}
+
+.filterButtons {
+    display: flex;
+    gap: 10px;
+}
+
+.filter_button {
+    width: 30vh;
+    padding: 5px;
+    margin: auto 0;
+    display: flex;
+    align-items: center;
+}
