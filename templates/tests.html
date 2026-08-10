@@ -5,6 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Варианты</title>
         <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+        <script src="{{ url_for('static', filename='js/theme.js') }}" defer></script>
     </head>
     <body>
         <header class="header" style="width:80%">
@@ -28,15 +29,16 @@
         <div class="sidebar" id="sidebar">
             <a href="{{url_for('main.error')}}" class="name">настя синус</a>
             <ul class="listThings">
-                <li><a href="{{url_for('main.home')}}" class="lighttext">Основная страница</a></li>
-                <li><a href="{{url_for('tasks.tasks')}}" class="lighttext">Банк заданий</a></li>
-                <li><a href="{{url_for('tasks.tests')}}" class="lighttext">Варианты уровня ЕГЭ</a></li>
-                <li><a href="{{url_for('tasks.mistakes')}}" class="lighttext">Работа над ошибками</a></li>
-                <li><a href="{{url_for('tasks.statistics')}}" class="lighttext">Статистика</a></li>
-                <li><a href="{{url_for('auth.logout')}}" class="lighttext">Выход</a></li>
+                <li><a href="{{url_for('main.home')}}" class="lighttext sidebar_text">Основная страница</a></li>
+                <li><a href="{{url_for('tasks.tasks')}}" class="lighttext sidebar_text">Банк заданий</a></li>
+                <li><a href="{{url_for('tasks.tests')}}" class="lighttext sidebar_text">Варианты уровня ЕГЭ</a></li>
+                <li><a href="{{url_for('tasks.mistakes')}}" class="lighttext sidebar_text">Работа над ошибками</a></li>
+                <li><a href="{{url_for('tasks.statistics')}}" class="lighttext sidebar_text">Статистика</a></li>
+                <li><a href="{{url_for('auth.logout')}}" class="lighttext sidebar_text">Выход</a></li>
                 <li></li>
             </ul>
         </div>
-        <script src="{{url_for('static',filename='scripts.js')}}"></script>
+        <script src="{{url_for('static',filename='js/ui.js')}}"></script>
+        <script src="{{url_for('static',filename='js/tasks.js')}}"></script>
     </body>
 </html>

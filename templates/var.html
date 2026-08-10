@@ -8,6 +8,7 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
         <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
         <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body);"></script>
+        <script src="{{ url_for('static', filename='js/theme.js') }}" defer></script>
     </head>
     </head>
     <body>
@@ -49,6 +50,6 @@
                 });
             });
         </script>
-        <script src="{{url_for('static',filename='scripts.js')}}"></script>
+        <script src="{{url_for('static',filename='js/tasks.js')}}"></script>
     </body>
 </html>

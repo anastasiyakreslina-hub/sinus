@@ -7,33 +7,33 @@ html, body {
     background:
         radial-gradient(
             circle at center,
-            #4409253c 0%,
-            #4409253c 30%,
+            var(--bg-main-1) 0%,
+            var(--bg-main-1) 30%,
             transparent 70%
         ),
         radial-gradient(
             circle at 30% 40%,
-            #440925,
-            #0f1117
+            var(--bg-main-2),
+            var(--bg-main-3)
         );
     font-family: 'MyFont', sans-serif;
     color: white;
     margin: 0;
-    background-color: #000000;
+    background-color: var(--bg-solid);
 }
 
 body::before {
     content: "";
     position: fixed;
     inset: 0;
-    background-image: radial-gradient(white 1px, transparent 1px);
+    background-image: radial-gradient(var(--grid-dots) 1px, transparent 1px);
     background-size: 20px 25px;
     opacity: 0.1;
 }
 
 a {
     text-decoration: none;
-    color: white;
+    /* color: white; */
     position: relative;
     z-index: 9999;
 }
@@ -43,15 +43,35 @@ a {
 }
 
 .lighttext:hover {
-    color: rgb(215, 173, 195);
+    color: var(--glow-color);
     text-shadow: 0 0 20px rgb(205, 10, 108);
+}
+
+.lightBox {
+    position: relative;
+}
+
+.lightBox::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    box-shadow: 0 0 20px var(--glow-color);
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+    pointer-events: none; 
+    z-index: 1;
+}
+
+.lightBox:hover::after {
+    opacity: 1;
 }
 
 .heading {
     display: flex;
     justify-content: center;
     padding: 5px;
-    color: #ffffff42;
+    color: var(--heading-color);
 }
 
 .h2heading {

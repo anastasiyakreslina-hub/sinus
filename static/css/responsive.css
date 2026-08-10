@@ -43,6 +43,7 @@
         max-height: 210px;
         width: 100%;
         max-width: 210px;
+        margin: 0 auto 0 auto;
     }
 
     .secondColumn {

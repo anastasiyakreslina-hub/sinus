@@ -1,4 +1,3 @@
-/* Общий стеклянный эффект для карточек и блоков */
 .studentsProfile,
 .rate,
 .secondColumn,
@@ -10,19 +9,26 @@
 .typeTasks,
 .information,
 .toast,
-.header {
-    background-color: #00000051;
+.header,
+.modal {
+    background-color: var(--background-color) !important;
     border-radius: 25px;
-    border: 2px solid #ffffff42;
+    border: 2px solid var(--card-border) !important;
     backdrop-filter: blur(15px);
     -webkit-backdrop-filter: blur(15px);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 8px 32px var(--card-shadow);
+    color: white;
+    transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
 }
 
-.lightBox {
-    transition: 0.3s;    
+.goal {
+    text-align: center;
+    text-shadow: 0 0 20px var(--glow-color);
+    color: var(--text-color);
 }
 
-.lightBox:hover {
-    box-shadow: 0 0 20px rgb(205, 10, 108);
+
+.heading, 
+.questions {
+    color: var(--text-color);
 }

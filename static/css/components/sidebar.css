@@ -4,7 +4,7 @@
     left: -220px;
     width: 210px;
     height: 100%;
-    background: #000000;
+    background: var(--sidebar-bg);
     padding: 20px;
     transition: 0.3s ease;
     display: flex;
@@ -41,4 +41,8 @@
 
 .listThings li+li {
     margin-top: 25px;
+}
+
+.sidebar_text {
+    color:var(--sidebar-text);
 }

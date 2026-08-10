@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>О проекте</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="{{ url_for('static', filename='js/theme.js') }}" defer></script>
 </head>
 <body>
     <div id="contacts" style="display: none; width:50%;height:35%" class="modal">
@@ -38,12 +39,12 @@
         <ul class="smallInfo">
             <li><a href="https://t.me/karznl">Телеграмм-канал</a></li>
             <li><a href="/">FAQ</a></li>
-            <li><button class="textButton buttons" onclick="openContacts()">Контакты</button></li>
+            <li><button class="textButton" onclick="openContacts()">Контакты</button></li>
             <li><a href="/">Поддержка</a></li>
             <li><a href="{{url_for('main.privacypolicy')}}">Политика конфиденциальности</a></li>
             <li>2026</li>
         </ul>
     </div>
-    <script src="{{url_for('static',filename='scripts.js')}}"></script> 
+    <script src="{{url_for('static',filename='js/ui.js')}}"></script> 
 </body>
 </html>

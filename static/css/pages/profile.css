@@ -33,6 +33,7 @@
 .avatar {
     border-radius: 25px;
     max-width: 220px;
+    margin-left:0;
 }
 
 .goal {

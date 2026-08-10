@@ -3,6 +3,13 @@ const sidebar = document.getElementById('sidebar');
 const var_form=document.getElementById('var_form');
 
 
+function getThemeColor(variableName) {
+    // Считываем значение CSS-переменной из <html> или <body>
+    return getComputedStyle(document.documentElement)
+        .getPropertyValue(variableName)
+        .trim();
+}
+
 if (var_form) {
     var_form.addEventListener('submit', async function(event){
         event.preventDefault();

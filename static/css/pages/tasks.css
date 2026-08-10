@@ -22,6 +22,7 @@
     width: 95%;
     padding: 20px;
     white-space: pre-wrap;
+    color: var(--task-text);
 }
 
 .task_image {
@@ -36,7 +37,7 @@
 }
 
 .blue {
-    color: rgb(71, 102, 158);
+    color: rgb(34, 115, 202);
 }
 
 .red {

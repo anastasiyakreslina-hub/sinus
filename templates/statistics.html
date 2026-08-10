@@ -5,6 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Статистика</title>
         <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+        <script src="{{ url_for('static', filename='js/theme.js') }}" defer></script>
     </head>
     <body>
         <div id="contacts" style="display: none; width:50%;height:35%" class="modal">
@@ -79,21 +80,21 @@
             </table>
         </div>
         <div class="sidebar" id="sidebar">
-            <a href="{{url_for('main.error')}}" class="name">настя синус</a>
+            <a href="{{url_for('main.error')}}" class="name sidebar_text">настя синус</a>
             <ul class="listThings">
-                <li><a href="{{url_for('main.home')}}" class="lighttext">Основная страница</a></li>
-                <li><a href="{{url_for('tasks.tasks')}}" class="lighttext">Банк заданий</a></li>
-                <li><a href="{{url_for('tasks.tests')}}" class="lighttext">Варианты уровня ЕГЭ</a></li>
-                <li><a href="{{url_for('tasks.mistakes')}}" class="lighttext">Работа над ошибками</a></li>
-                <li><a href="{{url_for('tasks.statistics')}}" class="lighttext">Статистика</a></li>
-                <li><a href="{{url_for('auth.logout')}}" class="lighttext">Выход</a></li>
+                <li><a href="{{url_for('main.home')}}" class="lighttext sidebar_text">Основная страница</a></li>
+                <li><a href="{{url_for('tasks.tasks')}}" class="lighttext sidebar_text">Банк заданий</a></li>
+                <li><a href="{{url_for('tasks.tests')}}" class="lighttext sidebar_text">Варианты уровня ЕГЭ</a></li>
+                <li><a href="{{url_for('tasks.mistakes')}}" class="lighttext sidebar_text">Работа над ошибками</a></li>
+                <li><a href="{{url_for('tasks.statistics')}}" class="lighttext sidebar_text">Статистика</a></li>
+                <li><a href="{{url_for('auth.logout')}}" class="lighttext sidebar_text">Выход</a></li>
                 <li></li>
             </ul>
         </div>
         <ul class="smallInfo">
             <li><a href="https://t.me/karznl">Телеграмм-канал</a></li>
             <li><a href="/">FAQ</a></li>
-            <li><button class="textButton buttons" onclick="openContacts()">Контакты</button></li>
+            <li><button class="textButton" onclick="openContacts()">Контакты</button></li>
             <li><a href="/">Поддержка</a></li>
             <li><a href="{{url_for('main.privacypolicy')}}">Политика конфиденциальности</a></li>
             <li>2026</li>
@@ -104,6 +105,7 @@
             const first_attempts_numbers={{ first_attempts_numbers | tojson }};
             const first_attempts_percents={{ first_attempts_percents | tojson }};
         </script>
-        <script src="{{url_for('static',filename='scripts.js')}}"></script>
+        <script src="{{ url_for('static', filename='js/ui.js') }}"></script>
+        <script src="{{url_for('static',filename='js/charts.js')}}"></script>
     </body>
 </html>

@@ -65,7 +65,7 @@ summary {
 
 .smallInfo a,
 .smallInfo li {
-    color: #ffffff42;
+    color: var(--text-secondary);
 }
 
 .smallInfo li+li {

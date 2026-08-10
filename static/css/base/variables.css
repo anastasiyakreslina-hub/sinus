@@ -1,0 +1,85 @@
+/* ==========================================
+   1. ТЁМНАЯ ТЕМА (По умолчанию)
+   ========================================== */
+:root {
+    /* Фоновые цвета сайта */
+    --bg-main-1: #4409253c;
+    --bg-main-2: #440925;
+    --bg-main-3: #0f1117;
+    --bg-solid: #000000;
+    --grid-dots:#ffffff;
+    --background-color:#00000051;
+
+    /* Карточки, модальные окна, профиль */
+    --card-bg: rgba(0, 0, 0, 0.32);
+    --card-border: rgba(255, 255, 255, 0.26);
+    --card-shadow: rgba(0, 0, 0, 0.4);
+
+    /* Текст и свечение */
+    --text-color: #ffffff;
+    --text-secondary: #9b6881;
+    --text-accent: #d70668;
+    --text-hover: rgb(215, 173, 195);
+    --glow-color: rgb(205, 10, 108);
+    --heading-color: #ffffff42;
+    --links-color: #ffffff;
+
+    --time-color:#5c394a;
+
+    /* Кнопки, формы, сайдбар */
+    --btn-bg: #75234551;
+    --btn-change-bg: #94034772;
+    --input-bg: #440925;
+    --sidebar-bg: #000000;
+    --sidebar-text: #ffffff;
+
+    --task-text: white;
+
+    --button-color:#158113;
+    --button-bg:#1581137b;
+
+    --chart-bg:#ff1b7e6b;;
+}
+
+/* ==========================================
+   2. СВЕТЛАЯ ТЕМА (При переключении)
+   ========================================== */
+[data-theme="light"] {
+    /* Фоновые цвета сайта */
+    --bg-main-1: #ffd6e73c;
+    --bg-main-2: #fcd5e5;
+    --bg-main-3: #f5cff2;
+    --bg-solid: #f5f5f7;
+    --grid-dots: #b00454;
+    --background-color: #fb91c551;
+
+    /* Карточки, модальные окна, профиль */
+    --card-bg: rgba(255, 255, 255, 0.85);
+    --card-border: rgba(230, 145, 196, 0.807);
+    --card-shadow: rgba(0, 0, 0, 0.08);
+
+    /* Текст и свечение */
+    --text-color: #cf4395;
+    --text-secondary: #e184b2d7;
+    --text-accent: #cf2172;
+    --text-hover: #df6b9f;
+    --glow-color: rgba(176, 4, 84, 0.4);
+    --heading-color: #ffffff;
+    --links-color:#ffffff;
+
+    --time-color:#f8b9d5;
+
+    /* Кнопки, формы, сайдбар */
+    --btn-bg: #fd93c14a;
+    --btn-change-bg: #e691b8;
+    --input-bg: #f3d4e2;
+    --sidebar-bg: #ffffff;
+    --sidebar-text: #d85f85;
+
+
+    --task-text:rgb(109, 6, 39);
+
+    --button-color: #5ecd5c;
+    --button-bg:#5ecd5c61;
+    --chart-bg: #fd93c1a4;
+}
