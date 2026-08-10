@@ -155,8 +155,21 @@ def mistakes():
         WHERE user_tasks.user_id=? AND user_tasks.status="Неправильно!"
     ''', (user_id,))
     tasks_list = cur.fetchall()
+    cur.execute('''
+        SELECT task_id, COUNT(*) AS total, SUM(CASE WHEN attempt_number=1 AND correct=1 THEN 1 ELSE 0 END) AS correct_first_attempts
+        FROM task_attempts
+        GROUP BY task_id
+    ''')
+    stats_raw = cur.fetchall()
+    stats = {}
+    for r in stats_raw:
+        t_id = r['task_id']
+        total = r[1]
+        first_attempts = r[2]
+        percent = (first_attempts / total) * 100 if total > 0 else 0
+        stats[t_id] = round(percent, 2)
     conn.close()
-    return render_template('mistakes.html', tasks=tasks_list)
+    return render_template('mistakes.html', tasks=tasks_list, stats=stats)
 
 @tasks_bp.route('/tests')
 @regs_only

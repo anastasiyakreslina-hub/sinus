@@ -39,7 +39,7 @@
             {% endfor %}
         {% endwith %}
         <div class="mainProfile">
-            <div class="infoBlock" style="height:25vh;">
+            <div  style="height:25vh;">
                <h2 class="heading main_Thing">Привет, {{ username }}</h2>
                <p class="goal main_Thing">Твоя цель: {{user['goal']}}</p>
             </div>
@@ -51,9 +51,6 @@
                         <img src="{{url_for('static', filename='images/studentsphoto.jpg')}}" class="avatar">
                     {% endif %}
                     <ul class="profileList">
-                        <li>
-                            <p class="main_Thing"> Логин: {{ user['username'] }}</p>
-                        </li>
                         <li>
                             <p class="heading main_Thing">Дата регистрации: {{user['reg_date']}}</p>
                         </li>

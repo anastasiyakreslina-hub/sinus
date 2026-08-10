@@ -37,9 +37,9 @@
                 <div class="studentsProfile lightBox">
                     <div id="greeting" class="heading main_Thing"></div>
                     {% if user['avatar'] %}
-                    <img src="{{url_for('static',filename=user['avatar'])}}?v={{user['id']}}" class="avatar">
+                    <img src="{{url_for('static',filename=user['avatar'])}}?v={{user['id']}}" class="avatar_main">
                 {% else %}
-                    <img src="{{url_for('static', filename='images/studentsphoto.jpg')}}" class="avatar">
+                    <img src="{{url_for('static', filename='images/studentsphoto.jpg')}}" class="avatar_main">
                 {% endif %}
                     <p class="goal main_Thing" >Цель: {{goal}}</p>
                 </div>
