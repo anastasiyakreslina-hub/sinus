@@ -13,6 +13,7 @@ def theory():
     cur = conn.cursor()
     cur.execute('SELECT block_id, title, task_number, text, pdf_path FROM theory_table')
     blocks = cur.fetchall()
+    cur.close()
     conn.close()
     return render_template('theory.html', blocks=blocks)
 
@@ -29,9 +30,12 @@ def add_theory():
         pdf.save(pdf_path)
     conn = get_db()
     cur = conn.cursor()
-    cur.execute('INSERT INTO theory_table(title,task_number,text,pdf_path) VALUES(?,?,?,?)',
-                (title, task_number, text, pdf_path))
+    cur.execute(
+        'INSERT INTO theory_table(title, task_number, text, pdf_path) VALUES(%s, %s, %s, %s)',
+        (title, task_number, text, pdf_path)
+    )
     conn.commit()
+    cur.close()
     conn.close()
     return redirect('/theory')
 
@@ -40,8 +44,9 @@ def add_theory():
 def delete_theory(theory_id):
     conn = get_db()
     cur = conn.cursor()
-    cur.execute('DELETE FROM theory_table WHERE block_id=?', (theory_id,))
+    cur.execute('DELETE FROM theory_table WHERE block_id = %s', (theory_id,))
     conn.commit()
+    cur.close()
     conn.close()
     return redirect('/theory')
 
@@ -53,8 +58,11 @@ def edit_theory(block_id):
     text = request.form['text']
     conn = get_db()
     cur = conn.cursor()
-    cur.execute('UPDATE theory_table SET title=?, task_number=?, text=? WHERE block_id=?',
-                (title, task_number, text, block_id))
+    cur.execute(
+        'UPDATE theory_table SET title = %s, task_number = %s, text = %s WHERE block_id = %s',
+        (title, task_number, text, block_id)
+    )
     conn.commit()
+    cur.close()
     conn.close()
     return redirect('/theory')

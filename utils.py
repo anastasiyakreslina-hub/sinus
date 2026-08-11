@@ -25,23 +25,29 @@ def crop(img):
 def all_count(user_id):
     conn = get_db()
     cur = conn.cursor()
-    cur.execute('SELECT COUNT(*) FROM user_tasks WHERE user_id=?', (user_id,))
-    count = cur.fetchone()[0]
+    # ? заменен на %s, добавлен alias для ключа count
+    cur.execute('SELECT COUNT(*) AS total FROM user_tasks WHERE user_id = %s', (user_id,))
+    row = cur.fetchone()
+    cur.close()
     conn.close()
-    return count
+    return row['total'] if row else 0
 
 def correct_count(user_id):
     conn = get_db()
     cur = conn.cursor()
-    cur.execute('SELECT COUNT(*) FROM user_tasks WHERE user_id=? AND status LIKE "Правильно%"', (user_id,))
-    count = cur.fetchone()[0]
+    # ? заменен на %s, двойные кавычки заменены на одинарные
+    cur.execute("SELECT COUNT(*) AS total FROM user_tasks WHERE user_id = %s AND status LIKE 'Правильно%%'", (user_id,))
+    row = cur.fetchone()
+    cur.close()
     conn.close()
-    return count
+    return row['total'] if row else 0
 
 def get_goal(username):
     conn = get_db()
     cur = conn.cursor()
-    cur.execute('SELECT goal FROM users WHERE username=?', (username,))
-    data = cur.fetchone()
+    # ? заменен на %s, обращение по ключу 'goal'
+    cur.execute('SELECT goal FROM users WHERE username = %s', (username,))
+    row = cur.fetchone()
+    cur.close()
     conn.close()
-    return data[0] if data else 0
+    return row['goal'] if row and row['goal'] is not None else 0

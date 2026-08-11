@@ -20,18 +20,22 @@ def register():
         password = request.form['password']
         conn = get_db()
         cur = conn.cursor()
-        cur.execute('SELECT * FROM users WHERE username=?', (username,))
+        # Заменен ? на %s
+        cur.execute('SELECT * FROM users WHERE username = %s', (username,))
         user = cur.fetchone()
         if user:
+            cur.close()
             conn.close()
             error = 'Упс! Этот логин уже занят'
             return render_template('register.html', error=error)
         role = 'admin' if username == 'myr' else 'user'
         reg_date = datetime.now().strftime('%d.%m.%Y')
         password = generate_password_hash(password, method='pbkdf2:sha256')
-        cur.execute('INSERT INTO users(username, password, role, reg_date) VALUES (?, ?, ?, ?)', 
+        # Заменены ? на %s
+        cur.execute('INSERT INTO users(username, password, role, reg_date) VALUES (%s, %s, %s, %s)', 
                     (username, password, role, reg_date))
         conn.commit()
+        cur.close()
         conn.close()
         return redirect('/login')
     return render_template('register.html')
@@ -44,17 +48,20 @@ def login():
         password = request.form['password']
         conn = get_db()
         cur = conn.cursor()
-        cur.execute('SELECT * FROM users WHERE username=?', (username,))
+        # Заменен ? на %s
+        cur.execute('SELECT * FROM users WHERE username = %s', (username,))
         user = cur.fetchone()
         if user:
             if not str(user['password']).startswith('pbkdf2:'):
                 if user['password'] == password:
                     new_hash = generate_password_hash(password, method='pbkdf2:sha256')
-                    cur.execute("UPDATE users SET password=? WHERE id=?", (new_hash, user['id']))
+                    # Заменены ? на %s
+                    cur.execute("UPDATE users SET password = %s WHERE id = %s", (new_hash, user['id']))
                     conn.commit()
                     session['user'] = username
                     session['role'] = user['role']
                     session['user_id'] = user['id']
+                    cur.close()
                     conn.close()
                     return redirect('/')
                 else:
@@ -64,13 +71,17 @@ def login():
                     session['user'] = username
                     session['role'] = user['role']
                     session['user_id'] = user['id']
+                    cur.close()
                     conn.close()
                     return redirect('/')
                 else:
                     error = 'Упс! Неверный логин или пароль'
         else:
             error = 'Упс! Неверный логин или пароль'
+            cur.close()
+            conn.close()
             return render_template('login.html', error=error)
+        cur.close()
         conn.close()
     return render_template('login.html', error=error)
 
@@ -81,10 +92,13 @@ def profile():
     cur = conn.cursor()
     if request.method == 'POST':
         goal = request.form['goal']
-        cur.execute('UPDATE users SET goal=? WHERE id=?', (goal, session['user_id']))
+        # Заменены ? на %s
+        cur.execute('UPDATE users SET goal = %s WHERE id = %s', (goal, session['user_id']))
         conn.commit()
-    cur.execute('SELECT * FROM users WHERE id=?', (session['user_id'],))
+    # Заменен ? на %s
+    cur.execute('SELECT * FROM users WHERE id = %s', (session['user_id'],))
     user = cur.fetchone()
+    cur.close()
     conn.close()
     return render_template('profile.html', username=session['user'], user=user)
 
@@ -93,7 +107,8 @@ def profile():
 def change_profile():
     conn = get_db()
     cur = conn.cursor()
-    cur.execute('SELECT * FROM users WHERE id=?', (session['user_id'],))
+    # Заменен ? на %s
+    cur.execute('SELECT * FROM users WHERE id = %s', (session['user_id'],))
     user = cur.fetchone()
     username = request.form['username'].strip()
     old_password = request.form['old_password']
@@ -101,31 +116,39 @@ def change_profile():
     repeat_password = request.form['repeat_password']
     
     if username != user['username']:
-        cur.execute('SELECT id FROM users WHERE username=?', (username,))
+        # Заменен ? на %s
+        cur.execute('SELECT id FROM users WHERE username = %s', (username,))
         if cur.fetchone():
             flash('Упс! Такой логин уже существует!')
+            cur.close()
             conn.close()
             return redirect('/profile')
-        cur.execute('UPDATE users SET username=? WHERE id=?', (username, session["user_id"]))
+        # Заменены ? на %s
+        cur.execute('UPDATE users SET username = %s WHERE id = %s', (username, session["user_id"]))
         session['user'] = username
 
     if new_password:
         if not check_password_hash(user['password'], old_password):
             flash('Упс! Неверный пароль!')
+            cur.close()
             conn.close()
             return redirect('/profile')
         if new_password != repeat_password:
             flash('Упс! Пароли не совпадают')
+            cur.close()
             conn.close()
             return redirect('/profile')
         if session.get('user') == 'testacc':
             flash('Упс! Это тестовый аккаунт')
+            cur.close()
             conn.close()
             return redirect('/profile')
-        cur.execute('UPDATE users SET password=? WHERE id=?', 
+        # Заменены ? на %s
+        cur.execute('UPDATE users SET password = %s WHERE id = %s', 
                     (generate_password_hash(new_password, method='pbkdf2:sha256'), session['user_id']))
 
     conn.commit()
+    cur.close()
     conn.close()
     return redirect('/profile')
 
@@ -157,8 +180,10 @@ def upload_avatar():
     
     conn = get_db()
     cur = conn.cursor()
-    cur.execute('UPDATE users SET avatar=? WHERE id=?', (f'avatars/{filename}', session['user_id']))
+    # Заменены ? на %s
+    cur.execute('UPDATE users SET avatar = %s WHERE id = %s', (f'avatars/{filename}', session['user_id']))
     conn.commit()
+    cur.close()
     conn.close()
     return redirect('/profile')
 

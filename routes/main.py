@@ -13,12 +13,16 @@ def home():
     if 'user' in session:
         conn = get_db()
         cur = conn.cursor()
-        cur.execute('SELECT * FROM users WHERE id=?', (session['user_id'],))
+        # Заменен ? на %s для PostgreSQL
+        cur.execute('SELECT * FROM users WHERE id = %s', (session['user_id'],))
         user = cur.fetchone()
+        cur.close()
         conn.close()
+        
         if user is None:
             session.clear()
             return redirect('/login')
+            
         goal = user['goal']
         solved_cnt = all_count(session['user_id'])
         correct_cnt = correct_count(session['user_id'])
