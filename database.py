@@ -1,14 +1,14 @@
 # Подключение к БД, функции-хелперы и init_db() для PostgreSQL
 
+import os
 import psycopg2
 from psycopg2.extras import RealDictCursor
 
-# Настройки подключения к базе данных PostgreSQL
-# ⚠️ Укажите ваш реальный пароль от пользователя postgres вместо 'ваш_пароль_postgres'
+# Настройки подключения для ЛОКАЛЬНОЙ разработки на компьютере
 DB_CONFIG = {
     'dbname': 'ege_db',                 # Имя базы данных, созданной в pgAdmin
     'user': 'postgres',                 # Пользователь по умолчанию
-    'password': '554tyzs_',  # Пароль, заданный при установке PostgreSQL
+    'password': '554tyzs_',             # Пароль, заданный при установке PostgreSQL
     'host': 'localhost',                # Локальный хост
     'port': '5432'                      # Стандартный порт PostgreSQL
 }
@@ -16,9 +16,19 @@ DB_CONFIG = {
 
 def get_db():
     """Подключение к базе данных PostgreSQL.
-    Возвращает подключение с курсором RealDictCursor (возврат строк в виде словарей).
+    Автоматически переключается между Render (DATABASE_URL) и локальной БД.
     """
-    conn = psycopg2.connect(**DB_CONFIG, cursor_factory=RealDictCursor)
+    db_url = os.environ.get('DATABASE_URL')
+    
+    if db_url:
+        # Render иногда передает URL с 'postgres://', исправляем на 'postgresql://' для psycopg2
+        if db_url.startswith('postgres://'):
+            db_url = db_url.replace('postgres://', 'postgresql://', 1)
+        conn = psycopg2.connect(db_url, cursor_factory=RealDictCursor)
+    else:
+        # Подключение к локальной базе данных на компьютере
+        conn = psycopg2.connect(**DB_CONFIG, cursor_factory=RealDictCursor)
+        
     return conn
 
 
