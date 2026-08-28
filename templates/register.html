@@ -1,46 +1,164 @@
 <!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Регистрация</title>
-        <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-        <script src="{{ url_for('static', filename='js/theme.js') }}" defer></script>
-    </head>
-    <body>
-        <div id="contacts" style="display: none; width:50%;height:35%" class="modal">
-            <span onclick="closeContacts()">&times;</span>
-            <p class="main_Thing questions">почта: anastasiyakreslina@gmail.com</p>
-            <p class="main_Thing questions">телеграмм: @krazern</p>
-            <p class="main_Thing questions">Время ответа: 1-2 дня</p>
-            <p class="main_Thing questions">Отвечаю исключительно на вопросы о платформе, предложения, сообщения об ошибке и отзывы</p>
-            <p class="main_Thing questions">^_^</p>
-        </div>
-        <div class="login">
-            <h1 class="questions">регистрация</h1>
-            <form method="POST">
-                <div class="logButtons">
-                    <input class="buttons lightBox logProfile" style="width:100%" name="username" placeholder="логин" type="text">
-                    <input class="buttons lightBox logProfile" style="width:100%" name="password" type='password' placeholder="пароль">
-                    <a href="{{url_for ('auth.login',filename='login.html')}}" class="createAccount main_Thing">Уже есть аккаунт?</a>
-                    <button class="enterButton lightBox" type="submit">регистрация</button>
-                </div>
-            </form>
-        </div>
-        {% if error %}
-            <div class="toast" id="toast">
-                <p class="error">{{ error }}</p>
-                <img src="{{url_for('static', filename='images/mascot/errorMascot.png')}}" class="mascot">
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Регистрация — Sinus</title>
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="{{ url_for('static', filename='js/theme.js') }}" defer></script>
+</head>
+
+<body class="authPage">
+    <!-- Контакты -->
+    <div id="contacts" class="modal contactsModal" style="display: none;">
+        <button class="closeModal" onclick="closeContacts()">
+            &times;
+        </button>
+        <div class="contactsHeader">
+            <span class="contactsEmoji">♡</span>
+            <div>
+                <h2>Связаться с нами</h2>
+                <p>
+                    Если нашли ошибку или хотите предложить улучшение
+                </p>
             </div>
-        {% endif %}
-        <ul class="smallInfo">
-            <li><a href="https://t.me/karznl">Телеграмм-канал</a></li>
-            <li><a href="/">FAQ</a></li>
-            <li><button class="textButton" onclick="openContacts()">Контакты</button></li>
-            <li><a href="/">Поддержка</a></li>
-            <li><a href="{{url_for('main.privacypolicy')}}">Политика конфиденциальности</a></li>
-            <li>2026</li>
-        </ul>
-        <script src="{{url_for('static',filename='js/ui.js')}}"></script> 
-    </body>
+        </div>
+
+        <div class="contactsList">
+            <div class="contactItem">
+                <span>✉</span>
+                <div>
+                    <small>Почта</small>
+                    <p>anastasiyakreslina@gmail.com</p>
+                </div>
+            </div>
+
+            <div class="contactItem">
+                <span>↗</span>
+                <div>
+                    <small>Telegram</small>
+                    <p>@krazern</p>
+                </div>
+            </div>
+
+            <div class="contactItem">
+                <span>◷</span>
+                <div>
+                    <small>Время ответа</small>
+                    <p>обычно 1–2 дня</p>
+                </div>
+            </div>
+        </div>
+
+        <p class="contactsNote">
+            Отвечаю на вопросы о платформе, предложения,
+            сообщения об ошибках и отзывы.
+        </p>
+    </div>
+
+    <!-- Регистрация -->
+    <main class="authWrapper">
+        <section class="login">
+
+            <!-- Маскот -->
+            <div class="loginMascot">
+                <img
+                    src="{{url_for('static', filename='images/mascot/coolMascot.png')}}"
+                    class="mascot"
+                    alt=""
+                >
+            </div>
+
+            <!-- Заголовок -->
+            <div class="loginHeader">
+                <p class="authEyebrow">
+                    SINUS
+                </p>
+                <h2>
+                    Создадим аккаунт?
+                </h2>
+                <p>
+                    Зарегистрируйся, чтобы сохранять
+                    прогресс и продолжить подготовку.
+                </p>
+            </div>
+
+            <!-- Форма -->
+            <form method="POST" class="loginForm">
+
+                <label class="inputLabel">
+                    Логин
+                    <input
+                        class="loginInput"
+                        name="username"
+                        placeholder="Придумайте логин"
+                        type="text"
+                        autocomplete="username"
+                        required
+                    >
+                </label>
+
+                <label class="inputLabel">
+                    Пароль
+                    <input
+                        class="loginInput"
+                        name="password"
+                        type="password"
+                        placeholder="Придумайте пароль"
+                        autocomplete="new-password"
+                        required
+                    >
+                </label>
+
+                <button
+                    class="enterButton lightBox"
+                    type="submit"
+                >
+                    <span>
+                        Зарегистрироваться
+                    </span>
+                    <span class="buttonArrow">
+                        →
+                    </span>
+                </button>
+
+            </form>
+
+            <!-- Переход ко входу -->
+            <div class="registerHint">
+                <span>
+                    Уже есть аккаунт?
+                </span>
+                <a href="{{ url_for('auth.login') }}">
+                    Войти
+                </a>
+            </div>
+        <!-- Ошибка -->
+            {% if error %}
+                <div class="toast" id="toast">
+                    <img
+                        src="{{url_for('static', filename='images/mascot/errorMascot.png')}}"
+                        class="mascot"
+                        alt=""
+                    >
+                    <p class="error">
+                        {{ error }}
+                    </p>
+                </div>
+            {% endif %}
+        </section>
+    </main>
+    <!-- Нижняя навигация -->
+    <footer class="authFooter smallInfo">
+        <li><a href="https://t.me/karznl">Телеграмм-канал</a></li>
+        <li><a href="/">FAQ</a></li>
+        <li><button class="textButton" onclick="openContacts()">Контакты</button></li>
+        <li><a href="/">Поддержка</a></li>
+        <li><a href="{{url_for('main.privacypolicy')}}">Политика конфиденциальности</a></li>
+        <li>2026</li>
+    </footer>
+    <script src="{{url_for('static',filename='js/ui.js')}}"></script>
+</body>
 </html>
+
