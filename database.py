@@ -126,6 +126,55 @@ def init_db():
             correct INTEGER
         );
     ''')
+    cur.execute('''
+        ALTER TABLE variants
+        ADD COLUMN IF NOT EXISTS name TEXT;
+    ''')
+
+    cur.execute('''
+
+        ALTER TABLE variants
+
+        ADD COLUMN IF NOT EXISTS year INTEGER;
+
+    ''')
+
+    cur.execute('''
+
+        ALTER TABLE variants
+
+        ALTER COLUMN created_at TYPE TIMESTAMP
+
+        USING (
+
+            CASE
+
+                WHEN created_at IS NULL THEN CURRENT_TIMESTAMP
+
+                ELSE created_at::timestamp
+
+            END
+
+        );
+
+    ''')
+    # Добавляем position в уже существующую таблицу
+
+    cur.execute('''
+
+        ALTER TABLE variant_tasks
+
+        ADD COLUMN IF NOT EXISTS position INTEGER DEFAULT 0;
+
+    ''')
+
+    cur.execute('''
+
+        ALTER TABLE variants
+
+        ADD COLUMN IF NOT EXISTS is_public BOOLEAN DEFAULT FALSE;
+
+    ''')
 
     conn.commit()
     cur.close()

@@ -16,10 +16,13 @@ html, body {
             var(--bg-main-2),
             var(--bg-main-3)
         );
-    font-family: 'MyFont', sans-serif;
     color: white;
     margin: 0;
     background-color: var(--bg-solid);
+}
+
+body {
+    font-family: 'MyFont', sans-serif;
 }
 
 body::before {

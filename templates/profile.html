@@ -4,566 +4,249 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
     <title>Профиль — Sinus</title>
-
-    <link rel="stylesheet"
-          href="{{ url_for('static', filename='css/style.css') }}">
-
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <script src="{{ url_for('static', filename='js/theme.js') }}" defer></script>
 </head>
 
-
-<body class="profilePage">
+<body class="tasksPage profilePage">
 
     <!-- ==================== КОНТАКТЫ ==================== -->
-
-    <div id="contacts"
-         class="modal contactsModal"
-         style="display: none;">
-
-        <button class="closeModal" onclick="closeContacts()">
-            &times;
-        </button>
-
+    <div id="contacts" class="modal contactsModal" style="display: none;">
+        <button class="closeModal" onclick="closeContacts()">&times;</button>
         <div class="contactsHeader">
-
             <span class="contactsEmoji">♡</span>
-
             <div>
                 <h2>Связаться с нами</h2>
-
-                <p>
-                    Если нашли ошибку или хотите предложить улучшение
-                </p>
+                <p>Если нашли ошибку или хотите предложить улучшение</p>
             </div>
-
         </div>
-
-
         <div class="contactsList">
-
             <div class="contactItem">
-
                 <span>✉</span>
-
                 <div>
                     <small>Почта</small>
                     <p>anastasiyakreslina@gmail.com</p>
                 </div>
-
             </div>
-
-
             <div class="contactItem">
-
                 <span>↗</span>
-
                 <div>
                     <small>Telegram</small>
                     <p>@krazern</p>
                 </div>
-
             </div>
-
-
             <div class="contactItem">
-
                 <span>◷</span>
-
                 <div>
                     <small>Время ответа</small>
                     <p>обычно 1–2 дня</p>
                 </div>
-
             </div>
-
         </div>
-
-
         <p class="contactsNote">
-            Отвечаю на вопросы о платформе, предложения,
-            сообщения об ошибках и отзывы.
+            Отвечаю на вопросы о платформе, предложения, сообщения об ошибках и отзывы.
         </p>
-
     </div>
 
-
-
     <!-- ==================== НАСТРОЙКИ ==================== -->
-
-    <div id="settingsModal"
-         class="modal settingsModal"
-         style="display: none;">
-
-        <button class="closeModal" onclick="closeSettings()">
-            &times;
-        </button>
-
-
+    <div id="settingsModal" class="modal settingsModal" style="display: none;">
+        <button class="closeModal" onclick="closeSettings()">&times;</button>
         <div class="settingsHeader">
-
             <span class="settingsIcon">⚙</span>
-
             <div>
                 <h2>Настройки аккаунта</h2>
-
-                <p>
-                    Измени данные для входа в аккаунт
-                </p>
+                <p>Измени данные для входа в аккаунт</p>
             </div>
-
         </div>
 
-
-        <form method="POST"
-              action="/change_profile"
-              class="settingsForm">
-
-
+        <form method="POST" action="/change_profile" class="settingsForm">
             <label class="settingsLabel">
                 Новый логин
-
-                <input
-                    type="text"
-                    name="username"
-                    value="{{user['username']}}"
-                    class="profileInput"
-                >
+                <input type="text" name="username" value="{{ user['username'] }}" class="profileInput">
             </label>
-
 
             <label class="settingsLabel">
                 Текущий пароль
-
-                <input
-                    type="password"
-                    name="old_password"
-                    class="profileInput"
-                    required
-                >
+                <input type="password" name="old_password" class="profileInput" required>
             </label>
-
 
             <div class="settingsDivider"></div>
 
-
             <label class="settingsLabel">
                 Новый пароль
-
-                <input
-                    type="password"
-                    name="new_password"
-                    class="profileInput"
-                >
+                <input type="password" name="new_password" class="profileInput">
             </label>
-
 
             <label class="settingsLabel">
                 Повторите новый пароль
-
-                <input
-                    type="password"
-                    name="repeat_password"
-                    class="profileInput"
-                >
+                <input type="password" name="repeat_password" class="profileInput">
             </label>
 
-
-            <button
-                type="submit"
-                class="profilePrimaryButton"
-            >
+            <button type="submit" class="profilePrimaryButton">
                 Сохранить изменения
             </button>
-
         </form>
-
     </div>
 
-
-
     <!-- ==================== УВЕДОМЛЕНИЯ ==================== -->
-
     {% with messages = get_flashed_messages() %}
         {% for message in messages %}
             <div class="toast" id="toast">
                 <p>{{ message }}</p>
-                <img
-                    src="{{url_for('static', filename='images/mascot/errorMascot.png')}}"
-                    class="mascot"
-                    alt=""
-                >
+                <img src="{{ url_for('static', filename='images/mascot/errorMascot.png') }}" class="mascot" alt="">
             </div>
         {% endfor %}
     {% endwith %}
+
+    <!-- ==================== SIDEBAR ==================== -->
+    <aside class="tasksSidebar" id="sidebar">
+        <a href="{{ url_for('main.error') }}" class="sidebarLogo">
+            sinus<span>.</span>
+        </a>
+
+        <nav class="listThings">
+            <a href="{{ url_for('main.home') }}">
+                <span>⌂</span> Главная
+            </a>
+            <a href="{{ url_for('tasks.tasks') }}">
+                <span>▦</span> Банк заданий
+            </a>
+            <a href="{{ url_for('tasks.tests') }}">
+                <span>✦</span> Варианты ЕГЭ
+            </a>
+            <a href="{{ url_for('tasks.mistakes') }}">
+                <span>↻</span> Работа над ошибками
+            </a>
+            <a href="{{ url_for('tasks.statistics') }}">
+                <span>⌁</span> Статистика
+            </a>
+            <a href="{{ url_for('auth.profile') }}" class="active">
+                <span>👤</span> Профиль
+            </a>
+        </nav>
+
+        <div class="sidebarBottom">
+            <a href="{{ url_for('auth.logout') }}" class="logoutLink">
+                <span>↪</span> Выйти
+            </a>
+        </div>
+    </aside>
 
     <!-- ==================== ОСНОВНОЙ КОНТЕНТ ==================== -->
     <main class="profileMain">
         <!-- Заголовок -->
         <header class="profileHeader">
             <div>
-                <p class="profileEyebrow">
-                    ЛИЧНЫЙ КАБИНЕТ
-                </p>
-                <h1>
-                    Привет, {{ username }}!
-                </h1>
+                <p class="profileEyebrow">ЛИЧНЫЙ КАБИНЕТ</p>
+                <h1>Привет, {{ username }}!</h1>
                 <p class="profileSubtitle">
-                    Здесь можно управлять аккаунтом и настройками
-                    подготовки.
+                    Здесь можно управлять аккаунтом и настройками подготовки.
                 </p>
             </div>
-            <button
-                type="button"
-                class="themeButton"
-                id="themeToggleBtn"
-            >
-                🌙
-                <span>Тёмная тема</span>
+            <button type="button" class="themeButton" id="themeToggleBtn">
+                🌙 <span>Тёмная тема</span>
             </button>
         </header>
+
         <!-- Профиль -->
         <section class="profileCard">
             <!-- Аватар -->
             <div class="profileAvatarWrapper">
                 {% if user['avatar'] %}
-                    <img
-                        src="{{url_for('static',filename=user['avatar'])}}?v={{user['id']}}"
-                        class="profileAvatar"
-                        alt="Фото профиля"
-                    >
+                    <img src="{{ url_for('static', filename=user['avatar']) }}?v={{ user['id'] }}" class="profileAvatar" alt="Фото профиля">
                 {% else %}
-
-                    <img
-                        src="{{url_for('static', filename='images/studentsphoto.jpg')}}"
-                        class="profileAvatar"
-                        alt="Фото профиля"
-                    >
-
+                    <img src="{{ url_for('static', filename='images/studentsphoto.jpg') }}" class="profileAvatar" alt="Фото профиля">
                 {% endif %}
-
             </div>
-
-
 
             <!-- Информация -->
-
             <div class="profileInfo">
-
-                <span class="profileLabel">
-                    Твоя цель
-                </span>
-
+                <span class="profileLabel">Твоя цель</span>
                 <div class="profileGoal">
-
-                    <strong>
-                        {{user['goal']}}
-                    </strong>
-
-                    <span>
-                        баллов ЕГЭ
-                    </span>
-
+                    <strong>{{ user['goal'] }}</strong>
+                    <span>баллов ЕГЭ</span>
                 </div>
-
 
                 <div class="profileMeta">
-
-                    <span>
-                        <b>Дата регистрации</b>
-                        {{user['reg_date']}}
-                    </span>
-
+                    <span><b>Дата регистрации</b> {{ user['reg_date'] }}</span>
                 </div>
-
             </div>
-
         </section>
-
-
 
         <!-- ==================== НАСТРОЙКИ ПРОФИЛЯ ==================== -->
-
         <section class="profileSettings">
-
-
             <div class="sectionHeading">
-
                 <div>
                     <h2>Настройки</h2>
-
-                    <p>
-                        Управляй своим профилем
-                    </p>
+                    <p>Управляй своим профилем</p>
                 </div>
-
             </div>
-
-
 
             <!-- Цель -->
-
             <div class="profileSettingCard">
-
                 <div class="settingText">
-
-                    <span class="settingIcon">
-                        🎯
-                    </span>
-
+                    <span class="settingIcon">🎯</span>
                     <div>
-
                         <h3>Цель по баллам</h3>
-
-                        <p>
-                            Укажи результат, к которому стремишься
-                        </p>
-
+                        <p>Укажи результат, к которому стремишься</p>
                     </div>
-
                 </div>
 
-
-                <form
-                    method="POST"
-                    action="/profile"
-                    class="goalForm"
-                >
-
-                    <input
-                        type="number"
-                        name="goal"
-                        placeholder="{{user['goal']}}"
-                        class="profileInput goalInput"
-                    >
-
-                    <button
-                        type="submit"
-                        class="profileSmallButton lightBox"
-                    >
-                        Сохранить
-                    </button>
-
+                <form method="POST" action="/profile" class="goalForm">
+                    <input type="number" name="goal" placeholder="{{ user['goal'] }}" class="profileInput goalInput">
+                    <button type="submit" class="profileSmallButton lightBox">Сохранить</button>
                 </form>
-
             </div>
-
-
 
             <!-- Данные -->
-
             <div class="profileSettingCard">
-
                 <div class="settingText">
-
-                    <span class="settingIcon">
-                        ⚙
-                    </span>
-
+                    <span class="settingIcon">⚙</span>
                     <div>
-
                         <h3>Данные аккаунта</h3>
-
-                        <p>
-                            Логин и пароль для входа
-                        </p>
-
+                        <p>Логин и пароль для входа</p>
                     </div>
-
                 </div>
 
-
-                <button
-                    onclick="openSettings()"
-                    class="profileSmallButton lightBox"
-                >
-                    Изменить
-                </button>
-
+                <button onclick="openSettings()" class="profileSmallButton lightBox">Изменить</button>
             </div>
-
-
 
             <!-- Фото -->
-
             <div class="profileSettingCard">
-
                 <div class="settingText">
-
-                    <span class="settingIcon">
-                        📷
-                    </span>
-
+                    <span class="settingIcon">📷</span>
                     <div>
-
                         <h3>Фото профиля</h3>
-
-                        <p>
-                            Добавь изображение, которое будет отображаться
-                            в профиле
-                        </p>
-
+                        <p>Добавь изображение, которое будет отображаться в профиле</p>
                     </div>
-
                 </div>
 
-
-                <form
-                    action="/upload_avatar"
-                    method="POST"
-                    enctype="multipart/form-data"
-                    class="avatarForm"
-                >
-
+                <form action="/upload_avatar" method="POST" enctype="multipart/form-data" class="avatarForm">
                     <label class="fileButton">
-
                         Выбрать фото
-
-                        <input
-                            type="file"
-                            name="avatar"
-                            accept="image/*"
-                            hidden
-                        >
-
+                        <input type="file" name="avatar" accept="image/*" hidden>
                     </label>
 
-
-                    <button
-                        type="submit"
-                        class="profileSmallButton lightBox"
-                    >
-                        Загрузить
-                    </button>
-
+                    <button type="submit" class="profileSmallButton lightBox">Загрузить</button>
                 </form>
-
             </div>
-
-
         </section>
-
-
     </main>
 
-
-
-    <!-- ==================== SIDEBAR ==================== -->
-
-    <aside class="sidebar" id="sidebar">
-
-        <a
-            href="{{url_for('main.error')}}"
-            class="name sidebar_text sidebarLogo"
-        >
-            sinus<span>.</span>
-        </a>
-
-
-        <nav>
-
-            <a
-                href="{{url_for('main.home')}}"
-                class="lighttext sidebar_text"
-            >
-                <span>⌂</span>
-                Главная
-            </a>
-
-
-            <a
-                href="{{url_for('tasks.tasks')}}"
-                class="lighttext sidebar_text"
-            >
-                <span>▦</span>
-                Банк заданий
-            </a>
-
-
-            <a
-                href="{{url_for('tasks.tests')}}"
-                class="lighttext sidebar_text"
-            >
-                <span>✦</span>
-                Варианты ЕГЭ
-            </a>
-
-
-            <a
-                href="{{url_for('tasks.mistakes')}}"
-                class="lighttext sidebar_text"
-            >
-                <span>↻</span>
-                Работа над ошибками
-            </a>
-
-
-            <a
-                href="{{url_for('tasks.statistics')}}"
-                class="lighttext sidebar_text"
-            >
-                <span>⌁</span>
-                Статистика
-            </a>
-            <a href="{{ url_for('auth.profile')}}" class="sidebar_text active">
-                <span>👤</span> Профиль
-            </a>
-        </nav>
-
-
-        <div class="sidebarBottom">
-
-            <a
-                href="{{url_for('auth.logout')}}"
-                class="lighttext sidebar_text logoutLink"
-            >
-                <span>↪</span>
-                Выйти
-            </a>
-
-        </div>
-
-    </aside>
-
-
-
     <!-- ==================== FOOTER ==================== -->
-
-    <footer class="smallInfo profileFooter">
-
-        <a href="https://t.me/karznl">
-            Телеграмм-канал
-        </a>
-
-        <a href="/">
-            FAQ
-        </a>
-
-        <button
-            class="textButton"
-            onclick="openContacts()"
-        >
-            Контакты
-        </button>
-
-        <a href="/">
-            Поддержка
-        </a>
-
-        <a href="{{url_for('main.privacypolicy')}}">
-            Политика конфиденциальности
-        </a>
-
-        <span>
-            © 2026 Sinus
-        </span>
-
+    <footer class="profileFooter">
+        <div class="footerLinks">
+            <a href="https://t.me/karznl" target="_blank" rel="noopener">Телеграм-канал</a>
+            <a href="/">FAQ</a>
+            <button class="textButton" onclick="openContacts()">Контакты</button>
+            <a href="/">Поддержка</a>
+            <a href="{{ url_for('main.privacypolicy') }}">Политика конфиденциальности</a>
+        </div>
+        <span class="copyright">2026</span>
     </footer>
 
-
-
-    <script src="{{url_for('static',filename='js/ui.js')}}"></script>
-
+    <script src="{{ url_for('static', filename='js/ui.js') }}"></script>
 </body>
+
 </html>

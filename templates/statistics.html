@@ -7,7 +7,7 @@
         <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
         <script src="{{ url_for('static', filename='js/theme.js') }}" defer></script>
     </head>
-    <body class="statisticsPage">
+    <body class="tasksPage statisticsPage">
         
         <!-- МОДАЛЬНОЕ ОКНО КОНТАКТОВ -->
         <div id="contacts" class="modal contactsModal" style="display: none;">
@@ -48,32 +48,34 @@
         </div>
 
         <!-- ================= SIDEBAR ================= -->
-        <aside class="sidebar" id="sidebar">
-            <a href="{{ url_for('main.error') }}" class="name sidebarLogo">
+        <aside class="tasksSidebar" id="sidebar">
+            <a href="{{ url_for('main.error') }}" class="sidebarLogo">
                 sinus<span>.</span>
             </a>
+
             <nav class="listThings">
-                <a href="{{ url_for('main.home') }}" class="sidebar_text">
+                <a href="{{ url_for('main.home') }}">
                     <span>⌂</span> Главная
                 </a>
-                <a href="{{ url_for('tasks.tasks') }}" class="sidebar_text">
+                <a href="{{ url_for('tasks.tasks') }}">
                     <span>▦</span> Банк заданий
                 </a>
-                <a href="{{ url_for('tasks.tests') }}" class="sidebar_text">
+                <a href="{{ url_for('tasks.tests') }}">
                     <span>✦</span> Варианты ЕГЭ
                 </a>
-                <a href="{{ url_for('tasks.mistakes') }}" class="sidebar_text">
+                <a href="{{ url_for('tasks.mistakes') }}">
                     <span>↻</span> Работа над ошибками
                 </a>
-                <a href="{{ url_for('tasks.statistics') }}" class="sidebar_text active">
+                <a href="{{ url_for('tasks.statistics') }}" class="active">
                     <span>⌁</span> Статистика
                 </a>
-                <a href="{{ url_for('auth.profile')}}" class="sidebar_text">
+                <a href="{{ url_for('auth.profile') }}">
                     <span>👤</span> Профиль
                 </a>
             </nav>
+
             <div class="sidebarBottom">
-                <a href="{{ url_for('auth.logout') }}" class="sidebar_text logoutLink">
+                <a href="{{ url_for('auth.logout') }}" class="logoutLink">
                     <span>↪</span> Выйти
                 </a>
             </div>
@@ -177,7 +179,7 @@
                         <thead>
                             <tr>
                                 <th>Вариант</th>
-                                {% for i in range(1,20) %}
+                                {% for i in range(1,21) %}
                                     <th>{{ i }}</th>
                                 {% endfor %}
                                 <th>Результат</th>
@@ -191,7 +193,7 @@
                                         <small>{{ variant.created_at }}</small>
                                     </td>
 
-                                    {% for i in range(1,20) %}
+                                    {% for i in range(1,21) %}
                                         <td>
                                             {% if i in variant.tasks %}
                                                 <a href="tasks?task_id={{variant.tasks[i].task_id}}" class="variantTask">
@@ -239,6 +241,11 @@
             const first_attempts_numbers = {{ first_attempts_numbers | tojson }};
             const first_attempts_percents = {{ first_attempts_percents | tojson }};
         </script>
+        
+        <!-- 1. Подключаем библиотеку Chart.js CDN -->
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        
+        <!-- 2. Подключаем ваши скрипты -->
         <script src="{{ url_for('static', filename='js/ui.js') }}"></script>
         <script src="{{ url_for('static', filename='js/charts.js') }}"></script>
     </body>

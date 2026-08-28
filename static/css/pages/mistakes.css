@@ -1,0 +1,384 @@
+/* =========================================================
+   MISTAKES — MAIN
+   ========================================================= */
+
+.mistakesPage {
+    min-height: 100vh;
+}
+
+.mistakesMain {
+    margin-left: 220px;
+    width: min(1050px, calc(100% - 220px));
+    box-sizing: border-box;
+    padding: 55px 55px 80px;
+}
+
+
+/* ================= HEADER ================= */
+
+.mistakesHeader {
+    max-width: 700px;
+    margin-bottom: 35px;
+}
+
+.mistakesHeader .heading {
+    margin-bottom: 12px;
+    color: #880d4d;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.15em;
+}
+
+.mistakesHeader h1 {
+    margin: 0;
+    font-size: clamp(30px, 4vw, 42px);
+    line-height: 1.08;
+    letter-spacing: -0.04em;
+}
+
+.mistakesSubtitle {
+    max-width: 550px;
+    margin-top: 15px;
+    font-size: 13px;
+    line-height: 1.6;
+    opacity: 0.5;
+}
+
+
+/* ================= TASK LIST ================= */
+
+.mistakesList {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+
+/* ================= EMPTY STATE ================= */
+
+.noMistakes {
+    width: min(600px, 100%);
+    margin: 40px auto 0;
+    padding: 35px;
+    box-sizing: border-box;
+    text-align: center;
+    border-radius: 22px;
+
+    background: #880d4d30;
+    border: 1px solid rgba(136, 13, 77, 0.08);
+}
+
+.noMistakes .heading {
+    margin-bottom: 12px;
+}
+
+.noMistakes .actualInformation {
+    max-width: 450px;
+    margin: 0 auto;
+    line-height: 1.6;
+    opacity: 0.55;
+}
+
+.noMistakesLinks {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 22px;
+}
+
+.noMistakesLinks a {
+    text-decoration: none;
+}
+
+.noMistakesMascot {
+    display: block;
+    width: 180px;
+    max-width: 45%;
+    margin: 25px auto 0;
+}
+
+
+/* ================= SIDEBAR ================= */
+
+.mistakesSidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+
+    width: 220px;
+    height: 100vh;
+
+    box-sizing: border-box;
+
+    display: flex;
+    flex-direction: column;
+
+    padding: 30px 15px;
+
+    background: var(--lightBox);
+    border-right: 1px solid rgba(128, 128, 128, 0.10);
+
+    z-index: 100;
+}
+
+
+/* LOGO */
+
+.mistakesSidebar .sidebarLogo {
+    display: block;
+
+    margin: 5px 12px 35px;
+
+    color: var(--text) !important;
+
+    font-size: 22px;
+    font-weight: 800;
+
+    line-height: 1;
+    letter-spacing: -0.05em;
+
+    text-decoration: none;
+}
+
+.mistakesSidebar .sidebarLogo span {
+    color: #880d4d;
+}
+
+
+/* NAV */
+
+.mistakesSidebar .listThings {
+    display: flex;
+    flex-direction: column;
+
+    width: 100%;
+
+    gap: 5px;
+
+    margin: 0;
+    padding: 0;
+
+    list-style: none;
+}
+
+
+/* LINK */
+
+.mistakesSidebar .listThings a {
+    position: relative;
+
+    display: flex;
+    align-items: center;
+
+    gap: 8px;
+
+    width: 100%;
+
+    box-sizing: border-box;
+
+    padding: 11px 13px;
+
+    border-radius: 11px;
+
+    color: var(--text) !important;
+
+    font-size: 12px;
+    font-weight: 500;
+
+    text-decoration: none !important;
+
+    opacity: 0.62;
+
+    transition:
+        color 0.2s ease,
+        background 0.2s ease,
+        opacity 0.2s ease;
+}
+
+
+/* ICON */
+
+.mistakesSidebar .listThings a span {
+    width: 20px;
+    height: 20px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    font-size: 14px;
+}
+
+
+/* HOVER */
+
+.mistakesSidebar .listThings a:hover {
+    color: #880d4d !important;
+    background: #880d4d14;
+
+    opacity: 1;
+}
+
+
+/* ACTIVE */
+
+.mistakesSidebar .listThings a.active {
+    color: #880d4d !important;
+    background: #880d4d18;
+
+    opacity: 1;
+    font-weight: 700;
+}
+
+.mistakesSidebar .listThings a.active::before {
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    top: 50%;
+
+    width: 3px;
+    height: 20px;
+
+    border-radius: 0 5px 5px 0;
+
+    background: #880d4d;
+
+    transform: translateY(-50%);
+}
+
+
+/* LOGOUT */
+
+.mistakesSidebar .sidebarBottom {
+    margin-top: auto;
+
+    padding-top: 20px;
+
+    border-top: 1px solid
+        rgba(128, 128, 128, 0.08);
+}
+
+.mistakesSidebar .logoutLink {
+    display: flex;
+    align-items: center;
+
+    gap: 8px;
+
+    width: 100%;
+
+    box-sizing: border-box;
+
+    padding: 11px 13px;
+
+    border-radius: 11px;
+
+    color: var(--text) !important;
+
+    font-size: 12px;
+
+    text-decoration: none !important;
+
+    opacity: 0.42;
+}
+
+.mistakesSidebar .logoutLink:hover {
+    color: #880d4d !important;
+    background: #880d4d14;
+
+    opacity: 1;
+}
+
+
+/* ================= FOOTER ================= */
+
+.mistakesFooter {
+    margin-left: 220px;
+}
+
+
+/* ================= DARK ================= */
+
+[data-theme="dark"] .mistakesSidebar {
+    background: var(--lightBox);
+    border-right-color: rgba(255, 255, 255, 0.07);
+}
+
+[data-theme="dark"] .mistakesSidebar .listThings a:hover {
+    color: #fff !important;
+    background: #880d4d30;
+}
+
+[data-theme="dark"] .mistakesSidebar .listThings a.active {
+    color: #fff !important;
+    background: #880d4d40;
+}
+
+[data-theme="dark"] .noMistakes {
+    background: #880d4d30;
+}
+
+
+/* ================= MOBILE ================= */
+
+@media (max-width: 900px) {
+
+    .mistakesSidebar {
+        position: relative;
+
+        width: 100%;
+        height: auto;
+
+        padding: 20px 15px;
+
+        border-right: none;
+        border-bottom:
+            1px solid rgba(128, 128, 128, 0.10);
+    }
+
+    .mistakesMain {
+        margin-left: 0;
+        width: 100%;
+
+        padding: 35px 20px 70px;
+    }
+
+    .mistakesFooter {
+        margin-left: 0;
+    }
+
+}
+
+
+@media (max-width: 520px) {
+
+    .mistakesMain {
+        padding: 28px 15px 60px;
+    }
+
+    .mistakesHeader h1 {
+        font-size: 29px;
+    }
+
+    .mistakesSubtitle {
+        font-size: 12px;
+    }
+
+    .noMistakes {
+        padding: 25px 18px;
+    }
+
+    .noMistakesLinks {
+        flex-direction: column;
+    }
+
+    .noMistakesLinks a {
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+}

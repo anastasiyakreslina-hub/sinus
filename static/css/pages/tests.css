@@ -1,0 +1,1239 @@
+/* =========================================================
+   VARIANTS — SINUS
+   ========================================================= */
+
+.variantsPage {
+    min-height: 100vh;
+
+    background:
+        radial-gradient(
+            circle at 70% 0%,
+            rgba(136, 13, 77, 0.06),
+            transparent 30%
+        ),
+        var(--background);
+
+    color: var(--text);
+}
+
+
+/* =========================================================
+   MAIN
+   ========================================================= */
+
+.variantsMain {
+    margin-left: 220px;
+
+    width: min(
+        1050px,
+        calc(100% - 220px)
+    );
+
+    box-sizing: border-box;
+
+    padding: 55px 55px 80px;
+}
+
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.variantsHeader {
+    display: flex;
+
+    align-items: flex-start;
+    justify-content: space-between;
+
+    gap: 30px;
+
+    margin-bottom: 35px;
+}
+
+.variantsEyebrow {
+    margin: 0 0 8px;
+
+    color: #62072d;
+
+    font-size: 10px;
+    font-weight: 800;
+
+    letter-spacing: 0.18em;
+}
+
+.variantsHeader h1 {
+    margin: 0;
+
+    font-size: clamp(30px, 4vw, 42px);
+
+    line-height: 1.1;
+
+    letter-spacing: -0.04em;
+}
+
+.variantsSubtitle {
+    max-width: 560px;
+
+    margin: 12px 0 0;
+
+    font-size: 14px;
+
+    line-height: 1.5;
+
+    opacity: 0.5;
+}
+
+
+/* =========================================================
+   GENERATE BUTTON
+   ========================================================= */
+
+.variantsGenerateButton {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 8px;
+
+    flex-shrink: 0;
+
+    padding: 12px 16px;
+
+    border: none;
+
+    border-radius: 11px;
+
+    background: #62072d;
+
+    color: #ffffff;
+
+    font-family: inherit;
+
+    font-size: 12px;
+
+    font-weight: 700;
+
+    text-decoration: none;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.variantsGenerateButton:hover {
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 8px 20px
+        rgba(98, 7, 45, 0.22);
+}
+
+
+/* =========================================================
+   ADMIN ADD
+   ========================================================= */
+
+.variantsAdminAdd {
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 7px;
+
+    width: 100%;
+
+    margin-bottom: 30px;
+
+    padding: 13px;
+
+    box-sizing: border-box;
+
+    border:
+        1px dashed
+        rgba(98, 7, 45, 0.25);
+
+    border-radius: 12px;
+
+    background:
+        rgba(98, 7, 45, 0.04);
+
+    color: #62072d;
+
+    font-family: inherit;
+
+    font-size: 12px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease;
+}
+
+.variantsAdminAdd:hover {
+    background:
+        rgba(98, 7, 45, 0.08);
+
+    transform: translateY(-1px);
+}
+
+.variantsAdminAdd span {
+    font-size: 17px;
+}
+
+
+/* =========================================================
+   YEAR SECTION
+   ========================================================= */
+
+.variantYear {
+    margin-bottom: 35px;
+}
+
+
+/* =========================================================
+   YEAR HEADER
+   ========================================================= */
+
+.variantYearHeader {
+    display: flex;
+
+    align-items: flex-end;
+    justify-content: space-between;
+
+    gap: 20px;
+
+    margin-bottom: 14px;
+}
+
+.variantYearLabel {
+    display: block;
+
+    margin-bottom: 4px;
+
+    color: #62072d;
+
+    font-size: 9px;
+
+    font-weight: 800;
+
+    letter-spacing: 0.14em;
+}
+
+.variantYearHeader h2 {
+    margin: 0;
+
+    font-size: 21px;
+
+    line-height: 1.2;
+
+    letter-spacing: -0.03em;
+}
+
+.variantYearHeader p {
+    margin: 0;
+
+    font-size: 11px;
+
+    opacity: 0.4;
+}
+
+
+/* =========================================================
+   VARIANT LIST
+   ========================================================= */
+
+.variantList {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 14px;
+}
+
+
+/* =========================================================
+   VARIANT CARD
+   ========================================================= */
+
+.variantCard {
+    position: relative;
+
+    display: block;
+
+    min-width: 0;
+
+    box-sizing: border-box;
+
+    padding: 22px;
+
+    border-radius: 20px;
+
+    background: #880d4d30;
+
+    border:
+        1px solid
+        rgba(136, 13, 77, 0.12);
+
+    color: var(--text);
+
+    text-decoration: none;
+
+    box-shadow:
+        0 10px 30px
+        rgba(0, 0, 0, 0.035);
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
+}
+
+.variantCard:hover {
+    transform: translateY(-3px);
+
+    background: #880d4d3d;
+
+    box-shadow:
+        0 14px 35px
+        rgba(0, 0, 0, 0.055);
+}
+
+
+/* =========================================================
+   VARIANT CARD TOP
+   ========================================================= */
+
+.variantCardHeader {
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 12px;
+
+    margin-bottom: 18px;
+}
+
+.variantTags {
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 6px;
+}
+
+.variantTag {
+    display: inline-flex;
+
+    align-items: center;
+
+    padding: 5px 8px;
+
+    border-radius: 7px;
+
+    background:
+        rgba(98, 7, 45, 0.07);
+
+    color: var(--text);
+
+    font-size: 9px;
+
+    font-weight: 700;
+
+    opacity: 0.65;
+}
+
+.variantTag.year {
+    color: #e00560;
+
+    opacity: 1;
+}
+
+
+/* =========================================================
+   VARIANT TITLE
+   ========================================================= */
+
+.variantTitle {
+    margin: 0;
+
+    max-width: calc(100% - 35px);
+
+    font-size: 19px;
+
+    line-height: 1.25;
+
+    letter-spacing: -0.025em;
+}
+
+
+/* =========================================================
+   VARIANT META
+   ========================================================= */
+
+.variantMeta {
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    margin-top: 10px;
+
+    font-size: 10px;
+
+    opacity: 0.42;
+}
+
+.variantMeta span {
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 4px;
+}
+
+
+/* =========================================================
+   ARROW
+   ========================================================= */
+
+.variantArrow {
+    position: absolute;
+
+    right: 20px;
+    bottom: 18px;
+
+    font-size: 20px;
+
+    opacity: 0.35;
+
+    transition:
+        transform 0.2s ease,
+        opacity 0.2s ease;
+}
+
+.variantCard:hover .variantArrow {
+    opacity: 1;
+
+    transform:
+        translateX(4px);
+}
+
+
+/* =========================================================
+   ADMIN ACTIONS
+   ========================================================= */
+
+.variantAdminActions {
+    display: flex;
+
+    gap: 7px;
+
+    margin-top: 18px;
+
+    padding-top: 14px;
+
+    border-top:
+        1px solid
+        rgba(128, 128, 128, 0.08);
+}
+
+.variantAdminActions button,
+.variantAdminActions form {
+    margin: 0;
+}
+
+.variantDeleteButton,
+.variantEditButton {
+    padding: 8px 11px;
+
+    border-radius: 9px;
+
+    font-family: inherit;
+
+    font-size: 9px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+}
+
+.variantDeleteButton {
+    border:
+        1px solid
+        rgba(150, 30, 50, 0.15);
+
+    background:
+        rgba(150, 30, 50, 0.06);
+
+    color: #8d2438;
+}
+
+.variantEditButton {
+    border:
+        1px solid
+        rgba(98, 7, 45, 0.15);
+
+    background:
+        rgba(98, 7, 45, 0.06);
+
+    color: #62072d;
+}
+
+
+/* =========================================================
+   EMPTY
+   ========================================================= */
+
+.variantsEmpty {
+    padding: 55px 30px;
+
+    text-align: center;
+
+    border-radius: 20px;
+
+    background: #880d4d30;
+
+    border:
+        1px solid
+        rgba(136, 13, 77, 0.12);
+
+    box-shadow:
+        0 10px 30px
+        rgba(0, 0, 0, 0.035);
+}
+
+.variantsEmpty h2 {
+    margin: 0;
+
+    font-size: 21px;
+
+    letter-spacing: -0.03em;
+}
+
+.variantsEmpty p {
+    margin: 10px auto 0;
+
+    max-width: 420px;
+
+    font-size: 12px;
+
+    line-height: 1.6;
+
+    opacity: 0.45;
+}
+
+
+/* =========================================================
+   MODAL
+   ========================================================= */
+
+.variantModal {
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 1000;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 20px;
+
+    background:
+        rgba(0, 0, 0, 0.45);
+
+    backdrop-filter:
+        blur(8px);
+}
+
+.variantModalBox {
+    position: relative;
+
+    width: min(620px, 100%);
+
+    max-height: 90vh;
+
+    overflow-y: auto;
+
+    box-sizing: border-box;
+
+    padding: 28px;
+
+    border-radius: 24px;
+
+    background: var(--lightBox);
+
+    box-shadow:
+        0 25px 70px
+        rgba(0, 0, 0, 0.18);
+}
+
+
+/* =========================================================
+   MODAL HEADER
+   ========================================================= */
+
+.variantModalHeader {
+    display: flex;
+
+    align-items: center;
+
+    gap: 14px;
+
+    margin-bottom: 24px;
+}
+
+.variantModalIcon {
+    width: 44px;
+    height: 44px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    border-radius: 13px;
+
+    background:
+        rgba(98, 7, 45, 0.08);
+
+    color: #62072d;
+
+    font-size: 20px;
+}
+
+.variantModalHeader h2 {
+    margin: 0;
+
+    font-size: 20px;
+
+    letter-spacing: -0.03em;
+}
+
+.variantModalHeader p {
+    margin: 4px 0 0;
+
+    font-size: 11px;
+
+    opacity: 0.45;
+}
+
+
+/* =========================================================
+   CLOSE
+   ========================================================= */
+
+.variantModal .closeModal {
+    position: absolute;
+
+    top: 15px;
+    right: 18px;
+
+    width: 32px;
+    height: 32px;
+
+    border: none;
+
+    border-radius: 9px;
+
+    background:
+        rgba(128, 128, 128, 0.08);
+
+    color: var(--text);
+
+    font-size: 20px;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease;
+}
+
+.variantModal .closeModal:hover {
+    background:
+        rgba(128, 128, 128, 0.14);
+
+    transform: scale(1.04);
+}
+
+
+/* =========================================================
+   FORM
+   ========================================================= */
+
+.variantModalForm {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 15px;
+}
+
+.variantModalForm label {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 7px;
+
+    font-size: 11px;
+
+    font-weight: 700;
+}
+
+.variantModalForm input,
+.variantModalForm textarea,
+.variantModalForm select {
+    width: 100%;
+
+    box-sizing: border-box;
+
+    padding: 11px 13px;
+
+    border:
+        1px solid
+        rgba(128, 128, 128, 0.14);
+
+    border-radius: 11px;
+
+    background: var(--background);
+
+    color: var(--text);
+
+    font-family: inherit;
+
+    font-size: 12px;
+
+    outline: none;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.variantModalForm input:focus,
+.variantModalForm textarea:focus,
+.variantModalForm select:focus {
+    border-color: #62072d;
+
+    box-shadow:
+        0 0 0 3px
+        rgba(98, 7, 45, 0.08);
+}
+
+.variantModalForm textarea {
+    min-height: 120px;
+
+    resize: vertical;
+}
+
+.variantModalForm input::placeholder,
+.variantModalForm textarea::placeholder {
+    color: var(--text);
+
+    opacity: 0.3;
+}
+
+
+/* =========================================================
+   MODAL GRID
+   ========================================================= */
+
+.variantModalGrid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 12px;
+}
+
+
+/* =========================================================
+   MODAL SUBMIT
+   ========================================================= */
+
+.variantModalSubmit {
+    width: 100%;
+
+    padding: 13px;
+
+    border: none;
+
+    border-radius: 11px;
+
+    background: #62072d;
+
+    color: #fff;
+
+    font-family: inherit;
+
+    font-size: 12px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.variantModalSubmit:hover {
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 8px 20px
+        rgba(98, 7, 45, 0.22);
+}
+
+
+/* =========================================================
+   SIDEBAR
+   ========================================================= */
+
+.variantsSidebar {
+    position: fixed;
+
+    top: 0;
+    left: 0;
+    bottom: 0;
+
+    width: 220px;
+
+    height: 100vh;
+
+    box-sizing: border-box;
+
+    display: flex;
+
+    flex-direction: column;
+
+    padding: 30px 15px;
+
+    background: var(--lightBox);
+
+    border-right:
+        1px solid
+        rgba(128, 128, 128, 0.10);
+
+    z-index: 100;
+}
+
+
+/* =========================================================
+   SIDEBAR LOGO
+   ========================================================= */
+
+.variantsSidebar .sidebarLogo {
+    display: block;
+
+    margin: 5px 12px 35px;
+
+    color: var(--text) !important;
+
+    font-size: 22px;
+
+    font-weight: 800;
+
+    line-height: 1;
+
+    letter-spacing: -0.05em;
+
+    text-decoration: none !important;
+}
+
+.variantsSidebar .sidebarLogo span {
+    color: #62072d;
+}
+
+
+/* =========================================================
+   SIDEBAR NAV
+   ========================================================= */
+
+.variantsSidebar nav,
+.variantsSidebar .listThings {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 5px;
+
+    width: 100%;
+
+    margin: 0;
+
+    padding: 0;
+}
+
+.variantsSidebar nav a,
+.variantsSidebar .listThings a {
+    position: relative;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    width: 100%;
+
+    box-sizing: border-box;
+
+    padding: 11px 13px;
+
+    border-radius: 11px;
+
+    color: var(--text) !important;
+
+    font-size: 12px;
+
+    font-weight: 500;
+
+    text-decoration: none !important;
+
+    opacity: 0.62;
+
+    transition:
+        color 0.2s ease,
+        background 0.2s ease,
+        opacity 0.2s ease,
+        transform 0.2s ease;
+}
+
+.variantsSidebar nav a:hover,
+.variantsSidebar .listThings a:hover {
+    color: #62072d !important;
+
+    background:
+        rgba(98, 7, 45, 0.07);
+
+    opacity: 1;
+
+    transform:
+        translateX(2px);
+}
+
+
+/* =========================================================
+   ACTIVE
+   ========================================================= */
+
+.variantsSidebar nav a.active,
+.variantsSidebar .listThings a.active {
+    color: #62072d !important;
+
+    background:
+        rgba(98, 7, 45, 0.09);
+
+    opacity: 1;
+
+    font-weight: 700;
+}
+
+.variantsSidebar nav a.active::before,
+.variantsSidebar .listThings a.active::before {
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    top: 50%;
+
+    width: 3px;
+    height: 20px;
+
+    border-radius:
+        0 5px 5px 0;
+
+    background: #62072d;
+
+    transform:
+        translateY(-50%);
+}
+
+
+/* =========================================================
+   LOGOUT
+   ========================================================= */
+
+.variantsSidebar .sidebarBottom {
+    margin-top: auto;
+
+    padding-top: 20px;
+
+    border-top:
+        1px solid
+        rgba(128, 128, 128, 0.08);
+}
+
+.variantsSidebar .logoutLink {
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    padding: 11px 13px;
+
+    border-radius: 11px;
+
+    color: var(--text) !important;
+
+    font-size: 12px;
+
+    text-decoration: none !important;
+
+    opacity: 0.42;
+}
+
+.variantsSidebar .logoutLink:hover {
+    color: #62072d !important;
+
+    background:
+        rgba(98, 7, 45, 0.07);
+
+    opacity: 1;
+}
+
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+
+.variantsFooter {
+    margin-top: 45px;
+
+    padding-bottom: 20px;
+}
+
+
+/* =========================================================
+   DARK
+   ========================================================= */
+
+[data-theme="dark"] .variantCard,
+[data-theme="dark"] .variantsEmpty {
+    background: #880d4d30;
+
+    border-color:
+        rgba(255, 255, 255, 0.07);
+}
+
+[data-theme="dark"] .variantCard:hover {
+    background: #880d4d45;
+}
+
+[data-theme="dark"] .variantsSidebar {
+    background: var(--lightBox);
+
+    border-right-color:
+        rgba(255, 255, 255, 0.07);
+}
+
+[data-theme="dark"] .variantsSidebar nav a.active,
+[data-theme="dark"] .variantsSidebar .listThings a.active {
+    color: #ffffff !important;
+
+    background:
+        rgba(98, 7, 45, 0.28);
+}
+
+[data-theme="dark"] .variantsSidebar nav a:hover,
+[data-theme="dark"] .variantsSidebar .listThings a:hover {
+    color: #ffffff !important;
+
+    background:
+        rgba(98, 7, 45, 0.20);
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 900px) {
+
+    .variantsSidebar {
+        position: relative;
+
+        width: 100%;
+        height: auto;
+
+        min-height: 64px;
+
+        padding: 10px 15px;
+
+        flex-direction: row;
+
+        align-items: center;
+
+        border-right: none;
+
+        border-bottom:
+            1px solid
+            rgba(128, 128, 128, 0.10);
+
+        overflow: hidden;
+    }
+
+    .variantsSidebar .sidebarLogo {
+        margin: 0 18px 0 4px;
+
+        flex-shrink: 0;
+
+        font-size: 20px;
+    }
+
+    .variantsSidebar nav,
+    .variantsSidebar .listThings {
+        flex-direction: row;
+
+        align-items: center;
+
+        gap: 4px;
+
+        overflow-x: auto;
+
+        scrollbar-width: none;
+    }
+
+    .variantsSidebar nav::-webkit-scrollbar,
+    .variantsSidebar .listThings::-webkit-scrollbar {
+        display: none;
+    }
+
+    .variantsSidebar nav a,
+    .variantsSidebar .listThings a {
+        width: auto;
+
+        min-width: max-content;
+
+        padding: 9px 11px;
+
+        white-space: nowrap;
+    }
+
+    .variantsSidebar nav a.active::before,
+    .variantsSidebar .listThings a.active::before {
+        display: none;
+    }
+
+    .variantsSidebar .sidebarBottom {
+        display: none;
+    }
+
+    .variantsMain {
+        margin-left: 0;
+
+        width: 100%;
+
+        padding: 35px 20px 70px;
+    }
+
+    .variantList {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+   ========================================================= */
+
+@media (max-width: 520px) {
+
+    .variantsMain {
+        padding: 28px 15px 60px;
+    }
+
+    .variantsHeader {
+        flex-direction: column;
+
+        margin-bottom: 25px;
+    }
+
+    .variantsHeader h1 {
+        font-size: 29px;
+    }
+
+    .variantsGenerateButton {
+        width: 100%;
+    }
+
+    .variantsAdminAdd {
+        margin-bottom: 22px;
+    }
+
+    .variantYear {
+        margin-bottom: 28px;
+    }
+
+    .variantCard {
+        padding: 18px;
+
+        border-radius: 17px;
+    }
+
+    .variantTitle {
+        font-size: 17px;
+    }
+
+    .variantCardHeader {
+        align-items: flex-start;
+
+        flex-direction: column;
+    }
+
+    .variantAdminActions {
+        flex-direction: column;
+    }
+
+    .variantAdminActions button {
+        width: 100%;
+    }
+
+    .variantModal {
+        padding: 12px;
+    }
+
+    .variantModalBox {
+        padding: 22px 18px;
+
+        border-radius: 20px;
+    }
+
+    .variantModalGrid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.variantCardLink {
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.variantCardLink:hover {
+    transform: translateY(-3px);
+    border-color: rgba(98, 7, 45, 0.3);
+}
+
+.variantCardLink:hover div:last-child {
+    transform: translateX(4px);
+    transition: transform 0.2s ease;
+}

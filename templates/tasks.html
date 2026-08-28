@@ -1,178 +1,753 @@
 <!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>База заданий</title>
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
-        <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-        <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
-        <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body);"></script>
-        <script src="{{ url_for('static', filename='js/theme.js') }}" defer></script>
-    </head>
-    <body>
-        <div id="contacts" style="display: none; width:50%;height:35%" class="modal">
-            <span onclick="closeContacts()">&times;</span>
-            <p class="main_Thing questions">почта: anastasiyakreslina@gmail.com</p>
-            <p class="main_Thing questions">телеграмм: @krazern</p>
-            <p class="main_Thing questions">Время ответа: 1-2 дня</p>
-            <p class="main_Thing questions">Отвечаю исключительно на вопросы о платформе, предложения, сообщения об ошибке и отзывы</p>
-            <p class="main_Thing questions">^_^</p>
+<html lang="ru">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Банк заданий — Sinus</title>
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+    <script defer
+            src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js">
+    </script>
+
+    <script defer
+            src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js">
+    </script>
+
+    <script src="{{ url_for('static', filename='js/theme.js') }}"
+            defer></script>
+</head>
+
+
+<body class="tasksPage">
+
+
+<!-- =====================================================
+     SIDEBAR
+     ===================================================== -->
+
+<aside class="sidebar tasksSidebar">
+
+    <a href="{{ url_for('main.error') }}"
+       class="name sidebarLogo">
+
+        sinus<span>.</span>
+
+    </a>
+
+
+    <nav class="listThings">
+
+        <a href="{{ url_for('main.home') }}">
+            <span>⌂</span>
+            Главная
+        </a>
+
+        <a href="{{ url_for('tasks.tasks') }}"
+           class="active">
+            <span>▦</span>
+            Банк заданий
+        </a>
+
+        <a href="{{ url_for('tasks.tests') }}">
+            <span>✦</span>
+            Варианты ЕГЭ
+        </a>
+
+        <a href="{{ url_for('tasks.mistakes') }}">
+            <span>↻</span>
+            Работа над ошибками
+        </a>
+
+        <a href="{{ url_for('tasks.statistics') }}">
+            <span>⌁</span>
+            Статистика
+        </a>
+        <a href="{{ url_for('auth.profile')}}" class="sidebar_text">
+            <span>👤</span> Профиль
+        </a>
+
+    </nav>
+
+
+    <div class="sidebarBottom">
+
+        <a href="{{ url_for('auth.logout') }}"
+           class="logoutLink">
+
+            <span>↪</span>
+            Выйти
+
+        </a>
+
+    </div>
+
+</aside>
+
+
+<!-- =====================================================
+     MAIN
+     ===================================================== -->
+
+<main class="tasksMain">
+
+
+    <!-- ================= HEADER ================= -->
+
+    <header class="tasksHeader">
+
+        <div>
+
+            <p class="tasksEyebrow">
+                ПОДГОТОВКА К ЕГЭ
+            </p>
+
+            <h1>
+                Банк заданий
+            </h1>
+
+            <p class="tasksSubtitle">
+                Решай задания, отслеживай ошибки
+                и постепенно повышай свой результат.
+            </p>
+
         </div>
-        <header class="header" style="width:80%">
-            <ul class="header__list1">
-                <li>
-                    <p class="classification main_Thing">sinus ^_^</p>
-                </li>
-            </ul>
-            <ul class="header__list2">
-                <li>
-                    <a href="{{url_for('main.about')}}" class="lighttext main_Thing">о проекте</a>
-                </li>
-                <li>
-                    <a href="{{url_for('auth.profile')}}" class="lighttext main_Thing">профиль</a>
-                </li>
-            </ul>
-        </header>
-        <form method="GET" action="{{url_for('tasks.tasks')}}" class="filterForm">
-            <div class="filter_labels">
-                <label style="font-size:12px; margin: auto 0 auto 0">Фильтр по номеру задания:</label>
+
+
+        <button
+            type="button"
+            class="themeButton"
+            id="themeToggleBtn">
+
+            🌙
+            <span>Тёмная тема</span>
+
+        </button>
+
+    </header>
+
+
+    <!-- =================================================
+         FILTERS
+         ================================================= -->
+
+    <section class="tasksFilters">
+
+
+        <div class="filterHeader">
+
+            <div>
+
+                <span class="filterEyebrow">
+                    ПОИСК
+                </span>
+
+                <h2>
+                    Найти задание
+                </h2>
+
             </div>
-            <div class="filterButtons">
-                <select name="number" class="buttons lightBox main_Thing filter_button">
-                    <option value="">Все</option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                    <option value="6">6</option>
-                    <option value="7">7</option>
-                    <option value="8">8</option>
-                    <option value="9">9</option>
-                    <option value="10">10</option>
-                    <option value="11">11</option>
-                    <option value="12">12</option>
-                    <option value="13">13</option>
-                    <option value="14">14</option>
-                    <option value="15">15</option>
-                    <option value="16">16</option>
-                    <option value="17">17</option>
-                    <option value="18">18</option>
-                    <option value="19">19</option>
-                </select>
-                <button type="submit" class="buttons lightBox main_Thing filter_button">Применить фильтр</button>
-            </div>
-        </form>
-        <form method="GET" action="{{url_for('tasks.tasks')}}" class="filterForm">
-            <div class="filter_labels">
-                <label style="font-size:12px;">Поиск по ID:</label>
-                <label class="heading" style="font-size:10px;">ID задания - первое число сверху каждого задания</label>
-            </div>
-            <div class="filterButtons">
-                <input type="number" name="task_id" class="lightBox buttons main_Thing filter_button" placeholder="ID">
-                <button type="submit" class="buttons lightBox main_Thing filter_button">Найти задание</button>
-            </div>
-        </form>
-        {% if session['role']=='admin' %}
-            <button onclick="openTaskAdding()" class="buttons lightBox add_Task main_Thing">Добавить задание</button>
-        {% endif %}
-        <div id="taskAdding" style="display: none" class="modal">
-            <span onclick="closeTaskAdding()">&times;</span>
-            <form method="POST" 
-                action="{{url_for('tasks.add_task')}}"
-                id="taskForm" 
-                class="modalObjects main_Thing"
-                enctype="multipart/form-data">
-                <input id="number" name="number" placeholder="номер задания" class="buttons main_Thing">
-                <input id="source" name="source" placeholder="источник" class="buttons main_Thing">
-                <textarea id="text" name="text" placeholder="текст" class="textareas buttons main_Thing"></textarea>
-                <textarea id="solution" name="solution" placeholder="решение задачи" class="textareas buttons main_Thing"></textarea>
-                <input id="answer" name="answer" placeholder="ответ" class="buttons main_Thing">
-                <input type="file" name="image" accept=".png, .jpg, .jpeg">
-                <button type="submit" class="buttons main_Thing">Сохранить</button>
+
+            <span class="filterIcon">
+                ⌕
+            </span>
+
+        </div>
+
+
+        <div class="filtersGrid">
+
+
+            <!-- НОМЕР -->
+
+            <form
+                method="GET"
+                action="{{ url_for('tasks.tasks') }}"
+                class="filterBlock">
+
+                <label>
+                    Номер задания
+                </label>
+
+                <div class="filterRow">
+
+                    <select
+                        name="number"
+                        class="taskInput">
+
+                        <option value="">
+                            Все задания
+                        </option>
+
+                        {% for i in range(1, 21) %}
+
+                            <option value="{{ i }}">
+                                №{{ i }}
+                            </option>
+
+                        {% endfor %}
+
+                    </select>
+
+                    <button
+                        type="submit"
+                        class="taskButton">
+
+                        Применить
+
+                    </button>
+
+                </div>
+
             </form>
-        </div>
-        {% for task in tasks %}
-            <div class="task">
-                <div class="tasksClasses">
-                    <p class="classification">#{{task['id']}}</p>
-                    <p class="classification">№{{task['number']}}
-                    <p class="classification">#{{task['source']}}</p>
-                    <p class="classification blue">#C первой попытки: {{ stats[task['id']] }}%</p>
-                </div>
-                <p class="taskText">{{task['text']}}</p>
-                {% if task['image'] %}
-                    <img src="{{url_for('static',filename=task['image'])}}?v={{task['id']}}" class="task_image">
-                {% endif %}
-                <div class="phoneButtons filterButtons">
-                    <input id="input-{{ task['id'] }}" class="lightBox buttons main_Thing" placeholder="ответ">
-                    <button onclick="checkAnswer({{ task['id'] }})" class="lightBox buttons main_Thing">Проверить</button>
-                </div>
-                <p id="result-{{task['id']}}"
-                class="answers {% if task['status']=='Правильно!' %}
-                    blue
-                {% elif task['status']=='Неправильно!' %}
-                    red
-                {% else %}
-                    white
-                {% endif %}">
-                    {{task['status']}}
+
+
+            <!-- ID -->
+
+            <form
+                method="GET"
+                action="{{ url_for('tasks.tasks') }}"
+                class="filterBlock">
+
+                <label>
+                    Поиск по ID
+                </label>
+
+                <p class="filterHint">
+                    ID указан в верхней части каждого задания
                 </p>
+
+                <div class="filterRow">
+
+                    <input
+                        type="number"
+                        name="task_id"
+                        class="taskInput"
+                        placeholder="Например, 125">
+
+                    <button
+                        type="submit"
+                        class="taskButton">
+
+                        Найти
+
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+
+        {% if session['role'] == 'admin' %}
+
+            <button
+                onclick="openTaskAdding()"
+                class="adminAddButton">
+
+                <span>＋</span>
+                Добавить задание
+
+            </button>
+
+        {% endif %}
+
+    </section>
+
+
+    <!-- =================================================
+         ADMIN MODAL
+         ================================================= -->
+
+    <div
+        id="taskAdding"
+        class="modal taskModal"
+        style="display: none;">
+
+        <div class="taskModalBox">
+
+            <button
+                class="closeModal"
+                onclick="closeTaskAdding()">
+
+                &times;
+
+            </button>
+
+
+            <div class="modalHeader">
+
+                <span class="modalIcon">
+                    ＋
+                </span>
+
+                <div>
+
+                    <h2>
+                        Новое задание
+                    </h2>
+
+                    <p>
+                        Добавь задачу в банк заданий
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <form
+                method="POST"
+                action="{{ url_for('tasks.add_task') }}"
+                id="taskForm"
+                class="taskModalForm"
+                enctype="multipart/form-data">
+
+
+                <div class="modalGrid">
+
+                    <label>
+                        Номер задания
+
+                        <input
+                            id="number"
+                            name="number"
+                            class="taskInput"
+                            placeholder="Например, 7">
+                    </label>
+
+
+                    <label>
+                        Источник
+
+                        <input
+                            id="source"
+                            name="source"
+                            class="taskInput"
+                            placeholder="Источник">
+                    </label>
+
+                </div>
+
+
+                <label>
+                    Текст задания
+
+                    <textarea
+                        id="text"
+                        name="text"
+                        class="taskTextarea"
+                        placeholder="Введите условие задачи"></textarea>
+                </label>
+
+
+                <label>
+                    Решение
+
+                    <textarea
+                        id="solution"
+                        name="solution"
+                        class="taskTextarea"
+                        placeholder="Введите решение"></textarea>
+                </label>
+
+
+                <div class="modalGrid">
+
+                    <label>
+                        Ответ
+
+                        <input
+                            id="answer"
+                            name="answer"
+                            class="taskInput"
+                            placeholder="Ответ">
+                    </label>
+
+
+                    <label>
+                        Изображение
+
+                        <input
+                            type="file"
+                            name="image"
+                            accept=".png,.jpg,.jpeg"
+                            class="fileInput">
+                    </label>
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="taskPrimaryButton">
+
+                    Сохранить задание
+
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <!-- =================================================
+         TASKS
+         ================================================= -->
+
+    <section class="tasksList">
+
+
+        <div class="tasksListHeader">
+
+            <div>
+
+                <span style="color:#e00560">
+                    БАНК
+                </span>
+
+                <h2>
+                    Задания
+                </h2>
+
+            </div>
+
+            <p>
+                {{ tasks|length }} заданий
+            </p>
+
+        </div>
+
+
+        {% for task in tasks %}
+
+            <article class="taskCard">
+
+
+                <!-- TASK HEADER -->
+
+                <div class="taskCardHeader">
+
+                    <div class="taskTags">
+
+                        <span class="taskTag taskId">
+                            #{{ task['id'] }}
+                        </span>
+
+                        <span class="taskTag">
+                            №{{ task['number'] }}
+                        </span>
+
+                        <span class="taskTag">
+                            #{{ task['source'] }}
+                        </span>
+
+                    </div>
+
+
+                    <span class="firstTry">
+                        С первой попытки:
+                        <strong style="color:#e00560">
+                            {{ stats[task['id']] }}%
+                        </strong>
+                    </span>
+
+                </div>
+
+
+                <!-- TEXT -->
+
+                <div class="taskText">
+                    {{ task['text'] }}
+                </div>
+
+
+                {% if task['image'] %}
+
+                    <div class="taskImageWrapper">
+
+                        <img
+                            src="{{ url_for('static', filename=task['image']) }}?v={{ task['id'] }}"
+                            class="taskImage"
+                            alt="Изображение задания">
+
+                    </div>
+
+                {% endif %}
+
+
+                <!-- ANSWER -->
+
+                <div class="answerRow">
+
+                    <input
+                        id="input-{{ task['id'] }}"
+                        class="taskInput answerInput"
+                        placeholder="Введите ответ">
+
+                    <button
+                        onclick="checkAnswer({{ task['id'] }})"
+                        class="taskButton">
+
+                        Проверить
+
+                    </button>
+
+                </div>
+
+
+                <!-- RESULT -->
+
+                <p
+                    id="result-{{ task['id'] }}"
+                    class="taskResult
+                    {% if task['status'] == 'Правильно!' %}
+                        correct
+                    {% elif task['status'] == 'Неправильно!' %}
+                        incorrect
+                    {% else %}
+                        neutral
+                    {% endif %}">
+
+                    {{ task['status'] }}
+
+                </p>
+
+
+                <!-- SOLUTION -->
+
                 <details
                     id="solution-{{ task['id'] }}"
-                    {% if task['status'] != 'Правильно!' and task['status'] != 'Неправильно!' %}
+                    class="solutionDetails"
+
+                    {% if task['status'] != 'Правильно!'
+                       and task['status'] != 'Неправильно!' %}
+
                         style="display:none;"
+
                     {% endif %}>
-                    <summary class="main_Thing">Решение задачи</summary>
-                    <p class="taskText">{{ task['solution'] }}</p>
+
+                    <summary style="color:rgba(174, 61, 140, 0.786)">
+                        Посмотреть решение
+                    </summary>
+
+                    <div class="solutionText">
+                        {{ task['solution'] }}
+                    </div>
+
                 </details>
-                {% if session.get('role')=='admin' %}
-                    <form method="POST" action="{{url_for('tasks.delete_task', task_id=task['id'])}}">
-                        <button class="buttons lightBox main_Thing" type="submit">удалить задание</button>
-                    </form>
-                    <button class="buttons lightBox main_Thing" onclick="editTask(this)"
-                        data-id="{{task['id']}}"
-                        data-number="{{task['number']}}"
-                        data-source="{{task['source']}}"
-                        data-text="{{task['text']}}"
-                        data-solution="{{task['solution']}}"
-                        data-answer="{{task['answer']}}"
-                    >Редактировать задание</button>
-                {%endif%}
-            </div>
+
+
+                <!-- ADMIN -->
+
+                {% if session.get('role') == 'admin' %}
+
+                    <div class="adminTaskActions">
+
+                        <form
+                            method="POST"
+                            action="{{ url_for(
+                                'tasks.delete_task',
+                                task_id=task['id']
+                            ) }}">
+
+                            <button
+                                class="dangerButton"
+                                type="submit">
+
+                                Удалить
+
+                            </button>
+
+                        </form>
+
+
+                        <button
+                            class="secondaryButton"
+                            onclick="editTask(this)"
+
+                            data-id="{{ task['id'] }}"
+                            data-number="{{ task['number'] }}"
+                            data-source="{{ task['source'] }}"
+                            data-text="{{ task['text'] }}"
+                            data-solution="{{ task['solution'] }}"
+                            data-answer="{{ task['answer'] }}">
+
+                            Редактировать
+
+                        </button>
+
+                    </div>
+
+                {% endif %}
+
+
+            </article>
+
         {% endfor %}
-        <ul class="smallInfo">
-            <li><a href="https://t.me/karznl">Телеграмм-канал</a></li>
-            <li><a href="/">FAQ</a></li>
-            <li><button class="textButton" onclick="openContacts()">Контакты</button></li>
-            <li><a href="/">Поддержка</a></li>
-            <li><a href="{{url_for('main.privacypolicy')}}">Политика конфиденциальности</a></li>
-            <li>2026</li>
-        </ul>
-        <div class="sidebar" id="sidebar">
-            <a href="{{url_for('main.error')}}" class="name sidebar_text">настя синус</a>
-            <ul class="listThings">
-                <li><a href="{{url_for('main.home')}}" class="lighttext sidebar_text">Основная страница</a></li>
-                <li><a href="{{url_for('tasks.tasks')}}" class="lighttext sidebar_text">Банк заданий</a></li>
-                <li><a href="{{url_for('tasks.tests')}}" class="lighttext sidebar_text">Варианты уровня ЕГЭ</a></li>
-                <li><a href="{{url_for('tasks.mistakes')}}" class="lighttext sidebar_text">Работа над ошибками</a></li>
-                <li><a href="{{url_for('tasks.statistics')}}" class="lighttext sidebar_text">Статистика</a></li>
-                <li><a href="{{url_for('auth.logout')}}" class="lighttext sidebar_text">Выход</a></li>
-                <li></li>
-            </ul>
+
+    </section>
+
+
+    <!-- =================================================
+         FOOTER
+         ================================================= -->
+
+    <footer class="smallInfo tasksFooter">
+
+        <a href="https://t.me/karznl">
+            Телеграмм-канал
+        </a>
+
+        <a href="/">
+            FAQ
+        </a>
+
+        <button
+            class="textButton"
+            onclick="openContacts()">
+
+            Контакты
+
+        </button>
+
+        <a href="/">
+            Поддержка
+        </a>
+
+        <a href="{{ url_for('main.privacypolicy') }}">
+            Политика конфиденциальности
+        </a>
+
+        <span>
+            © 2026 Sinus
+        </span>
+
+    </footer>
+
+
+</main>
+
+
+<!-- =====================================================
+     CONTACTS
+     ===================================================== -->
+
+<div
+    id="contacts"
+    class="modal contactsModal"
+    style="display: none;">
+
+    <button
+        class="closeModal"
+        onclick="closeContacts()">
+
+        &times;
+
+    </button>
+
+
+    <div class="contactsHeader">
+
+        <span class="contactsEmoji">
+            ♡
+        </span>
+
+        <div>
+
+            <h2>
+                Связаться с нами
+            </h2>
+
+            <p>
+                Если нашли ошибку или хотите предложить улучшение
+            </p>
+
         </div>
-        <script>
-            document.addEventListener("DOMContentLoaded", function () {
-                renderMathInElement(document.body, {
-                    delimiters: [
-                        {left: "$$", right: "$$", display: true},
-                        {left: "$", right: "$", display: false}
-                    ]
-                });
-            });
-        </script>
-        <script src="{{url_for('static',filename='js/tasks.js')}}"></script>
-        <script src="{{url_for('static', filename='js/ui.js')}}"></script>
-    </body>
+
+    </div>
+
+
+    <div class="contactsList">
+
+        <div class="contactItem">
+            <span>✉</span>
+
+            <div>
+                <small>Почта</small>
+                <p>anastasiyakreslina@gmail.com</p>
+            </div>
+        </div>
+
+
+        <div class="contactItem">
+            <span>↗</span>
+
+            <div>
+                <small>Telegram</small>
+                <p>@krazern</p>
+            </div>
+        </div>
+
+
+        <div class="contactItem">
+            <span>◷</span>
+
+            <div>
+                <small>Время ответа</small>
+                <p>обычно 1–2 дня</p>
+            </div>
+        </div>
+
+    </div>
+
+
+    <p class="contactsNote">
+        Отвечаю на вопросы о платформе, предложения,
+        сообщения об ошибках и отзывы.
+    </p>
+
+</div>
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+
+        renderMathInElement(document.body, {
+
+            delimiters: [
+                {
+                    left: "$$",
+                    right: "$$",
+                    display: true
+                },
+                {
+                    left: "$",
+                    right: "$",
+                    display: false
+                }
+            ]
+
+        });
+
+    });
+</script>
+
+
+<script src="{{ url_for('static', filename='js/tasks.js') }}"></script>
+
+<script src="{{ url_for('static', filename='js/ui.js') }}"></script>
+
+
+</body>
 </html>

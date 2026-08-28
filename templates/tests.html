@@ -1,44 +1,219 @@
 <!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Варианты</title>
-        <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-        <script src="{{ url_for('static', filename='js/theme.js') }}" defer></script>
-    </head>
-    <body>
-        <header class="header" style="width:80%">
-            <ul class="header__list1">
-                <li>
-                    <p class="classification main_Thing">sinus ^_^</p>
-                </li>
-            </ul>
-            <ul class="header__list2">
-                <li>
-                    <a href="{{url_for('main.about')}}" class="lighttext main_Thing">о проекте</a>
-                </li>
-                <li>
-                    <a href="{{url_for('auth.profile')}}" class="lighttext main_Thing">профиль</a>
-                </li>
-            </ul>
-        </header>
-        <form action="/generate_var">
-            <button type="submit" class="buttons lightbox add_Task main_Thing">сгенерировать вариант</button>
-        </form>
-        <div class="sidebar" id="sidebar">
-            <a href="{{url_for('main.error')}}" class="name sidebar_text">настя синус</a>
-            <ul class="listThings">
-                <li><a href="{{url_for('main.home')}}" class="lighttext sidebar_text">Основная страница</a></li>
-                <li><a href="{{url_for('tasks.tasks')}}" class="lighttext sidebar_text">Банк заданий</a></li>
-                <li><a href="{{url_for('tasks.tests')}}" class="lighttext sidebar_text">Варианты уровня ЕГЭ</a></li>
-                <li><a href="{{url_for('tasks.mistakes')}}" class="lighttext sidebar_text">Работа над ошибками</a></li>
-                <li><a href="{{url_for('tasks.statistics')}}" class="lighttext sidebar_text">Статистика</a></li>
-                <li><a href="{{url_for('auth.logout')}}" class="lighttext sidebar_text">Выход</a></li>
-                <li></li>
-            </ul>
+<html lang="ru">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Варианты — Sinus</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="{{ url_for('static', filename='js/theme.js') }}" defer></script>
+</head>
+
+<body class="tasksPage variantsPage">
+
+    <!-- МОДАЛЬНОЕ ОКНО КОНТАКТОВ -->
+    <div id="contacts" class="modal contactsModal" style="display: none;">
+        <button class="closeModal" onclick="closeContacts()">&times;</button>
+        <div class="contactsHeader">
+            <span class="contactsEmoji">♡</span>
+            <div>
+                <h2>Связаться с нами</h2>
+                <p>Если нашли ошибку или хотите предложить улучшение</p>
+            </div>
         </div>
-        <script src="{{url_for('static',filename='js/ui.js')}}"></script>
-        <script src="{{url_for('static',filename='js/tasks.js')}}"></script>
-    </body>
+        <div class="contactsList">
+            <div class="contactItem">
+                <span>✉</span>
+                <div>
+                    <small>Почта</small>
+                    <p>anastasiyakreslina@gmail.com</p>
+                </div>
+            </div>
+            <div class="contactItem">
+                <span>↗</span>
+                <div>
+                    <small>Telegram</small>
+                    <p>@krazern</p>
+                </div>
+            </div>
+            <div class="contactItem">
+                <span>◷</span>
+                <div>
+                    <small>Время ответа</small>
+                    <p>обычно 1–2 дня</p>
+                </div>
+            </div>
+        </div>
+        <p class="contactsNote">
+            Отвечаю на вопросы о платформе, предложения, сообщения об ошибках и отзывы.
+        </p>
+    </div>
+
+    <!-- ================= SIDEBAR ================= -->
+    <aside class="tasksSidebar" id="sidebar">
+        <a href="{{ url_for('main.error') }}" class="sidebarLogo">
+            sinus<span>.</span>
+        </a>
+
+        <nav class="listThings">
+            <a href="{{ url_for('main.home') }}">
+                <span>⌂</span> Главная
+            </a>
+            <a href="{{ url_for('tasks.tasks') }}">
+                <span>▦</span> Банк заданий
+            </a>
+            <a href="{{ url_for('tasks.tests') }}" class="active">
+                <span>✦</span> Варианты ЕГЭ
+            </a>
+            <a href="{{ url_for('tasks.mistakes') }}">
+                <span>↻</span> Работа над ошибками
+            </a>
+            <a href="{{ url_for('tasks.statistics') }}">
+                <span>⌁</span> Статистика
+            </a>
+            <a href="{{ url_for('auth.profile') }}">
+                <span>👤</span> Профиль
+            </a>
+        </nav>
+
+        <div class="sidebarBottom">
+            <a href="{{ url_for('auth.logout') }}" class="logoutLink">
+                <span>↪</span> Выйти
+            </a>
+        </div>
+    </aside>
+
+    <!-- ================= MAIN ================= -->
+    <main class="tasksMain">
+
+        <header class="tasksHeader">
+            <div>
+                <p class="tasksEyebrow">ПОДГОТОВКА К ЕГЭ</p>
+                <h1>Варианты</h1>
+                <p class="tasksSubtitle">
+                    Решай полноценные варианты и отслеживай свой результат.
+                </p>
+            </div>
+
+            <div class="filterRow" style="align-self: flex-start;">
+                <form action="/generate_var">
+                    <button type="submit" class="taskPrimaryButton">
+                        Сгенерировать вариант
+                    </button>
+                </form>
+
+                {% if session.get('role') == 'admin' %}
+                    <button onclick="openVariantAdding()" class="taskButton">
+                        + Добавить вариант
+                    </button>
+                {% endif %}
+            </div>
+        </header>
+
+        <!-- ================= VARIANTS ================= -->
+        {% if years %}
+            {% for year, variants in years.items() %}
+                <section class="variantYearSection" style="margin-bottom: 40px;">
+                    <div class="tasksListHeader">
+                        <div>
+                            <span>ГОД ВЫПУСКА</span>
+                            <h2>{{ year }}</h2>
+                        </div>
+                    </div>
+
+                    <div class="variantsGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 15px;">
+                        {% for variant in variants %}
+                            <a href="{{ url_for('tasks.view_variant', variant_id=variant['id']) }}" class="taskCard variantCardLink" style="text-decoration: none; display: flex; flex-direction: column; justify-content: space-between;">
+                                <div>
+                                    <div class="taskCardHeader">
+                                        <div class="taskTags">
+                                            <span class="taskTag taskId">ВАРИАНТ №{{ loop.index }}</span>
+                                            <span class="taskTag">{{ year }}</span>
+                                        </div>
+                                    </div>
+
+                                    <h3 style="margin: 10px 0 0; font-size: 18px; color: white; font-weight: 700; letter-spacing: -0.02em;">
+                                        {{ variant['name'] }}
+                                    </h3>
+                                </div>
+
+                                <div style="display: flex; align-items: center; justify-content: flex-end; margin-top: 20px; color: #62072d; font-weight: 800; font-size: 18px;">
+                                    →
+                                </div>
+                            </a>
+                        {% endfor %}
+                    </div>
+                </section>
+            {% endfor %}
+
+        {% else %}
+            <div class="taskCard" style="text-align: center; padding: 50px 20px;">
+                <h2 style="margin: 0 0 10px; font-size: 22px;">Вариантов пока нет</h2>
+                <p class="tasksSubtitle" style="margin: 0 auto 20px;">
+                    Скоро здесь появятся тренировочные варианты ЕГЭ.
+                </p>
+                {% if session.get('role') == 'admin' %}
+                    <button onclick="openVariantAdding()" class="taskPrimaryButton" style="max-width: 250px; margin: 0 auto;">
+                        Добавить первый вариант
+                    </button>
+                {% endif %}
+            </div>
+        {% endif %}
+
+    </main>
+
+    <!-- ================= ADD VARIANT MODAL ================= -->
+    {% if session.get('role') == 'admin' %}
+        <div id="variantAdding" class="taskModal" style="display:none;">
+            <div class="taskModalBox">
+                <button onclick="closeVariantAdding()" class="closeModal">&times;</button>
+
+                <div class="modalHeader">
+                    <div class="modalIcon">✦</div>
+                    <div>
+                        <h2>Новый вариант</h2>
+                        <p>Создай вариант из уже существующих заданий в базе</p>
+                    </div>
+                </div>
+
+                <form method="POST" action="{{ url_for('tasks.add_variant') }}" class="taskModalForm">
+                    <label>
+                        Название варианта
+                        <input type="text" name="name" placeholder="Например: Вариант 1 (Досрочный)" class="taskInput" required>
+                    </label>
+
+                    <label>
+                        Год
+                        <input type="number" name="year" placeholder="Год" class="taskInput" min="2000" max="2100" value="2026" required>
+                    </label>
+
+                    <label>
+                        Список ID заданий
+                        <textarea name="task_ids" class="taskTextarea" placeholder="ID заданий через запятую&#10;Например: 12, 45, 78, 103..." required></textarea>
+                    </label>
+
+                    <button type="submit" class="taskPrimaryButton" style="margin-top: 10px;">
+                        Создать вариант
+                    </button>
+                </form>
+            </div>
+        </div>
+    {% endif %}
+
+    <!-- ================= FOOTER ================= -->
+    <footer class="profileFooter">
+        <div class="footerLinks">
+            <a href="https://t.me/karznl" target="_blank" rel="noopener">Телеграм-канал</a>
+            <a href="/">FAQ</a>
+            <button class="textButton" onclick="openContacts()">Контакты</button>
+            <a href="/">Поддержка</a>
+            <a href="{{ url_for('main.privacypolicy') }}">Политика конфиденциальности</a>
+        </div>
+        <span class="copyright">2026</span>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/ui.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/tests.js') }}"></script>
+</body>
+
 </html>
