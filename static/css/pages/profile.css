@@ -1,49 +1,806 @@
-.name {
-    margin-bottom: auto;
+/* =========================================================
+   PROFILE — SINUS
+   ========================================================= */
+.profilePage {
+    min-height: 100vh;
+    margin: 0;
+    background:
+        radial-gradient(
+            circle at 65% 5%,
+            rgba(205, 48, 95, 0.07),
+            transparent 30%
+        ),
+        var(--background);
+    color: var(--text);
 }
-
-.mainProfile {
-    padding: 10px;
-    margin: 15px auto;
-    width: 90%;
+/* ================= MAIN ================= */
+.profileMain {
+    margin-left: 220px;
+    width: min(100% - 220px, 1050px);
+    box-sizing: border-box;
+    padding: 55px 55px 100px;
 }
-
-.profileContainer {
-    margin-top: 20px;
+/* ================= HEADER ================= */
+.profileHeader {
     display: flex;
-    gap: 50px;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 30px;
+    margin-bottom: 35px;
+}
+.profileEyebrow {
+    margin: 0 0 8px;
+    color: #cd305f;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.18em;
+}
+.profileHeader h1 {
+    margin: 0;
+    font-size: clamp(30px, 4vw, 42px);
+    line-height: 1.1;
+    letter-spacing: -0.04em;
+}
+.profileSubtitle {
+    margin: 12px 0 0;
+    max-width: 500px;
+    font-size: 14px;
+    line-height: 1.5;
+    opacity: 0.55;
+}
+/* ================= THEME ================= */
+.themeButton {
+    position: relative;
+    z-index:9999;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+    padding: 11px 15px;
+    border: 1px solid rgba(128, 128, 128, 0.14);
+    border-radius: 12px;
+    background: var(--lightBox);
+    color: var(--text);
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+.themeButton:hover {
+    transform: translateY(-2px);
+    box-shadow:
+        0 8px 22px rgba(0, 0, 0, 0.07);
+}
+/* ================= PROFILE CARD ================= */
+.profileCard {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    padding: 28px;
+    border-radius: 24px;
+    background: var(--lightBox);
+    border: 1px solid rgba(128, 128, 128, 0.10);
+    box-shadow:
+        0 12px 35px rgba(0, 0, 0, 0.05);
+}
+/* ================= AVATAR ================= */
+.profileAvatarWrapper {
+    width: 120px;
+    height: 120px;
+    flex-shrink: 0;
+    overflow: hidden;
+    border-radius: 24px;
+    background: var(--background);
+}
+.profileAvatar {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
-.profileList {
-    list-style: none;
+/* ================= PROFILE INFO ================= */
+
+.profileInfo {
     display: flex;
     flex-direction: column;
-    width: 67%;
-    gap: 20px;
-    text-align: center;
+    gap: 8px;
 }
 
-.profileButtons {
+.profileLabel {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    opacity: 0.45;
+}
+
+.profileGoal {
+
     display: flex;
+
+    align-items: baseline;
+
+    gap: 8px;
+
+}
+
+.profileGoal strong {
+
+    color: #cd305f;
+
+    font-size: 34px;
+
+    line-height: 1;
+
+    letter-spacing: -0.04em;
+
+}
+
+.profileGoal span {
+
+    font-size: 13px;
+
+    opacity: 0.55;
+
+}
+
+.profileMeta {
+
+    margin: 7px 0 0;
+
+    font-size: 12px;
+
+    opacity: 0.5;
+
+}
+
+.profileMeta b {
+
+    margin-right: 5px;
+
+    font-weight: 600;
+
+}
+
+/* ================= SETTINGS ================= */
+
+.profileSettings {
+
+    margin-top: 42px;
+
+}
+
+.sectionHeading {
+
+    margin-bottom: 18px;
+
+}
+
+.sectionHeading h2 {
+
+    margin: 0;
+
+    font-size: 22px;
+
+    letter-spacing: -0.02em;
+
+}
+
+.sectionHeading p {
+
+    margin: 5px 0 0;
+
+    font-size: 13px;
+
+    opacity: 0.5;
+
+}
+
+/* ================= SETTING CARD ================= */
+
+.profileSettingCard {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 25px;
+
+    margin-bottom: 12px;
+
+    padding: 20px;
+
+    border-radius: 18px;
+
+    background: var(--lightBox);
+
+    border: 1px solid rgba(128, 128, 128, 0.10);
+
+    transition:
+
+        transform 0.2s ease,
+
+        box-shadow 0.2s ease;
+
+}
+
+.profileSettingCard:hover {
+
+    transform: translateY(-2px);
+
+    box-shadow:
+
+        0 10px 28px rgba(0, 0, 0, 0.05);
+
+}
+
+/* ================= SETTING CONTENT ================= */
+
+.settingText {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    min-width: 0;
+}
+.settingIcon {
+    width: 42px;
+    height: 42px;
+    display: flex;
+    align-items: center;
     justify-content: center;
-    text-align: center;
+    flex-shrink: 0;
+    border-radius: 13px;
+    background: rgba(205, 48, 95, 0.08);
+    font-size: 18px;
+}
+.settingText h3 {
+    margin: 0;
+    font-size: 14px;
+}
+.settingText p {
+    margin: 4px 0 0;
+    font-size: 12px;
+    line-height: 1.4;
+    opacity: 0.5;
+}
+/* ================= INPUT ================= */
+.profileInput {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 11px 13px;
+    border: 1px solid rgba(128, 128, 128, 0.16);
+    border-radius: 11px;
+    background: var(--background);
+    color: var(--text);
+    font-family: inherit;
+    font-size: 13px;
+    outline: none;
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+.profileInput:focus {
+    border-color: #cd305f;
+    box-shadow:
+        0 0 0 3px rgba(205, 48, 95, 0.08);
+}
+/* ================= GOAL ================= */
+.goalForm {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 250px;
+}
+.goalInput {
+    width: 100px;
+}
+/* ================= BUTTONS ================= */
+.profileSmallButton,
+.profilePrimaryButton {
+    border: none;
+    border-radius: 11px;
+    background: #cd305f;
+    color: #fff;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+.profileSmallButton {
+    padding: 11px 15px;
+    white-space: nowrap;
+    position: relative;
+    z-index: 9999;
+}
+.profilePrimaryButton {
+    width: 100%;
+    padding: 13px;
+}
+.profileSmallButton:hover,
+.profilePrimaryButton:hover {
+    transform: translateY(-2px);
+    box-shadow:
+        0 8px 20px rgba(205, 48, 95, 0.20);
+}
+/* ================= AVATAR UPLOAD ================= */
+.avatarForm {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.fileButton {
+    display: inline-flex;
+    align-items: center;
+    padding: 11px 13px;
+    border-radius: 11px;
+    background: var(--background);
+    border: 1px solid rgba(128, 128, 128, 0.14);
+    font-size: 12px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+
+        border-color 0.2s ease,
+
+        transform 0.2s ease;
+
+}
+
+.fileButton:hover {
+
+    border-color: rgba(205, 48, 95, 0.35);
+
+    transform: translateY(-1px);
+
+}
+
+/* ================= SIDEBAR ================= */
+
+.profilePage .sidebar {
+
+    position: fixed;
+
+    top: 0;
+
+    left: 0;
+
+    bottom: 0;
+
+    width: 220px;
+
+    box-sizing: border-box;
+
+    display: flex;
+
+    flex-direction: column;
+
+    padding: 30px 15px;
+
+    background: var(--lightBox);
+
+    border-right: 1px solid rgba(128, 128, 128, 0.10);
+
+    z-index: 50;
+
+}
+
+.sidebarLogo {
+
+    display: block;
+
+    margin: 5px 12px 35px;
+
+    color: var(--text);
+
+    font-size: 22px !important;
+
+    font-weight: 800;
+
+    letter-spacing: -0.04em;
+
+    text-decoration: none;
+
+}
+
+.sidebarLogo span {
+
+    color: #cd305f;
+
+}
+
+.profilePage .sidebar nav {
+
+    display: flex;
+
+    flex-direction: column;
+
     gap: 5px;
+
 }
 
-.avatar {
-    border-radius: 25px;
-    max-width: 250px;
-    margin-left:0;
+.profilePage .sidebar nav a,
+
+.profilePage .logoutLink {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    padding: 11px 13px;
+
+    border-radius: 11px;
+
+    color: var(--text);
+
+    font-size: 12px;
+
+    text-decoration: none;
+
+    transition:
+
+        background 0.2s ease,
+
+        color 0.2s ease,
+
+        transform 0.2s ease;
+
 }
 
-.avatar_main {
-    border-radius: 25px;
-    max-width: 220px;
-    margin: 0 auto 0 auto;
-}
+.profilePage .sidebar nav a span,
 
-.goal {
+.profilePage .logoutLink span {
+
+    width: 18px;
+
     text-align: center;
-    text-shadow: 0 0 20px rgb(205, 10, 108);
-    color: white;
+
+    opacity: 0.6;
+
+}
+
+.profilePage .sidebar nav a:hover,
+
+.profilePage .logoutLink:hover {
+
+    background: rgba(205, 48, 95, 0.07);
+
+    color: #cd305f;
+
+    transform: translateX(2px);
+
+}
+
+.sidebarBottom {
+
+    margin-top: auto;
+
+}
+
+.logoutLink {
+
+    opacity: 0.55;
+
+}
+
+/* ================= FOOTER ================= */
+
+/* ================= FOOTER ================= */
+.profileFooter {
+    margin-left: 220px;
+    width: min(1050px, calc(100% - 220px));
+    box-sizing: border-box;
+    padding: 30px 55px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    border-top: 1px solid rgba(128, 128, 128, 0.10);
+}
+
+.footerLinks {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 20px;
+}
+
+.profileFooter a,
+.profileFooter .textButton {
+    background: none;
+    border: none;
+    padding: 0;
+    font-family: inherit;
+    font-size: 12px;
+    color: var(--text);
+    text-decoration: none;
+    opacity: 0.5;
+    cursor: pointer;
+    transition: opacity 0.2s ease, color 0.2s ease;
+}
+
+.profileFooter a:hover,
+.profileFooter .textButton:hover {
+    opacity: 1;
+    color: #62072d;
+}
+
+.profileFooter .copyright {
+    font-size: 12px;
+    opacity: 0.3;
+}
+
+/* ================= FOOTER BREAKPOINTS ================= */
+@media (max-width: 900px) {
+    .profileFooter {
+        margin-left: 0;
+        width: 100%;
+        padding: 25px 20px;
+    }
+}
+
+@media (max-width: 520px) {
+    .profileFooter {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+        padding: 20px 15px;
+    }
+    .footerLinks {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+}
+
+/* =========================================================
+   PROFILE — MODAL
+   ========================================================= */
+.settingsModal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: min(92%, 460px);
+    max-height: 90vh;
+    padding: 30px;
+    box-sizing: border-box;
+    overflow-y: auto;
+    background: #62072d;
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 26px;
+    box-shadow:
+        0 25px 80px rgba(0, 0, 0, 0.30);
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+    animation: settingsAppear 0.25s ease both;
+}
+@keyframes settingsAppear {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -47%) scale(0.97);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+}
+/* Заголовок модалки */
+.settingsHeader {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    margin-bottom: 25px;
+}
+.settingsIcon {
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.11);
+    font-size: 19px;
+}
+.settingsHeader h2 {
+    margin: 0;
+    color: #ffffff;
+    font-size: 21px;
+    letter-spacing: -0.03em;
+}
+.settingsHeader p {
+    margin: 4px 0 0;
+    color: rgba(255, 255, 255, 0.60);
+    font-size: 12px;
+}
+/* Кнопка закрытия */
+.settingsModal .closeModal {
+    position: absolute;
+    top: 18px;
+    right: 18px;
+    width: 34px;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border: none;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.08);
+    color: rgba(255, 255, 255, 0.75);
+    font-size: 22px;
+    line-height: 1;
+    cursor: pointer;
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease;
+}
+.settingsModal .closeModal:hover {
+    background: rgba(255, 255, 255, 0.15);
+    color: #ffffff;
+    transform: rotate(5deg);
+}
+/* Форма */
+.settingsForm {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+.settingsLabel {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 12px;
+
+    font-weight: 600;
+
+}
+
+/* Поля */
+
+.settingsForm .profileInput {
+
+    background: rgba(255, 255, 255, 0.09);
+
+    border: 1px solid rgba(255, 255, 255, 0.15);
+
+    color: #ffffff;
+
+    border-radius: 12px;
+
+}
+
+.settingsForm .profileInput::placeholder {
+
+    color: rgba(255, 255, 255, 0.45);
+
+}
+
+.settingsForm .profileInput:focus {
+
+    background: rgba(255, 255, 255, 0.13);
+
+    border-color: rgba(255, 255, 255, 0.45);
+
+    box-shadow:
+
+        0 0 0 3px rgba(255, 255, 255, 0.08);
+
+}
+
+/* Разделитель */
+
+.settingsDivider {
+
+    height: 1px;
+
+    margin: 5px 0;
+
+    background: rgba(255, 255, 255, 0.12);
+
+}
+
+/* Главная кнопка */
+
+.settingsForm .profilePrimaryButton {
+
+    margin-top: 5px;
+
+    padding: 14px;
+
+    background: #ffffff;
+
+    color: #62072d;
+
+    border-radius: 13px;
+
+    font-size: 13px;
+
+    box-shadow: none;
+
+}
+
+.settingsForm .profilePrimaryButton:hover {
+
+    transform: translateY(-2px);
+
+    box-shadow:
+
+        0 8px 25px rgba(0, 0, 0, 0.18);
+
+}
+
+/* =========================================================
+
+   THEME BUTTON
+
+   ========================================================= */
+
+.themeButton {
+
+    background: #62072d;
+
+    color: #ffffff;
+
+    border: 1px solid rgba(255, 255, 255, 0.12);
+
+}
+
+.themeButton:hover {
+
+    background: #720b37;
+
+    box-shadow:
+
+        0 8px 22px rgba(98, 7, 45, 0.25);
+
+}
+
+/* =========================================================
+
+   DARK THEME
+
+   ========================================================= */
+
+[data-theme="dark"] .profileCard,
+
+[data-theme="dark"] .profileSettingCard,
+
+[data-theme="dark"] .themeButton,
+
+[data-theme="dark"] .settingsModal {
+
+    background: #880d4d30;;
+
+    color: #ffffff;
+    border-color: rgba(255, 255, 255, 0.10);
+}
+/* =========================================================
+   MOBILE MODAL
+   ========================================================= */
+@media (max-width: 480px) {
+    .settingsModal {
+        width: calc(100% - 28px);
+        padding: 24px 20px;
+        border-radius: 22px;
+    }
+    .settingsHeader {
+        padding-right: 30px;
+    }
 }

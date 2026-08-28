@@ -1,111 +1,245 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Статистика</title>
+        <title>Статистика — Sinus</title>
         <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
         <script src="{{ url_for('static', filename='js/theme.js') }}" defer></script>
     </head>
-    <body>
-        <div id="contacts" style="display: none; width:50%;height:35%" class="modal">
-            <span onclick="closeContacts()">&times;</span>
-            <p class="main_Thing questions">почта: anastasiyakreslina@gmail.com</p>
-            <p class="main_Thing questions">телеграмм: @krazern</p>
-            <p class="main_Thing questions">Время ответа: 1-2 дня</p>
-            <p class="main_Thing questions">Отвечаю исключительно на вопросы о платформе, предложения, сообщения об ошибке и отзывы</p>
-            <p class="main_Thing questions">^_^</p>
+    <body class="statisticsPage">
+        
+        <!-- МОДАЛЬНОЕ ОКНО КОНТАКТОВ -->
+        <div id="contacts" class="modal contactsModal" style="display: none;">
+            <button class="closeModal" onclick="closeContacts()">&times;</button>
+            <div class="contactsHeader">
+                <span class="contactsEmoji">♡</span>
+                <div>
+                    <h2>Связаться с нами</h2>
+                    <p>Если нашли ошибку или хотите предложить улучшение</p>
+                </div>
+            </div>
+            <div class="contactsList">
+                <div class="contactItem">
+                    <span>✉</span>
+                    <div>
+                        <small>Почта</small>
+                        <p>anastasiyakreslina@gmail.com</p>
+                    </div>
+                </div>
+                <div class="contactItem">
+                    <span>↗</span>
+                    <div>
+                        <small>Telegram</small>
+                        <p>@krazern</p>
+                    </div>
+                </div>
+                <div class="contactItem">
+                    <span>◷</span>
+                    <div>
+                        <small>Время ответа</small>
+                        <p>обычно 1–2 дня</p>
+                    </div>
+                </div>
+            </div>
+            <p class="contactsNote">
+                Отвечаю на вопросы о платформе, предложения, сообщения об ошибках и отзывы.
+            </p>
         </div>
-        <header class="header" style="width:80%">
-            <ul class="header__list1">
-                <li>
-                    <p class="classification main_Thing">sinus ^_^</p>
-                </li>
-            </ul>
-            <ul class="header__list2">
-                <li>
-                    <a href="{{url_for('main.about')}}" class="lighttext main_Thing">о проекте</a>
-                </li>
-                <li>
-                    <a href="{{url_for('auth.profile')}}" class="lighttext main_Thing">профиль</a>
-                </li>
-            </ul>
-        </header>
-        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-        <div class="task">
-            <p class="main_Thing">Цель: {{goal}}</p>
-            <p class="main_Thing">Решено задач: {{solved_count}}</p>
-            <p class="main_Thing">Решено верно: {{correct}}</p>
-            <p class="main_Thing">Процент правильности: {{percent}}%</p>
-        </div>
-        <div class="task">
-            <canvas id="Chart"></canvas>
-        </div>
-        <div class="task">
-            <canvas id="firstTryChart"></canvas>
-        </div>
-        <div class="task">
-            <h3 class="heading" style="font-size: 12px;">История вариантов</h3>
-            <table class="variant_table">
-                {% for var_id, variant in variant_table.items() %}
-                    <tr>
-                        <td>
-                            <p class="table_text">вариант {{var_id}}</p>
-                            <small class="table_text">{{variant.created_at}}</small>
-                        </td>
-                        {% for i in range(1,20) %}
-                            <td>
-                                {% if i in variant.tasks %}
-                                    <a href="tasks?task_id={{variant.tasks[i].task_id}}" class="table_text">
-                                        {% if variant.tasks[i].correct %}
-                                            ✅
-                                        {% else %}
-                                            ❌
-                                        {% endif %}
-                                        {{ variant.tasks[i].answer }}
-                                    </a>
-                                    <small class="table_text">
-                                        ответ: {{variant.tasks[i].correct_answer}}
-                                    </small>
-                                {% else %}
-                                    -
-                                {% endif %}
-                            </td>  
-                        {% endfor %}
-                        <td >
-                            {{variant.score}}/19
-                        </td>
-                    </tr>
-                {% endfor %}
-            </table>
-        </div>
-        <div class="sidebar" id="sidebar">
-            <a href="{{url_for('main.error')}}" class="name sidebar_text">настя синус</a>
-            <ul class="listThings">
-                <li><a href="{{url_for('main.home')}}" class="lighttext sidebar_text">Основная страница</a></li>
-                <li><a href="{{url_for('tasks.tasks')}}" class="lighttext sidebar_text">Банк заданий</a></li>
-                <li><a href="{{url_for('tasks.tests')}}" class="lighttext sidebar_text">Варианты уровня ЕГЭ</a></li>
-                <li><a href="{{url_for('tasks.mistakes')}}" class="lighttext sidebar_text">Работа над ошибками</a></li>
-                <li><a href="{{url_for('tasks.statistics')}}" class="lighttext sidebar_text">Статистика</a></li>
-                <li><a href="{{url_for('auth.logout')}}" class="lighttext sidebar_text">Выход</a></li>
-                <li></li>
-            </ul>
-        </div>
-        <ul class="smallInfo">
-            <li><a href="https://t.me/karznl">Телеграмм-канал</a></li>
-            <li><a href="/">FAQ</a></li>
-            <li><button class="textButton" onclick="openContacts()">Контакты</button></li>
-            <li><a href="/">Поддержка</a></li>
-            <li><a href="{{url_for('main.privacypolicy')}}">Политика конфиденциальности</a></li>
-            <li>2026</li>
-        </ul>
+
+        <!-- ================= SIDEBAR ================= -->
+        <aside class="sidebar" id="sidebar">
+            <a href="{{ url_for('main.error') }}" class="name sidebarLogo">
+                sinus<span>.</span>
+            </a>
+            <nav class="listThings">
+                <a href="{{ url_for('main.home') }}" class="sidebar_text">
+                    <span>⌂</span> Главная
+                </a>
+                <a href="{{ url_for('tasks.tasks') }}" class="sidebar_text">
+                    <span>▦</span> Банк заданий
+                </a>
+                <a href="{{ url_for('tasks.tests') }}" class="sidebar_text">
+                    <span>✦</span> Варианты ЕГЭ
+                </a>
+                <a href="{{ url_for('tasks.mistakes') }}" class="sidebar_text">
+                    <span>↻</span> Работа над ошибками
+                </a>
+                <a href="{{ url_for('tasks.statistics') }}" class="sidebar_text active">
+                    <span>⌁</span> Статистика
+                </a>
+                <a href="{{ url_for('auth.profile')}}" class="sidebar_text">
+                    <span>👤</span> Профиль
+                </a>
+            </nav>
+            <div class="sidebarBottom">
+                <a href="{{ url_for('auth.logout') }}" class="sidebar_text logoutLink">
+                    <span>↪</span> Выйти
+                </a>
+            </div>
+        </aside>
+
+        <!-- ================= MAIN ================= -->
+        <main class="statisticsMain">
+            <!-- HEADER -->
+            <header class="statisticsHeader">
+                <div>
+                    <p class="profileEyebrow">SINUS / PROGRESS</p>
+                    <h1>Твоя статистика</h1>
+                    <p class="profileSubtitle">
+                        Здесь можно посмотреть прогресс, результаты решения задач и историю вариантов.
+                    </p>
+                </div>
+            </header>
+
+            <!-- ================= OVERVIEW ================= -->
+            <section class="statisticsOverview">
+                <div class="statisticCard">
+                    <span class="statisticIcon">◎</span>
+                    <div>
+                        <small>ЦЕЛЬ</small>
+                        <strong>{{ goal }}</strong>
+                        <span>баллов</span>
+                    </div>
+                </div>
+
+                <div class="statisticCard">
+                    <span class="statisticIcon">✓</span>
+                    <div>
+                        <small>РЕШЕНО</small>
+                        <strong>{{ solved_count }}</strong>
+                        <span>задач</span>
+                    </div>
+                </div>
+
+                <div class="statisticCard">
+                    <span class="statisticIcon">★</span>
+                    <div>
+                        <small>ВЕРНО</small>
+                        <strong>{{ correct }}</strong>
+                        <span>задач</span>
+                    </div>
+                </div>
+
+                <div class="statisticCard accent">
+                    <span class="statisticIcon">%</span>
+                    <div>
+                        <small>ТОЧНОСТЬ</small>
+                        <strong>{{ percent }}%</strong>
+                        <span>правильных ответов</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ================= CHARTS ================= -->
+            <section class="statisticsGrid">
+                <div class="statisticsCard">
+                    <div class="statisticsCardHeader">
+                        <div>
+                            <small>АНАЛИЗ</small>
+                            <h2>Результаты по заданиям</h2>
+                            <p>Процент правильных решений</p>
+                        </div>
+                        <span class="statisticsCardIcon">◔</span>
+                    </div>
+                    <div class="chartWrapper">
+                        <canvas id="Chart"></canvas>
+                    </div>
+                </div>
+
+                <div class="statisticsCard">
+                    <div class="statisticsCardHeader">
+                        <div>
+                            <small>ПЕРВАЯ ПОПЫТКА</small>
+                            <h2>Как решаешь с первого раза</h2>
+                            <p>Точность без повторных попыток</p>
+                        </div>
+                        <span class="statisticsCardIcon">↗</span>
+                    </div>
+                    <div class="chartWrapper">
+                        <canvas id="firstTryChart"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ================= VARIANTS ================= -->
+            <section class="variantsSection">
+                <div class="statisticsCardHeader">
+                    <div>
+                        <small>ИСТОРИЯ</small>
+                        <h2>Варианты</h2>
+                        <p>Результаты пройденных вариантов ЕГЭ</p>
+                    </div>
+                </div>
+
+                <div class="variantsTableWrapper">
+                    <table class="variant_table">
+                        <thead>
+                            <tr>
+                                <th>Вариант</th>
+                                {% for i in range(1,20) %}
+                                    <th>{{ i }}</th>
+                                {% endfor %}
+                                <th>Результат</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for var_id, variant in variant_table.items() %}
+                                <tr>
+                                    <td class="variantInfo">
+                                        <strong>Вариант {{ var_id }}</strong>
+                                        <small>{{ variant.created_at }}</small>
+                                    </td>
+
+                                    {% for i in range(1,20) %}
+                                        <td>
+                                            {% if i in variant.tasks %}
+                                                <a href="tasks?task_id={{variant.tasks[i].task_id}}" class="variantTask">
+                                                    {% if variant.tasks[i].correct %}
+                                                        <span class="correct">✓</span>
+                                                    {% else %}
+                                                        <span class="incorrect">×</span>
+                                                    {% endif %}
+                                                    <b>{{ variant.tasks[i].answer }}</b>
+                                                </a>
+                                                <small class="answer">{{ variant.tasks[i].correct_answer }}</small>
+                                            {% else %}
+                                                <span class="emptyTask">—</span>
+                                            {% endif %}
+                                        </td>
+                                    {% endfor %}
+
+                                    <td class="variantScore">
+                                        <strong>{{ variant.score }}/19</strong>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+
+        <!-- ================= FOOTER ================= -->
+        <footer class="profileFooter">
+            <div class="footerLinks">
+                <a href="https://t.me/karznl" target="_blank" rel="noopener">Телеграм-канал</a>
+                <a href="/">FAQ</a>
+                <button class="textButton" onclick="openContacts()">Контакты</button>
+                <a href="/">Поддержка</a>
+                <a href="{{ url_for('main.privacypolicy') }}">Политика конфиденциальности</a>
+            </div>
+            <span class="copyright">2026</span>
+        </footer>
+
+        <!-- DATA & SCRIPTS -->
         <script>
-            const numbers={{ numbers | tojson }};
-            const percents={{ percents | tojson }};
-            const first_attempts_numbers={{ first_attempts_numbers | tojson }};
-            const first_attempts_percents={{ first_attempts_percents | tojson }};
+            const numbers = {{ numbers | tojson }};
+            const percents = {{ percents | tojson }};
+            const first_attempts_numbers = {{ first_attempts_numbers | tojson }};
+            const first_attempts_percents = {{ first_attempts_percents | tojson }};
         </script>
         <script src="{{ url_for('static', filename='js/ui.js') }}"></script>
-        <script src="{{url_for('static',filename='js/charts.js')}}"></script>
+        <script src="{{ url_for('static', filename='js/charts.js') }}"></script>
     </body>
 </html>

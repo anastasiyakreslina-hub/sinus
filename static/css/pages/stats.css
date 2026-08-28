@@ -1,15 +1,657 @@
-table {
-    border-collapse: collapse;
-    max-width: fit-content;
+/* =========================================================
+   STATISTICS — MAIN LAYOUT
+   ========================================================= */
+
+.statisticsPage {
+    min-height: 100vh;
 }
 
-.variant_table th, 
+.statisticsMain {
+    margin-left: 220px;
+    width: min(1050px, calc(100% - 220px));
+    box-sizing: border-box;
+    padding: 55px 55px 80px;
+}
+
+/* ================= HEADER ================= */
+
+.statisticsHeader {
+    margin-bottom: 35px;
+}
+
+.statisticsHeader h1 {
+    margin: 0;
+    font-size: clamp(30px, 4vw, 42px);
+    line-height: 1.1;
+    letter-spacing: -0.04em;
+}
+
+/* ================= OVERVIEW ================= */
+
+.statisticsOverview {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 14px;
+}
+
+.statisticCard {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    min-width: 0;
+    padding: 20px;
+
+    border-radius: 18px;
+
+    /* НОВЫЙ ФОН */
+    background: #880d4d30;
+
+    border: 1px solid rgba(136, 13, 77, 0.12);
+
+    box-shadow:
+        0 10px 30px rgba(0, 0, 0, 0.035);
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.statisticCard:hover {
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 14px 35px rgba(0, 0, 0, 0.06);
+}
+
+.statisticIcon {
+    width: 42px;
+    height: 42px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    border-radius: 13px;
+
+    background: rgba(136, 13, 77, 0.10);
+
+    color: #62072d;
+
+    font-size: 17px;
+}
+
+.statisticCard small {
+    display: block;
+
+    margin-bottom: 4px;
+
+    font-size: 9px;
+    font-weight: 800;
+
+    letter-spacing: 0.12em;
+
+    opacity: 0.4;
+}
+
+.statisticCard strong {
+    display: inline-block;
+
+    font-size: 27px;
+    line-height: 1;
+
+    letter-spacing: -0.04em;
+}
+
+.statisticCard > div > span {
+    margin-left: 4px;
+
+    font-size: 10px;
+
+    opacity: 0.45;
+}
+
+.statisticCard.accent strong {
+    color: #62072d;
+}
+
+/* ================= CHARTS ================= */
+
+.statisticsGrid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+}
+
+.statisticsCard {
+    min-width: 0;
+
+    padding: 24px;
+
+    border-radius: 20px;
+
+    /* НОВЫЙ ФОН */
+    background: #880d4d30;
+
+    border: 1px solid rgba(136, 13, 77, 0.12);
+
+    box-shadow:
+        0 10px 30px rgba(0, 0, 0, 0.035);
+}
+
+.statisticsCardHeader {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+
+    gap: 15px;
+
+    margin-bottom: 20px;
+}
+
+.statisticsCardHeader small {
+    display: block;
+
+    margin-bottom: 5px;
+
+    color: #62072d;
+
+    font-size: 9px;
+    font-weight: 800;
+
+    letter-spacing: 0.14em;
+}
+
+.statisticsCardHeader h2 {
+    margin: 0;
+
+    font-size: 19px;
+
+    letter-spacing: -0.03em;
+}
+
+.statisticsCardHeader p {
+    margin: 5px 0 0;
+
+    font-size: 11px;
+
+    opacity: 0.45;
+}
+
+.statisticsCardIcon {
+    font-size: 22px;
+
+    color: #62072d;
+
+    opacity: 0.55;
+}
+
+/* ================= CHART WRAPPER ================= */
+
+.chartWrapper {
+    position: relative;
+
+    width: 100%;
+    height: 300px;
+}
+
+.chartWrapper canvas {
+    max-width: 100%;
+}
+
+/* ================= VARIANTS ================= */
+
+.variantsSection {
+    margin-top: 14px;
+
+    padding: 24px;
+
+    border-radius: 20px;
+
+    /* НОВЫЙ ФОН */
+    background: #880d4d30;
+
+    border: 1px solid rgba(136, 13, 77, 0.12);
+
+    box-shadow:
+        0 10px 30px rgba(0, 0, 0, 0.035);
+}
+
+.variantsTableWrapper {
+    width: 100%;
+
+    overflow-x: auto;
+
+    border-radius: 14px;
+
+    scrollbar-width: thin;
+}
+
+/* ================= TABLE ================= */
+
+.variant_table {
+    width: 100%;
+
+    min-width: 900px;
+
+    border-collapse: separate;
+
+    border-spacing: 4px;
+}
+
+.variant_table th {
+    padding: 8px 5px;
+
+    color: var(--text);
+
+    font-size: 9px;
+    font-weight: 700;
+
+    opacity: 0.4;
+}
+
 .variant_table td {
-    border: 2px solid #ffffff42;
-    padding: 5px;
+    min-width: 34px;
+
+    padding: 8px 5px;
+
     text-align: center;
+    vertical-align: middle;
+
+    border-radius: 9px;
+
+    background: var(--background);
 }
 
-.table_text {
+.variant_table td.variantInfo {
+    min-width: 120px;
+
+    text-align: left;
+
+    padding-left: 12px;
+}
+
+.variantInfo strong {
+    display: block;
+
+    font-size: 11px;
+}
+
+.variantInfo small {
+    display: block;
+
+    margin-top: 3px;
+
+    font-size: 8px;
+
+    opacity: 0.4;
+}
+
+/* ================= TASK ================= */
+
+.variantTask {
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 3px;
+
+    color: var(--text);
+
+    text-decoration: none;
+
+    font-size: 10px;
+}
+
+.variantTask .correct {
+    color: #62072d;
+
+    font-weight: 800;
+}
+
+.variantTask .incorrect {
+    opacity: 0.55;
+
+    font-weight: 800;
+}
+
+.variantTask b {
+    font-size: 9px;
+}
+
+.answer {
+    display: block;
+
+    margin-top: 3px;
+
     font-size: 7px;
+
+    opacity: 0.35;
+}
+
+.emptyTask {
+    opacity: 0.2;
+
+    font-size: 10px;
+}
+
+/* ================= SCORE ================= */
+
+.variant_table td.variantScore {
+    min-width: 70px;
+
+    background: rgba(136, 13, 77, 0.15);
+}
+
+.variantScore strong {
+    color: #62072d;
+
+    font-size: 14px;
+}
+
+/* =========================================================
+   DARK THEME
+   ========================================================= */
+
+/*
+   ВАЖНО:
+   Здесь НЕ переопределяем фон карточек через var(--lightBox),
+   поэтому #880d4d30 останется и в светлой, и в тёмной теме.
+*/
+
+[data-theme="dark"] .statisticCard,
+[data-theme="dark"] .statisticsCard,
+[data-theme="dark"] .variantsSection {
+    background: #880d4d30;
+
+    border-color:
+        rgba(255, 255, 255, 0.07);
+}
+
+[data-theme="dark"] .statisticIcon {
+    background: rgba(255, 255, 255, 0.06);
+
+    color: #ffffff;
+}
+
+[data-theme="dark"] .variant_table td {
+    background: var(--background);
+}
+
+[data-theme="dark"] .variant_table td.variantScore {
+    background: rgba(136, 13, 77, 0.25);
+}
+
+/* =========================================================
+   STATISTICS — SIDEBAR
+   ========================================================= */
+
+.statisticsPage .sidebar {
+    position: fixed;
+
+    top: 0;
+    left: 0;
+    bottom: 0;
+
+    width: 220px;
+    height: 100vh;
+
+    box-sizing: border-box;
+
+    display: flex;
+    flex-direction: column;
+
+    padding: 30px 15px;
+
+    background: var(--lightBox);
+
+    border-right:
+        1px solid rgba(128, 128, 128, 0.10);
+
+    z-index: 100;
+}
+
+/* ================= LOGO ================= */
+
+.statisticsPage .sidebar > .name {
+    display: block;
+
+    margin: 5px 12px 35px;
+
+    color: var(--text) !important;
+
+    font-size: 22px;
+
+    font-weight: 800;
+
+    line-height: 1;
+
+    letter-spacing: -0.05em;
+
+    text-decoration: none !important;
+}
+
+.statisticsPage .sidebar > .name span {
+    color: #62072d;
+}
+
+/* ================= NAV ================= */
+
+.statisticsPage .sidebar nav.listThings {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 5px;
+
+    width: 100%;
+
+    margin: 0;
+    padding: 0;
+}
+
+/* ================= LINKS ================= */
+
+.statisticsPage .sidebar nav.listThings a {
+    position: relative;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    width: 100%;
+
+    box-sizing: border-box;
+
+    padding: 11px 13px;
+
+    border-radius: 11px;
+
+    color: var(--text) !important;
+
+    font-size: 12px;
+
+    font-weight: 500;
+
+    text-decoration: none !important;
+
+    opacity: 0.62;
+
+    transition:
+        color 0.2s ease,
+        background 0.2s ease,
+        opacity 0.2s ease;
+}
+
+.statisticsPage .sidebar nav.listThings a:hover {
+    color: #62072d !important;
+
+    background:
+        rgba(98, 7, 45, 0.07);
+
+    opacity: 1;
+}
+
+/* ================= ACTIVE ================= */
+
+.statisticsPage .sidebar nav.listThings a.active {
+    color: #62072d !important;
+
+    background:
+        rgba(98, 7, 45, 0.09);
+
+    opacity: 1;
+
+    font-weight: 700;
+}
+
+.statisticsPage .sidebar nav.listThings a.active::before {
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    top: 50%;
+
+    width: 3px;
+    height: 20px;
+
+    border-radius:
+        0 5px 5px 0;
+
+    background: #62072d;
+
+    transform:
+        translateY(-50%);
+}
+
+/* ================= LOGOUT ================= */
+
+.statisticsPage .sidebarBottom {
+    margin-top: auto;
+
+    padding-top: 20px;
+
+    border-top:
+        1px solid rgba(128, 128, 128, 0.08);
+}
+
+.statisticsPage .sidebar .logoutLink {
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    width: 100%;
+
+    box-sizing: border-box;
+
+    padding: 11px 13px;
+
+    border-radius: 11px;
+
+    color: var(--text) !important;
+
+    font-size: 12px;
+
+    text-decoration: none !important;
+
+    opacity: 0.42;
+}
+
+.statisticsPage .sidebar .logoutLink:hover {
+    color: #62072d !important;
+
+    background:
+        rgba(98, 7, 45, 0.07);
+
+    opacity: 1;
+}
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 900px) {
+
+    .statisticsPage .sidebar {
+        position: relative;
+
+        width: 100%;
+        height: auto;
+
+        padding: 20px 15px;
+
+        border-right: none;
+
+        border-bottom:
+            1px solid rgba(128, 128, 128, 0.10);
+    }
+
+    .statisticsMain {
+        margin-left: 0;
+
+        width: 100%;
+
+        padding: 35px 20px 70px;
+    }
+
+    .statisticsOverview {
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+
+    .statisticsGrid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 520px) {
+
+    .statisticsMain {
+        padding: 28px 15px 60px;
+    }
+
+    .statisticsHeader h1 {
+        font-size: 29px;
+    }
+
+    .statisticsOverview {
+        grid-template-columns:
+            repeat(2, 1fr);
+
+        gap: 8px;
+    }
+
+    .statisticCard {
+        padding: 15px;
+
+        gap: 10px;
+    }
+
+    .statisticIcon {
+        width: 36px;
+        height: 36px;
+    }
+
+    .statisticCard strong {
+        font-size: 22px;
+    }
+
+    .statisticsCard,
+    .variantsSection {
+        padding: 18px;
+
+        border-radius: 17px;
+    }
+
+    .chartWrapper {
+        height: 240px;
+    }
 }

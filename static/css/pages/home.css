@@ -1,57 +1,887 @@
-.time {
-    font-size: 40px;
+
+.homePage {
+
+    min-height: 100vh;
+
+    background:
+
+        radial-gradient(
+
+            circle at 70% 0%,
+
+            rgba(205, 48, 95, 0.07),
+
+            transparent 32%
+
+        ),
+
+        var(--background);
+
+    color: var(--text);
+
+}
+
+/* =========================================================
+
+   HEADER
+
+   ========================================================= */
+
+.homeHeader {
+
+    width: min(1180px, calc(100% - 40px));
+
+    margin: 0 auto;
+
+    padding: 24px 0;
+
     display: flex;
-    justify-content: center;
-    padding: 10px;
-    color: var(--time-color);
-}
 
-.main {
-    display: flex;
-    list-style: none;
-    gap: 20px;
-}
-
-.firstColumn {
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-    gap: 10px;
-    margin-left: 5px;
-}
-
-.studentsProfile {
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-}
-
-.rate {
-    text-align: center;
-    padding: 10px;
-    height: 100%;
-}
-
-.secondColumn {
-    padding: 10px;
-    flex: 2;
-}
-
-.thirdColumn {
-    padding: 10px;
-    flex: 1;
-    margin-right: 15px;
-}
-
-.toDo {
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
     align-items: center;
-    height: 60vh;
+
+    justify-content: space-between;
+
 }
 
-.toDo li+li {
-    margin-top: 15px;
+.homeLogo {
+
+    color: var(--text);
+
+    font-size: 24px;
+
+    font-weight: 800;
+
+    letter-spacing: -0.05em;
+
+    text-decoration: none;
+
+}
+
+.homeLogo span {
+
+    color: #cd305f;
+
+}
+
+.homeNav {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+}
+
+.homeNav a {
+
+    padding: 9px 13px;
+
+    border-radius: 10px;
+
+    color: var(--text);
+
+    font-size: 12px;
+
+    font-weight: 600;
+
+    text-decoration: none;
+
+    opacity: 0.65;
+
+    transition:
+
+        color 0.2s ease,
+
+        background 0.2s ease,
+
+        opacity 0.2s ease;
+
+}
+
+.homeNav a:hover {
+
+    color: #cd305f;
+
+    background: rgba(205, 48, 95, 0.07);
+
+    opacity: 1;
+
+}
+
+/* =========================================================
+
+   MAIN
+
+   ========================================================= */
+
+.homeMain {
+
+    width: min(1050px, calc(100% - 40px));
+
+    margin: 0 auto;
+
+    padding: 15px 0 80px;
+
+}
+
+/* =========================================================
+
+   TIME
+
+   ========================================================= */
+
+.homeTime {
+
+    display: flex;
+
+    justify-content: center;
+
+    margin: 5px 0 30px;
+
+}
+
+.homeTime #time {
+
+    font-size: clamp(30px, 5vw, 46px);
+
+    font-weight: 700;
+
+    letter-spacing: -0.05em;
+
+    color: var(--time-color);
+
+}
+
+/* =========================================================
+
+   WELCOME
+
+   ========================================================= */
+
+.welcomeBlock {
+
+    position: relative;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    overflow: hidden;
+
+    margin-bottom: 25px;
+
+    padding: 30px 32px;
+
+    border-radius: 24px;
+
+    background:
+
+        linear-gradient(
+
+            135deg,
+
+            rgba(205, 48, 95, 0.09),
+
+            transparent 65%
+
+        );
+
+    border: 1px solid rgba(205, 48, 95, 0.08);
+
+}
+
+.homeEyebrow {
+
+    margin: 0 0 7px;
+
+    color: #cd305f;
+
+    font-size: 10px;
+
+    font-weight: 800;
+
+    letter-spacing: 0.18em;
+
+}
+
+.welcomeBlock h1 {
+
+    margin: 0;
+
+    font-size: clamp(25px, 4vw, 36px);
+
+    letter-spacing: -0.04em;
+
+}
+
+.welcomeBlock p:last-child {
+
+    margin: 8px 0 0;
+
+    font-size: 13px;
+
+    opacity: 0.5;
+
+}
+
+.welcomeDecoration {
+
+    position: absolute;
+
+    right: 35px;
+
+    font-size: 75px;
+
+    color: #cd305f;
+
+    opacity: 0.08;
+
+    transform: rotate(12deg);
+
+}
+
+/* =========================================================
+
+   DASHBOARD
+
+   ========================================================= */
+
+.dashboard {
+
+    display: grid;
+
+    grid-template-columns:
+
+        minmax(0, 1fr)
+
+        minmax(0, 1fr);
+
+    gap: 14px;
+
+}
+
+
+.dashboardCard {
+    background: #ffffff;
+
+    border: 1px solid rgba(128, 128, 128, 0.12);
+
+    box-shadow:
+        0 10px 30px rgba(0, 0, 0, 0.06);
+
+    border-radius: 20px;
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+[data-theme="dark"] .dashboardCard {
+    background: #880d4d30;
+
+    border-color: rgba(134, 17, 83, 0.336);
+
+    box-shadow:
+        0 10px 30px rgba(0, 0, 0, 0.25);
+}
+
+/* =========================================================
+
+   STUDENT
+
+   ========================================================= */
+
+.studentCard {
+
+    padding: 22px;
+
+}
+
+.studentTop {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 15px;
+
+}
+
+.studentAvatar {
+
+    width: 65px;
+
+    height: 65px;
+
+    flex-shrink: 0;
+
+    overflow: hidden;
+
+    border-radius: 18px;
+
+    background: var(--background);
+
+}
+
+.studentAvatar img {
+
+    width: 100%;
+
+    height: 100%;
+
+    object-fit: cover;
+
+}
+
+.cardLabel {
+
+    margin: 0 0 5px;
+
+    font-size: 9px;
+
+    font-weight: 800;
+
+    letter-spacing: 0.12em;
+
+    opacity: 0.4;
+
+}
+
+.studentTop h2 {
+
+    margin: 0;
+
+    font-size: 20px;
+
+    letter-spacing: -0.03em;
+
+}
+
+.studentGoal {
+
+    display: flex;
+
+    align-items: baseline;
+
+    gap: 7px;
+
+    margin-top: 20px;
+
+}
+
+.studentGoal span {
+
+    font-size: 12px;
+
+    opacity: 0.5;
+
+}
+
+.studentGoal strong {
+
+    color: #cd305f;
+
+    font-size: 30px;
+
+    line-height: 1;
+
+    letter-spacing: -0.04em;
+
+}
+
+.studentGoal small {
+
+    font-size: 11px;
+
+    opacity: 0.45;
+
+}
+
+/* =========================================================
+
+   RATE
+
+   ========================================================= */
+
+.rateCard {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 15px;
+
+    padding: 22px;
+
+}
+
+.cardIcon {
+
+    width: 45px;
+
+    height: 45px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    border-radius: 14px;
+
+    background: rgba(205, 48, 95, 0.08);
+
+    color: #cd305f;
+
+    font-size: 18px;
+
+}
+
+.rateCard h3 {
+
+    margin: 0 0 5px;
+
+    font-size: 19px;
+
+}
+
+.rateCard a {
+
+    color: #cd305f;
+
+    font-size: 11px;
+
+    font-weight: 700;
+
+    text-decoration: none;
+
+}
+
+.rateCard a:hover {
+
+    text-decoration: underline;
+
+}
+
+/* =========================================================
+
+   TASKS
+
+   ========================================================= */
+
+.tasksCard {
+
+    grid-column: 1 / -1;
+
+    padding: 24px;
+
+}
+
+.cardHeading {
+
+    display: flex;
+
+    align-items: flex-start;
+
+    justify-content: space-between;
+
+    margin-bottom: 18px;
+
+}
+
+.cardHeading h2 {
+
+    margin: 0;
+
+    font-size: 20px;
+
+    letter-spacing: -0.03em;
+
+}
+
+.cardHeadingIcon {
+
+    color: #cd305f;
+
+    font-size: 22px;
+
+    opacity: 0.6;
+
+}
+
+.taskLinks {
+
+    display: grid;
+
+    grid-template-columns:
+
+        repeat(4, 1fr);
+
+    gap: 8px;
+
+}
+
+.taskLinks a {
+
+    position: relative;
+
+    display: flex;
+
+    flex-direction: column;
+
+    min-height: 115px;
+
+    padding: 17px;
+
+    box-sizing: border-box;
+
+    border-radius: 15px;
+
+    background: var(--background);
+
+    color: var(--text);
+
+    text-decoration: none;
+
+    transition:
+
+        background 0.2s ease,
+
+        transform 0.2s ease;
+
+}
+
+.taskLinks a:hover {
+
+    background: rgba(205, 48, 95, 0.07);
+
+    transform: translateY(-2px);
+
+}
+
+.taskLinks a > span {
+
+    margin-bottom: auto;
+
+    color: #cd305f;
+
+    font-size: 18px;
+
+}
+
+.taskLinks b {
+
+    font-size: 13px;
+
+}
+
+.taskLinks small {
+
+    margin-top: 3px;
+
+    font-size: 10px;
+
+    opacity: 0.4;
+
+}
+
+.taskLinks i {
+
+    position: absolute;
+
+    right: 14px;
+
+    bottom: 14px;
+
+    color: #cd305f;
+
+    font-size: 15px;
+
+    font-style: normal;
+
+    opacity: 0.6;
+
+}
+
+/* =========================================================
+
+   STATS
+
+   ========================================================= */
+
+.statsCard {
+
+    grid-column: 1 / -1;
+
+    padding: 24px;
+
+}
+
+.statsMore {
+
+    color: #cd305f;
+
+    font-size: 11px;
+
+    font-weight: 600;
+
+    text-decoration: none;
+
+    opacity: 0.75;
+
+}
+
+.statsMore:hover {
+
+    text-decoration: underline;
+
+}
+
+.statsGrid {
+
+    display: grid;
+
+    grid-template-columns:
+
+        repeat(4, 1fr);
+
+    gap: 8px;
+
+}
+
+.statItem {
+
+    display: flex;
+
+    flex-direction: column;
+
+    padding: 18px;
+
+    border-radius: 15px;
+
+    background: var(--background);
+
+    color: var(--text);
+
+    text-decoration: none;
+
+    transition:
+
+        transform 0.2s ease,
+
+        background 0.2s ease;
+
+}
+
+.statItem:hover {
+
+    transform: translateY(-2px);
+
+    background: rgba(205, 48, 95, 0.06);
+
+}
+
+.statItem strong {
+
+    font-size: 25px;
+
+    line-height: 1;
+
+    letter-spacing: -0.04em;
+
+}
+
+.statItem span {
+
+    margin-top: 8px;
+
+    font-size: 10px;
+
+    opacity: 0.45;
+
+}
+
+.statItem.accentStat strong {
+
+    color: #cd305f;
+
+}
+
+/* =========================================================
+
+   FOOTER
+
+   ========================================================= */
+
+.homeFooter {
+
+    width: min(1050px, calc(100% - 40px));
+
+    margin: 0 auto;
+
+    padding: 20px 0 30px;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    flex-wrap: wrap;
+
+    gap: 8px 20px;
+
+}
+
+.homeFooter a,
+
+.homeFooter button,
+
+.homeFooter span {
+
+    font-size: 10px;
+
+}
+
+/* =========================================================
+
+   MOBILE
+
+   ========================================================= */
+
+@media (max-width: 700px) {
+
+    .homeHeader {
+
+        width: calc(100% - 30px);
+
+        padding: 18px 0;
+
+    }
+
+    .homeNav {
+
+        gap: 2px;
+
+    }
+
+    .homeNav a {
+
+        padding: 8px 9px;
+
+    }
+
+    .homeMain {
+
+        width: calc(100% - 30px);
+
+        padding-top: 10px;
+
+    }
+
+    .homeTime {
+
+        margin-bottom: 22px;
+
+    }
+
+    .welcomeBlock {
+
+        padding: 23px;
+
+        border-radius: 20px;
+
+    }
+
+    .welcomeDecoration {
+
+        right: 20px;
+
+        font-size: 55px;
+
+    }
+
+    .dashboard {
+
+        grid-template-columns: 1fr;
+
+    }
+
+    .tasksCard,
+
+    .statsCard {
+
+        grid-column: auto;
+
+    }
+
+    .taskLinks {
+
+        grid-template-columns:
+
+            repeat(2, 1fr);
+
+    }
+
+    .statsGrid {
+
+        grid-template-columns:
+
+            repeat(2, 1fr);
+
+    }
+
+    .homeFooter {
+
+        width: calc(100% - 30px);
+
+    }
+
+}
+
+@media (max-width: 430px) {
+
+    .homeLogo {
+
+        font-size: 21px;
+
+    }
+
+    .homeNav a {
+
+        font-size: 11px;
+
+    }
+
+    .welcomeBlock h1 {
+
+        font-size: 25px;
+
+    }
+
+    .studentCard,
+
+    .rateCard,
+
+    .tasksCard,
+
+    .statsCard {
+
+        padding: 18px;
+
+    }
+
+    .taskLinks a {
+
+        min-height: 105px;
+
+        padding: 14px;
+
+    }
+
 }
