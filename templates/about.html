@@ -1,50 +1,136 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>О проекте</title>
+    <title>О проекте — Sinus</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <script src="{{ url_for('static', filename='js/theme.js') }}" defer></script>
 </head>
 <body>
+    <!-- Модальное окно -->
     <div id="contacts" style="display: none; width:50%;height:35%" class="modal">
-            <span onclick="closeContacts()">&times;</span>
-            <p class="main_Thing questions">почта: anastasiyakreslina@gmail.com</p>
-            <p class="main_Thing questions">телеграмм: @krazern</p>
-            <p class="main_Thing questions">Время ответа: 1-2 дня</p>
-            <p class="main_Thing questions">Отвечаю исключительно на вопросы о платформе, предложения, сообщения об ошибке и отзывы</p>
-            <p class="main_Thing questions">^_^</p>
+        <span onclick="closeContacts()">&times;</span>
+        <p class="main_Thing questions">почта: anastasiyakreslina@gmail.com</p>
+        <p class="main_Thing questions">телеграмм: @krazern</p>
+        <p class="main_Thing questions">Время ответа: 1-2 дня</p>
+        <p class="main_Thing questions">Отвечаю исключительно на вопросы о платформе, предложения, сообщения об ошибке и отзывы</p>
+        <p class="main_Thing questions">^_^</p>
+    </div>
+
+    <!-- Hero Блок (проявляется первым) -->
+    <div class="infoBlock reveal">
+        <div class="hero">
+            <div class="math-float math-1">x²</div>
+            <div class="math-float math-2">√x</div>
+            <div class="math-float math-3">π</div>
+            <div class="math-float math-4">∫</div>
+            <img src="{{url_for('static', filename='images/mascot/mainMascot.png')}}" class="mascot">
+            <h1 class="sinus-title">
+                <span id="sinusText"></span><span class="cursor">|</span>
+            </h1>
+            <p class="sinus-subtitle heading">математика становится понятнее</p>
+            <p class="actualInformation">{{about_text}}</p>
+            <a href="{{url_for('auth.register')}}" 
+                class="buttons lightBox lighttext main_Thing"
+                style="width:30%; margin: 10% auto 20px auto; padding:10px">
+                создать аккаунт
+                <span class="arrow">→</span>
+            </a>
         </div>
-    <div class="infoBlock">
-        <img src="{{url_for('static', filename='images/mascot/mainMascot.png')}}" class="mascot">
-        <h1 style="color:rgb(205, 48, 95);" class="center">Sinus</h1>
-        <p class="actualInformation" style="text-align: center; width:70%;">{{ about_text }}</p>
-        <a href="{{url_for('auth.login')}}" class="buttons lightBox lighttext main_Thing" style="width:30%; margin: 0 auto 0 auto; padding:10px">Войти на платформу</a>
     </div>
-    <div class="infoBlock">
-        <img src="{{url_for('static',filename='images/mainPicture.png')}}" class="infoImage">
-        <p class="h2heading center">Платформа включает в себя:</p>
-        <p class="actualInformation">{{ include_text }}</p>
+
+    <!-- Возможности -->
+    <div class="infoBlock featuresBlock">
+        <div class="featuresImage reveal">
+            <img
+                src="{{url_for('static', filename='images/mainPicture.png')}}"
+                class="infoImage"
+                alt="возможности платформы">
+            <div class="imageDecoration decorationA">∫</div>
+            <div class="imageDecoration decorationB">x²</div>
+        </div>
+        <div class="featuresContent reveal delay-1">
+            <span class="featuresLabel heading">SINUS · ВОЗМОЖНОСТИ</span>
+            <p class="h2heading">Платформа включает в себя:</p>
+            <div class="featuresLine"></div>
+            <p class="actualInformation">{{ include_text }}</p>
+        </div>
     </div>
-    <div class="infoBlock">
-        <img src="{{url_for('static', filename='images/mascot/coolMascot.png')}}" class="mascot">
-        <p class="h2heading center">Платформа для тех, кто:</p>
-        <p class="actualInformation">{{ forWho_text }}</p>
+
+    <!-- Тебе сюда если -->
+    <div class="infoBlock forWhoSection">
+        <div class="forWhoCard reveal">
+            <div class="forWhoMascotWrapper reveal delay-1">
+                <div class="mascotGlow"></div>
+                <img src="{{ url_for('static', filename='images/mascot/coolMascot.png') }}" class="mascot" alt="Крутой маскот">
+            </div>
+            <div class="forWhoContent reveal delay-2">
+                <span class="infoLabel">ТЕБЕ СЮДА ЕСЛИ</span>
+                <div class="featuresLine"></div>
+                <p class="actualInformation">{{ forWho_text }}</p>
+            </div>
+        </div>
     </div>
-    <div class="infoBlock">
-        <a href="{{url_for('auth.register')}}" class="buttons lightBox lighttext main_Thing" style="width:30%; margin: 10% auto 20px auto; padding:10px">Создание аккаунта</a>
-        <a href="{{url_for('auth.login')}}" class="buttons lightBox lighttext main_Thing" style="width:30%; margin: 0 auto 20px auto; padding:10px">Вход на платформу</a>
-        <img src="{{url_for('static', filename='images/mascot/lyingMascot.png')}}" class="mascot">
+
+    <!-- CTA Блок -->
+    <div class="infoBlock ctaSection">
+        <div class="ctaCard reveal">
+            <div class="ctaContent reveal delay-1">
+                <span class="ctaLabel">ГОТОВЫ НАЧАТЬ?</span>
+                <h2 class="ctaTitle">Попробуй Sinus</h2>
+                <p class="ctaText">Присоединяйся к платформе и начни разбираться в математике без лишней суеты.</p>
+            
+                <div class="ctaButtons">
+                    <a href="{{ url_for('auth.register') }}" class="ctaBtn ctaPrimary">
+                        Создать аккаунт <span>→</span>
+                    </a>
+                    <a href="{{ url_for('auth.login') }}" class="ctaBtn ctaSecondary">
+                        Войти на платформу <span>→</span>
+                    </a>
+                </div>
+            </div>
+
+            <img src="{{ url_for('static', filename='images/mascot/lyingMascot.png') }}" class="ctaMascot reveal delay-2" alt="Отдыхающий маскот">
+        </div>
+    </div>
+
+    <!-- Подвал сайта -->
+    <footer class="footer reveal">
         <ul class="smallInfo">
-            <li><a href="https://t.me/karznl">Телеграмм-канал</a></li>
+            <li><a href="https://t.me/karznl" target="_blank" rel="noopener">Телеграм-канал</a></li>
             <li><a href="/">FAQ</a></li>
             <li><button class="textButton" onclick="openContacts()">Контакты</button></li>
             <li><a href="/">Поддержка</a></li>
-            <li><a href="{{url_for('main.privacypolicy')}}">Политика конфиденциальности</a></li>
-            <li>2026</li>
+            <li><a href="{{ url_for('main.privacypolicy') }}">Политика конфиденциальности</a></li>
+            <li class="copyright">© 2026 Sinus</li>
         </ul>
-    </div>
+    </footer>
+
+    <!-- Скрипт плавного скролла -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px 0px -50px 0px', // Элемент начнет проявляться за 50px до достижения края экрана
+                threshold: 0.15 // Порог видимости 15%
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                        // Если хотите, чтобы анимация срабатывала только 1 раз при первом скролле:
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            const revealElements = document.querySelectorAll('.reveal');
+            revealElements.forEach(el => observer.observe(el));
+        });
+    </script>
+    <script src="{{url_for('static', filename='js/about.js')}}"></script>
     <script src="{{url_for('static',filename='js/ui.js')}}"></script> 
 </body>
 </html>

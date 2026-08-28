@@ -21,6 +21,15 @@
 }
 
 .main_Thing {
+    width: auto !important;
+    min-width: 240px;
+    padding: 13px 22px !important;
+    border-radius: 14px;
+    transition: 0.25s ease;
     font-size: 12px;
     color:var(--text-color);
+}
+
+.main_Thing:hover {
+    transform: translateY(-3px);
 }

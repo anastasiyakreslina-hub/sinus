@@ -3,6 +3,7 @@
 /* Базовые стили */
 @import url('base/fonts.css');
 @import url('base/global.css');
+@import url('base/slow.css');
 
 /* Переиспользуемые компоненты */
 @import url('components/card.css');
