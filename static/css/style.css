@@ -11,6 +11,7 @@
 @import url('components/sidebar.css');
 @import url('components/buttons.css');
 @import url('components/forms.css');
+@import url('components/modals.css');
 
 /* Страницы */
 @import url('pages/home.css');

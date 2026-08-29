@@ -886,27 +886,61 @@
 #     app.run(debug=True)
 
 import os
-from flask import Flask
-from database import init_db
+from flask import Flask, session
 
+from database import init_db, get_user_by_id
+from rate import get_tariff_info
+from routes.payment import payment_bp
 from routes.main import main_bp
 from routes.auth import auth_bp
 from routes.tasks import tasks_bp
 from routes.theory import theory_bp
 
-def create_app():
-    app = Flask(__name__)
-    
-    app.config['MAX_CONTENT_LENGTH'] = 8 * 1024 * 1024
-    app.secret_key = os.environ.get('secret_key', '12345')
 
-    # Инициализация БД
+def create_app() -> Flask:
+    app = Flask(__name__)
+
+    # Ограничение на размер загружаемых файлов (8 МБ)
+    app.config["MAX_CONTENT_LENGTH"] = 8 * 1024 * 1024
+
+    # Секретный ключ для сессий
+    app.secret_key = os.environ.get("SECRET_KEY", "dev-secret-key-12345")
+
+    # ============================================================
+    # ИНИЦИАЛИЗАЦИЯ БАЗЫ ДАННЫХ
+    # ============================================================
     init_db()
 
-    # Регистрация блупринтов
+    # ============================================================
+    # КОНТЕКСТНЫЕ ПЕРЕМЕННЫЕ ДЛЯ SHABLONOV JINJA2
+    # ============================================================
+    @app.context_processor
+    def inject_user_and_tariff():
+        """Автоматически передаёт current_user и tariff_info во все HTML-шаблоны."""
+        user_id = session.get("user_id")
+        user = get_user_by_id(user_id) if user_id else None
+        tariff_info = get_tariff_info(user) if user else None
+
+        return {
+            "current_user": user,
+            "tariff_info": tariff_info,
+        }
+
+    # ============================================================
+    # РЕГИСТРАЦИЯ BLUEPRINTS
+    # ============================================================
     app.register_blueprint(main_bp)
     app.register_blueprint(auth_bp)
     app.register_blueprint(tasks_bp)
     app.register_blueprint(theory_bp)
+    app.register_blueprint(payment_bp)
 
     return app
+
+
+# Точка входа для локального запуска приложения
+app = create_app()
+
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port, debug=True)

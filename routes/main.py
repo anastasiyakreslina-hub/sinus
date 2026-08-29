@@ -4,6 +4,7 @@ from flask import Blueprint, render_template, redirect, session
 from database import get_db
 from decorators import regs_only
 from utils import all_count, correct_count
+from datetime import date
 
 main_bp = Blueprint('main', __name__)
 
@@ -49,14 +50,42 @@ def about():
         include_text=read_static_file('static/texts/include.txt')
     )
 
-@main_bp.route('/privacypolicy')
+@main_bp.route("/offer")
+def offer():
+    return render_template(
+        "offer.html",
+        offer_date=date.today().strftime("%d.%m.%Y"),
+        seller_name="Креслина Анастасия Владимировна",
+        seller_status="самозанятая",
+        seller_inn="701775365157",
+        seller_email="anastasiyakreslina@gmail.com",
+        pro_price=299,
+        pro_days=30
+    )
+
+
+@main_bp.route("/privacypolicy")
 def privacypolicy():
-    try:
-        with open('static/texts/policy.txt', 'r', encoding='utf-8') as f:
-            policy_text = f.read()
-    except FileNotFoundError:
-        policy_text = ""
-    return render_template('privacypolicy.html', policy_text=policy_text)
+    return render_template(
+        "privacypolicy.html",
+        privacypolicy_date=date.today().strftime("%d.%m.%Y"),
+        seller_name="Креслина Анастасия Владимировна",
+        seller_status="самозанятая",
+        seller_inn="701775365157",
+        seller_email="anastasiyakreslina@gmail.com"
+    )
+
+
+@main_bp.route("/refund")
+def refund():
+    return render_template(
+        "refund.html",
+        refund_date=date.today().strftime("%d.%m.%Y"),
+        seller_name="Креслина Анастасия Владимировна",
+        seller_status="самозанятая",
+        seller_inn="701775365157",
+        seller_email="anastasiyakreslina@gmail.com"
+    )
 
 @main_bp.route('/error')
 @regs_only

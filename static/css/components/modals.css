@@ -1,0 +1,156 @@
+/* =====================================================
+           PRO MODAL
+        ===================================================== */
+        .proModal {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.65);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+        .proModal.active {
+            display: flex;
+        }
+        .proModalContent {
+            position: relative;
+            width: min(480px, 100%);
+            padding: 32px;
+            border-radius: 28px;
+            background: var(--card-bg, #18181b);
+            color: var(--text-color, #ffffff);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.5);
+            animation: proModalAppear 0.25s ease;
+        }
+        @keyframes proModalAppear {
+            from {
+                opacity: 0;
+                transform: translateY(15px) scale(0.97);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+        .proModalClose {
+            position: absolute;
+            top: 16px;
+            right: 18px;
+            width: 36px;
+            height: 36px;
+            border: none;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.08);
+            color: currentColor;
+            font-size: 22px;
+            line-height: 1;
+            cursor: pointer;
+            opacity: 0.8;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .proModalClose:hover {
+            opacity: 1;
+            background: rgba(255, 255, 255, 0.15);
+        }
+        .proModalBadge {
+            display: inline-flex;
+            align-items: center;
+            margin-bottom: 14px;
+            padding: 7px 12px;
+            border-radius: 999px;
+            background: rgba(130, 100, 255, 0.2);
+            color: #a78bfa;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+        .proModalTitle {
+            margin: 0 0 8px;
+            font-size: 32px;
+            line-height: 1.1;
+            color: inherit;
+        }
+        .proModalDescription {
+            margin: 0 0 24px;
+            opacity: 0.75;
+            line-height: 1.5;
+            color: inherit;
+        }
+        .proFeatures {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 28px;
+        }
+        .proFeature {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 15px;
+            color: inherit;
+        }
+        .proFeatureIcon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            flex-shrink: 0;
+            border-radius: 50%;
+            background: rgba(130, 100, 255, 0.2);
+            color: #a78bfa;
+            font-size: 14px;
+            font-weight: bold;
+        }
+        .proPrice {
+            display: flex;
+            align-items: baseline;
+            gap: 8px;
+            margin-bottom: 18px;
+        }
+        .proPriceValue {
+            font-size: 34px;
+            font-weight: 800;
+            color: inherit;
+        }
+        .proPricePeriod {
+            opacity: 0.6;
+            color: inherit;
+        }
+        .proPayButton {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            padding: 15px 20px;
+            border: none;
+            border-radius: 16px;
+            background: #8264ff;
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.1s;
+        }
+        .proPayButton:hover {
+            background: #6e4eff;
+        }
+        .proPayButton:active {
+            transform: scale(0.99);
+        }
+        .proModalNote {
+            margin-top: 12px;
+            font-size: 12px;
+            text-align: center;
+            opacity: 0.55;
+            color: inherit;
+        }

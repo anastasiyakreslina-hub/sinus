@@ -1,45 +1,478 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
+
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Политика конфиденциальности</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    <script src="{{ url_for('static', filename='js/theme.js') }}" defer></script>
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1"
+    >
+
+    <title>Sinus — Политика конфиденциальности</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+
+    <script
+        src="{{ url_for('static', filename='js/theme.js') }}"
+        defer>
+    </script>
+
+    <style>
+
+        .legalPage {
+            width: 100%;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 45px 25px 80px;
+        }
+
+        .legalBack {
+            display: inline-block;
+            margin-bottom: 35px;
+            color: inherit;
+            text-decoration: none;
+            opacity: .55;
+        }
+
+        .legalBack:hover {
+            opacity: 1;
+        }
+
+        .legalHeader {
+            margin-bottom: 45px;
+        }
+
+        .legalEyebrow {
+            margin-bottom: 12px;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: .12em;
+            opacity: .5;
+        }
+
+        .legalTitle {
+            margin: 0 0 15px;
+            font-size: 42px;
+            line-height: 1.1;
+        }
+
+        .legalDate {
+            opacity: .5;
+        }
+
+        .legalContent {
+            line-height: 1.7;
+        }
+
+        .legalContent h2 {
+            margin: 42px 0 15px;
+            font-size: 23px;
+        }
+
+        .legalContent p {
+            margin-bottom: 15px;
+        }
+
+        .legalContent ul {
+            padding-left: 25px;
+        }
+
+        .legalContent li {
+            margin-bottom: 8px;
+        }
+
+        .legalBox {
+            margin: 25px 0;
+            padding: 22px;
+            border-radius: 20px;
+            background: rgba(128,128,128,.08);
+        }
+
+        .legalNav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 45px;
+        }
+
+        .legalNav a {
+            color: inherit;
+            opacity: .65;
+        }
+
+        @media (max-width: 600px) {
+            .legalPage {
+                padding: 30px 18px 60px;
+            }
+
+            .legalTitle {
+                font-size: 32px;
+            }
+        }
+
+    </style>
+
 </head>
-<body>
-    <div id="contacts" style="display: none; width:50%;height:35%" class="modal">
-            <span onclick="closeContacts()">&times;</span>
-            <p class="main_Thing questions">почта: anastasiyakreslina@gmail.com</p>
-            <p class="main_Thing questions">телеграмм: @krazern</p>
-            <p class="main_Thing questions">Время ответа: 1-2 дня</p>
-            <p class="main_Thing questions">Отвечаю исключительно на вопросы о платформе, предложения, сообщения об ошибке и отзывы</p>
-            <p class="main_Thing questions">^_^</p>
+
+
+<body class="homePage">
+
+
+<main class="legalPage">
+
+
+    <a
+        href="{{ url_for('main.home') }}"
+        class="legalBack"
+    >
+        ← Вернуться на главную
+    </a>
+
+
+    <header class="legalHeader">
+
+        <p class="legalEyebrow">
+            SINUS · ДОКУМЕНТЫ
+        </p>
+
+        <h1 class="legalTitle">
+            Политика конфиденциальности
+        </h1>
+
+        <p class="legalDate">
+            Дата публикации: {{ privacy_date }}
+        </p>
+
+    </header>
+
+
+    <article class="legalContent">
+
+
+        <div class="legalBox">
+
+            <p>
+                Настоящая Политика определяет порядок обработки
+                и защиты персональных данных пользователей
+                платформы Sinus.
+            </p>
+
         </div>
-    <div class="task">
-        <img src="{{url_for('static',filename='images/mascot/mainMascot.png')}}" class="mascot">
-        <p class="taskText">{{ policy_text }}</p>
-    </div>
-    <div class="sidebar" id="sidebar">
-        <a href="{{url_for('main.error')}}" class="name sidebar_text">настя синус</a>
-        <ul class="listThings">
-            <li><a href="{{url_for('main.home')}}" class="lighttext sidebar_text">Основная страница</a></li>
-            <li><a href="{{url_for('tasks.tasks')}}" class="lighttext sidebar_text">Банк заданий</a></li>
-            <li><a href="{{url_for('tasks.tests')}}" class="lighttext sidebar_text">Варианты уровня ЕГЭ</a></li>
-            <li><a href="{{url_for('tasks.mistakes')}}" class="lighttext sidebar_text">Работа над ошибками</a></li>
-            <li><a href="{{url_for('tasks.statistics')}}" class="lighttext sidebar_text">Статистика</a></li>
-            <li><a href="{{url_for('auth.logout')}}" class="lighttext sidebar_text">Выход</a></li>
-            <li></li>
+
+
+        <h2>1. Общие положения</h2>
+
+        <p>
+            1.1. Настоящая Политика разработана с целью
+            обеспечения защиты персональных данных пользователей
+            Сервиса.
+        </p>
+
+        <p>
+            1.2. Используя Sinus, Пользователь подтверждает,
+            что ознакомился с настоящей Политикой.
+        </p>
+
+
+        <h2>2. Оператор персональных данных</h2>
+
+        <div class="legalBox">
+
+            <p>
+                <strong>
+                    Оператор:
+                </strong>
+                {{ seller_name }}
+            </p>
+
+            <p>
+                <strong>
+                    Статус:
+                </strong>
+                {{ seller_status }}
+            </p>
+
+            <p>
+                <strong>
+                    ИНН:
+                </strong>
+                {{ seller_inn }}
+            </p>
+
+            <p>
+                <strong>
+                    Email:
+                </strong>
+                {{ seller_email }}
+            </p>
+
+        </div>
+
+
+        <h2>3.Какие данные обрабатываются</h2>
+
+        <p>
+            В зависимости от использования Сервиса могут
+            обрабатываться следующие данные:
+        </p>
+
+        <ul>
+
+            <li>
+                имя пользователя или логин;
+            </li>
+
+            <li>
+                адрес электронной почты, если он используется
+                при регистрации или обращении в поддержку;
+            </li>
+
+            <li>
+                пароль в защищённом виде;
+            </li>
+
+            <li>
+                установленная Пользователем цель подготовки;
+            </li>
+
+            <li>
+                изображение профиля, если Пользователь его
+                загружает;
+            </li>
+
+            <li>
+                сведения о решённых заданиях;
+            </li>
+
+            <li>
+                результаты и статистика подготовки;
+            </li>
+
+            <li>
+                сведения о приобретённом тарифе;
+            </li>
+
+            <li>
+                технические данные, необходимые для
+                функционирования Сервиса.
+            </li>
+
         </ul>
-    </div>
-        <ul class="smallInfo">
-            <li><a href="https://t.me/karznl">Телеграмм-канал</a></li>
-            <li><a href="/">FAQ</a></li>
-            <li><button class="textButton" onclick="openContacts()">Контакты</button></li>
-            <li><a href="/">Поддержка</a></li>
-            <li><a href="{{url_for('main.privacypolicy')}}">Политика конфиденциальности</a></li>
-            <li>2026</li>
+
+
+        <h2>4. Цели обработки</h2>
+
+        <p>
+            Персональные данные используются для:
+        </p>
+
+        <ul>
+
+            <li>
+                создания и обслуживания аккаунта;
+            </li>
+
+            <li>
+                предоставления доступа к функциям Сервиса;
+            </li>
+
+            <li>
+                сохранения прогресса пользователя;
+            </li>
+
+            <li>
+                отображения статистики;
+            </li>
+
+            <li>
+                предоставления оплаченного доступа Pro;
+            </li>
+
+            <li>
+                обработки обращений в поддержку;
+            </li>
+
+            <li>
+                обеспечения безопасности аккаунта;
+            </li>
+
+            <li>
+                выполнения требований законодательства.
+            </li>
+
         </ul>
-    <script src="{{url_for('static',filename='js/ui.js')}}"></script>
+
+
+        <h2>5. Обработка платежной информации</h2>
+
+        <p>
+            При оплате тарифа Pro платёжные данные обрабатываются
+            соответствующим платёжным сервисом.
+        </p>
+
+        <p>
+            Sinus не получает и не хранит полный номер
+            банковской карты, CVC/CVV-код и другие реквизиты
+            карты, если такие данные непосредственно
+            обрабатываются платёжным сервисом.
+        </p>
+
+        <p>
+            Sinus может хранить техническую информацию,
+            необходимую для подтверждения платежа,
+            например идентификатор платежа, статус платежа,
+            сумму и дату операции.
+        </p>
+
+
+        <h2>6. Правовые основания обработки</h2>
+
+        <p>
+            Обработка персональных данных осуществляется
+            на основании согласия Пользователя, необходимости
+            исполнения договора, а также иных оснований,
+            предусмотренных законодательством Российской Федерации.
+        </p>
+
+
+        <h2>7. Хранение персональных данных</h2>
+
+        <p>
+            Персональные данные хранятся в информационных
+            системах, используемых для работы Сервиса.
+        </p>
+
+        <p>
+            Срок хранения определяется целями обработки,
+            требованиями законодательства и необходимостью
+            исполнения договорных обязательств.
+        </p>
+
+
+        <h2>8. Защита данных</h2>
+
+        <p>
+            Оператор принимает разумные организационные
+            и технические меры для защиты персональных данных
+            от неправомерного доступа, изменения,
+            распространения и уничтожения.
+        </p>
+
+        <p>
+            Пароли пользователей не должны храниться
+            в открытом виде.
+        </p>
+
+
+        <h2>9. Передача данных третьим лицам</h2>
+
+        <p>
+            Персональные данные могут передаваться третьим лицам
+            только в случаях, необходимых для функционирования
+            Сервиса, исполнения договора или выполнения требований
+            законодательства.
+        </p>
+
+        <p>
+            К таким организациям могут относиться хостинг-провайдеры,платёжные сервисы и иные технические подрядчики,
+            обеспечивающие работу Сервиса.
+        </p>
+
+
+        <h2>10. Права Пользователя</h2>
+
+        <p>
+            Пользователь вправе обращаться к Оператору
+            по вопросам обработки своих персональных данных,
+            а также требовать уточнения, изменения или удаления
+            данных в случаях, предусмотренных законодательством.
+        </p>
+
+
+        <h2>11. Удаление аккаунта</h2>
+
+        <p>
+            Пользователь может обратиться к Оператору
+            с запросом на удаление аккаунта и связанных
+            с ним персональных данных.
+        </p>
+
+        <p>
+            Отдельные данные могут сохраняться в случаях,
+            когда их хранение требуется законодательством
+            или необходимо для исполнения обязательств.
+        </p>
+
+
+        <h2>12. Файлы cookie</h2>
+
+        <p>
+            Сервис может использовать технические cookie
+            и аналогичные технологии, необходимые для
+            авторизации, сохранения настроек и корректной
+            работы сайта.
+        </p>
+
+
+        <h2>13. Изменение Политики</h2>
+
+        <p>
+            Оператор вправе изменять настоящую Политику.
+            Новая редакция публикуется на сайте Sinus.
+        </p>
+
+
+        <h2>14. Контакты</h2>
+
+        <div class="legalBox">
+
+            <p>
+                <strong>
+                    {{ seller_name }}
+                </strong>
+            </p>
+
+            <p>
+                {{ seller_status }}
+            </p>
+
+            <p>
+                ИНН: {{ seller_inn }}
+            </p>
+
+            <p>
+                Email:
+                <a href="mailto:{{ seller_email }}">
+                    {{ seller_email }}
+                </a>
+            </p>
+
+        </div>
+
+
+        <nav class="legalNav">
+
+            <a href="{{ url_for('main.offer') }}">
+                Публичная оферта
+            </a>
+
+            <a href="{{ url_for('main.refund') }}">
+                Условия возврата
+            </a>
+
+        </nav>
+
+
+    </article>
+
+
+</main>
+
+
 </body>
 </html>

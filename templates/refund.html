@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1"
+    >
+
+    <title>Sinus — Условия возврата</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+
+    <script
+        src="{{ url_for('static', filename='js/theme.js') }}"
+        defer>
+    </script>
+
+    <style>
+
+        .legalPage {
+            width: 100%;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 45px 25px 80px;
+        }
+
+        .legalBack {
+            display: inline-block;
+            margin-bottom: 35px;
+            color: inherit;
+            text-decoration: none;
+            opacity: .55;
+        }
+
+        .legalBack:hover {
+            opacity: 1;
+        }
+
+        .legalHeader {
+            margin-bottom: 45px;
+        }
+
+        .legalEyebrow {
+            margin-bottom: 12px;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: .12em;
+            opacity: .5;
+        }
+
+        .legalTitle {
+            margin: 0 0 15px;
+            font-size: 42px;
+            line-height: 1.1;
+        }
+
+        .legalDate {
+            opacity: .5;
+        }
+
+        .legalContent {
+            line-height: 1.7;
+        }
+
+        .legalContent h2 {
+            margin: 42px 0 15px;
+            font-size: 23px;
+        }
+
+        .legalContent p {
+            margin-bottom: 15px;
+        }
+
+        .legalContent ul {
+            padding-left: 25px;
+        }
+
+        .legalContent li {
+            margin-bottom: 8px;
+        }
+
+        .legalBox {
+            margin: 25px 0;
+            padding: 22px;
+            border-radius: 20px;
+            background: rgba(128,128,128,.08);
+        }
+
+        .legalNav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 45px;
+        }
+
+        .legalNav a {
+            color: inherit;
+            opacity: .65;
+        }
+
+        @media (max-width: 600px) {
+
+            .legalPage {
+                padding: 30px 18px 60px;
+            }
+
+            .legalTitle {
+                font-size: 32px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body class="homePage">
+
+
+<main class="legalPage">
+
+
+    <a
+        href="{{ url_for('main.home') }}"
+        class="legalBack"
+    >
+        ← Вернуться на главную
+    </a>
+
+
+    <header class="legalHeader">
+
+        <p class="legalEyebrow">
+            SINUS · ДОКУМЕНТЫ
+        </p>
+
+        <h1 class="legalTitle">
+            Условия возврата
+        </h1>
+
+        <p class="legalDate">
+            Дата публикации: {{ refund_date }}
+        </p>
+
+    </header>
+
+
+    <article class="legalContent">
+
+
+        <div class="legalBox">
+
+            <p>
+                Настоящие условия определяют порядок
+                рассмотрения запросов на возврат денежных
+                средств за платный доступ к Sinus.
+            </p>
+
+        </div>
+
+
+        <h2>1. Общие положения</h2>
+
+        <p>
+            1.1. Пользователь вправе обратиться с запросом
+            на возврат денежных средств в случаях,
+            предусмотренных законодательством Российской Федерации.
+        </p>
+
+        <p>
+            1.2. Условия возврата применяются к оплате
+            тарифа Pro и иных платных функций Сервиса,
+            если для них не установлены отдельные условия.
+        </p>
+
+
+        <h2>2. Как оформить запрос</h2>
+
+        <p>
+            Для обращения по вопросу возврата необходимо
+            направить сообщение на:
+        </p>
+
+        <div class="legalBox">
+
+            <strong>
+                {{ seller_email }}
+            </strong>
+
+        </div>
+
+        <p>
+            В обращении желательно указать:
+        </p>
+
+        <ul>
+
+            <li>
+                имя пользователя или email аккаунта;
+            </li>
+
+            <li>
+                дату совершения платежа;
+            </li>
+
+            <li>
+                сумму платежа;
+            </li>
+
+            <li>
+                идентификатор платежа, если он известен;
+            </li>
+
+            <li>
+                причину обращения.
+            </li>
+
+        </ul>
+
+
+        <h2>3. Рассмотрение обращения</h2>
+
+        <p>
+            После получения запроса Исполнитель проверяет
+            сведения о платеже и обстоятельства, указанные
+            Пользователем.
+        </p>
+
+        <p>
+            При необходимости Исполнитель может запросить
+            дополнительную информацию, необходимую для
+            рассмотрения обращения.
+        </p>
+
+        <p>
+            Решение принимается в сроки, установленные
+            применимым законодательством.
+        </p>
+
+
+        <h2>4. Возврат денежных средств</h2>
+
+        <p>
+            Если возврат одобрен, денежные средства возвращаются
+            тем способом, который допускается платёжной системой
+            и применимым законодательством.
+        </p>
+
+        <p>
+            Срок фактического зачисления денежных средств
+            может зависеть от банка или платёжного сервиса.
+        </p>
+
+
+        <h2>5. Прекращение доступа после возврата</h2>
+
+        <p>
+            При осуществлении возврата денежных средств
+            доступ к соответствующему платному тарифу
+            может быть прекращён.
+        </p>
+
+
+        <h2>6. Технические проблемы</h2>
+
+        <p>
+            Если Пользователь оплатил тариф, но доступ
+            к Pro не был предоставлен из-за технической
+            ошибки, необходимо обратиться в поддержку.
+        </p>
+
+        <p>
+            Исполнитель проверит информацию о платеже
+            и примет необходимые меры для восстановления
+            доступа либо решения вопроса с оплатой.
+        </p>
+
+
+        <h2>7. Несанкционированные платежи</h2>
+
+        <p>
+            Если Пользователь считает, что платёж был
+            совершён без его согласия, необходимо как можно
+            скорее обратиться в службу поддержки и,
+            при необходимости, в обслуживающий банк.
+        </p>
+
+
+        <h2>8. Контактная информация</h2>
+
+        <div class="legalBox">
+
+            <p>
+                <strong>
+                    {{ seller_name }}
+                </strong>
+            </p>
+
+            <p>
+                {{ seller_status }}
+            </p>
+
+            <p>
+                ИНН: {{ seller_inn }}
+            </p>
+
+            <p>
+                Email:
+                <a href="mailto:{{ seller_email }}">
+                    {{ seller_email }}
+                </a>
+            </p>
+
+        </div>
+
+
+        <nav class="legalNav">
+
+            <a href="{{ url_for('main.offer') }}">
+                Публичная оферта
+            </a>
+
+            <a href="{{ url_for('main.privacypolicy') }}">
+                Политика конфиденциальности
+            </a>
+
+        </nav>
+
+
+    </article>
+
+
+</main>
+
+
+</body>
+</html>

@@ -33,3 +33,143 @@
 .main_Thing:hover {
     transform: translateY(-3px);
 }
+
+/* =========================================================
+   FOOTER (ОБНОВЛЕННЫЙ СТИЛЬ)
+   ========================================================= */
+.homeFooter {
+    width: 100%;
+    margin-top: auto;
+    padding: 50px 0 30px;
+    background: linear-gradient(
+        180deg,
+        transparent 0%,
+        rgba(205, 48, 95, 0.03) 100%
+    );
+    border-top: 1px solid rgba(128, 128, 128, 0.12);
+    color: var(--text);
+}
+
+[data-theme="dark"] .homeFooter {
+    border-top-color: rgba(134, 17, 83, 0.25);
+}
+
+.footerContainer {
+    width: min(1050px, calc(100% - 40px));
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 40px;
+    flex-wrap: wrap;
+}
+
+/* Секция бренда */
+.footerBrand {
+    max-width: 280px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.footerLogo {
+    color: var(--text);
+    font-size: 24px;
+    font-weight: 800;
+    letter-spacing: -0.05em;
+    text-decoration: none;
+}
+
+.footerLogo span {
+    color: #cd305f;
+}
+
+.footerDescription {
+    margin: 0;
+    font-size: 13px;
+    line-height: 1.5;
+    opacity: 0.55;
+}
+
+.footerCopyright {
+    font-size: 11px;
+    opacity: 0.4;
+    margin-top: 8px;
+}
+
+/* Сетка ссылок */
+.footerNavGrid {
+    display: flex;
+    gap: 50px;
+    flex-wrap: wrap;
+}
+
+.footerColumn {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.footerColumnTitle {
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #cd305f;
+    margin-bottom: 4px;
+}
+
+/* Общие стили для ссылок и кнопок в футере */
+.footerColumn a,
+.footerLinkBtn {
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    font-family: inherit;
+    font-size: 13px;
+    color: var(--text);
+    text-decoration: none;
+    opacity: 0.65;
+    text-align: left;
+    cursor: pointer;
+    transition: opacity 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+.footerColumn a:hover,
+.footerLinkBtn:hover {
+    opacity: 1;
+    color: #cd305f;
+    transform: translateX(2px);
+}
+
+/* Адаптированность под мобильные устройства */
+@media (max-width: 700px) {
+    .homeFooter {
+        padding: 40px 0 25px;
+    }
+
+    .footerContainer {
+        width: calc(100% - 30px);
+        flex-direction: column;
+        gap: 32px;
+    }
+
+    .footerBrand {
+        max-width: 100%;
+    }
+
+    .footerNavGrid {
+        width: 100%;
+        justify-content: space-between;
+        gap: 24px;
+    }
+}
+
+@media (max-width: 480px) {
+    .footerNavGrid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 28px 20px;
+    }
+}

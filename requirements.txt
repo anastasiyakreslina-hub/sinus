@@ -2,3 +2,4 @@ pillow
 flask
 gunicorn
 psycopg2-binary
+yookassa

@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Sinus — Pro</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="{{ url_for('static', filename='js/theme.js') }}" defer></script>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            font-family: inherit;
+            background:
+                radial-gradient(
+                    circle at 70% 0%,
+                    rgba(205, 48, 95, 0.07),
+                    transparent 32%
+                ),
+                var(--background);
+            color: var(--text);
+        }
+
+        .paymentPage {
+            width: 100%;
+            max-width: 520px;
+        }
+
+        .paymentCard {
+            padding: 40px;
+            border-radius: 24px;
+            background: #ffffff;
+            border: 1px solid rgba(128, 128, 128, 0.12);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        [data-theme="dark"] .paymentCard {
+            background: #880d4d30;
+            border-color: rgba(134, 17, 83, 0.336);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+        }
+
+        .paymentLogo {
+            margin-bottom: 30px;
+            font-size: 26px;
+            font-weight: 800;
+            letter-spacing: -0.05em;
+            color: var(--text);
+        }
+
+        .paymentLogo span {
+            color: #cd305f;
+            opacity: 1;
+        }
+
+        .paymentBadge {
+            display: inline-block;
+            margin-bottom: 15px;
+            padding: 7px 12px;
+            border-radius: 999px;
+            background: rgba(205, 48, 95, 0.08);
+            color: #cd305f;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+        }
+
+        .paymentTitle {
+            margin: 0 0 12px;
+            font-size: 34px;
+            line-height: 1.1;
+            letter-spacing: -0.04em;
+        }
+
+        .paymentDescription {
+            margin: 0 0 28px;
+            line-height: 1.5;
+            font-size: 13px;
+            opacity: 0.6;
+        }
+
+        .paymentFeatures {
+            display: flex;
+            flex-direction: column;
+            gap: 13px;
+            margin-bottom: 30px;
+        }
+
+        .paymentFeature {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 14px;
+        }
+
+        .paymentFeatureIcon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            flex-shrink: 0;
+            border-radius: 50%;
+            background: rgba(205, 48, 95, 0.08);
+            color: #cd305f;
+            font-weight: 700;
+            font-size: 13px;
+        }
+
+        .paymentPrice {
+            display: flex;
+            align-items: baseline;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .paymentPrice strong {
+            font-size: 36px;
+            letter-spacing: -0.04em;
+            color: #cd305f;
+        }
+
+        .paymentPrice span {
+            opacity: 0.5;
+            font-size: 14px;
+        }
+
+        .paymentButton {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 16px;
+            background: #cd305f;
+            color: white;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.2s ease, transform 0.2s ease, opacity 0.2s ease;
+        }
+
+        .paymentButton:hover {
+            transform: translateY(-2px);
+            opacity: 0.95;
+            background: #b82852;
+        }
+
+        .paymentBack {
+            display: block;
+            margin-top: 18px;
+            text-align: center;
+            color: var(--text);
+            text-decoration: none;
+            font-size: 13px;
+            opacity: 0.5;
+            transition: opacity 0.2s ease, color 0.2s ease;
+        }
+
+        .paymentBack:hover {
+            opacity: 1;
+            color: #cd305f;
+        }
+
+        @media (max-width: 430px) {
+            .paymentCard {
+                padding: 24px;
+            }
+
+            .paymentTitle {
+                font-size: 28px;
+            }
+
+            .paymentPrice strong {
+                font-size: 30px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="paymentPage">
+    <div class="paymentCard">
+
+        <div class="paymentLogo">
+            sinus<span>.</span>
+        </div>
+
+        <div class="paymentBadge">
+            ✦ SINUS PRO
+        </div>
+
+        <h1 class="paymentTitle">
+            Pro на 30 дней
+        </h1>
+
+        <p class="paymentDescription">
+            Открой все возможности платформы и продолжай подготовку к экзамену без ограничений.
+        </p>
+
+        <div class="paymentFeatures">
+            <div class="paymentFeature">
+                <div class="paymentFeatureIcon">✓</div>
+                <span>Полный банк задач</span>
+            </div>
+
+            <div class="paymentFeature">
+                <div class="paymentFeatureIcon">✓</div>
+                <span>Все варианты ЕГЭ и ОГЭ</span>
+            </div>
+
+            <div class="paymentFeature">
+                <div class="paymentFeatureIcon">✓</div>
+                <span>Работа над ошибками</span>
+            </div>
+
+            <div class="paymentFeature">
+                <div class="paymentFeatureIcon">✓</div>
+                <span>Расширенная статистика</span>
+            </div>
+
+            <div class="paymentFeature">
+                <div class="paymentFeatureIcon">✓</div>
+                <span>Все теоретические материалы</span>
+            </div>
+        </div>
+
+        <div class="paymentPrice">
+            <strong>{{ offer.price_rubles }} ₽</strong>
+            <span>/ 30 дней</span>
+        </div>
+
+        <form action="{{ url_for('payment.create_payment') }}" method="POST">
+            <button type="submit" class="paymentButton">
+                Перейти к оплате →
+            </button>
+        </form>
+
+        <a href="{{ url_for('main.home') }}" class="paymentBack">
+            ← Вернуться на главную
+        </a>
+
+    </div>
+</div>
+
+</body>
+</html>

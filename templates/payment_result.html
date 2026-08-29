@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Sinus — оплата</title>
+
+    <!-- Стили -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+    <main class="paymentMain">
+
+        <div class="paymentCard paymentResult">
+
+            <div class="paymentResultIcon">
+                ✓
+            </div>
+
+            <p class="homeEyebrow">
+                SINUS · PRO
+            </p>
+
+            <h1>
+                Спасибо за оплату!
+            </h1>
+
+            <p class="paymentDescription">
+                Мы проверяем статус платежа.
+                После подтверждения Pro автоматически
+                появится в вашем профиле.
+            </p>
+
+            <a href="{{ url_for('main.home') }}" class="paymentButton">
+                Вернуться в Sinus →
+            </a>
+
+        </div>
+
+    </main>
+
+</body>
+</html>

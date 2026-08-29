@@ -237,17 +237,47 @@
         </section>
     </main>
 
-    <!-- ================= FOOTER ================= -->
-    <footer class="profileFooter">
-        <div class="footerLinks">
-            <a href="https://t.me/karznl" target="_blank" rel="noopener">Телеграм-канал</a>
-            <a href="/">FAQ</a>
-            <button class="textButton" onclick="openContacts()">Контакты</button>
-            <a href="/">Поддержка</a>
-            <a href="{{ url_for('main.privacypolicy') }}">Политика конфиденциальности</a>
+ <!-- =====================================================
+     FOOTER
+===================================================== -->
+    <footer class="homeFooter">
+        <div class="footerContainer">
+        <!-- Левая колонка: Бренд и описание -->
+            <div class="footerBrand">
+                <a href="{{ url_for('main.home') if 'main.home' in request.endpoint else '/' }}" class="footerLogo">
+                sinus<span>.</span>
+                </a>
+                <p class="footerDescription">
+                    Платформа для эффективной подготовки к экзаменам по математике.
+                </p>
+                <span class="footerCopyright">© 2026 Sinus. Все права защищены.</span>
+            </div>
+
+        <!-- Правая часть: Логические группы ссылок -->
+            <div class="footerNavGrid">
+                <div class="footerColumn">
+                    <span class="footerColumnTitle">Проект</span>
+                    <a href="https://t.me/karznl" target="_blank" rel="noopener">Телеграм-канал</a>
+                    <a href="{{ url_for('main.about') if 'main.about' in request.endpoint else '/' }}">О проекте</a>
+                </div>
+
+                <div class="footerColumn">
+                    <span class="footerColumnTitle">Помощь</span>
+                    <a href="/">FAQ</a>
+                    <button type="button" class="footerLinkBtn" onclick="openContacts()">Контакты</button>
+                    <a href="/">Поддержка</a>
+                </div>
+
+                <div class="footerColumn">
+                    <span class="footerColumnTitle">Документы</span>
+                    <a href="{{ url_for('main.privacypolicy') }}">Конфиденциальность</a>
+                    <a href="{{ url_for('main.offer') }}">Публичная оферта</a>
+                    <a href="{{ url_for('main.refund') }}">Правила возврата</a>
+                </div>
+            </div>
         </div>
-        <span class="copyright">2026</span>
-    </footer>
+    </footer>   
+
 
     <!-- ================= DATA ================= -->
     <script>
