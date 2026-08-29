@@ -1,181 +1,187 @@
 <!DOCTYPE html>
 <html lang="ru">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Статистика — Sinus</title>
-        <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-        <script src="{{ url_for('static', filename='js/theme.js') }}" defer></script>
-    </head>
-    <body class="tasksPage statisticsPage">
-        
-        <!-- МОДАЛЬНОЕ ОКНО КОНТАКТОВ -->
-        <div id="contacts" class="modal contactsModal" style="display: none;">
-            <button class="closeModal" onclick="closeContacts()">&times;</button>
-            <div class="contactsHeader">
-                <span class="contactsEmoji">♡</span>
-                <div>
-                    <h2>Связаться с нами</h2>
-                    <p>Если нашли ошибку или хотите предложить улучшение</p>
-                </div>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Статистика — Sinus</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="{{ url_for('static', filename='js/theme.js') }}" defer></script>
+</head>
+<body class="tasksPage statisticsPage">
+    <!-- ================= МОДАЛЬНОЕ ОКНО КОНТАКТОВ ================= -->
+    <div id="contacts" class="modal contactsModal" style="display: none;">
+        <button class="closeModal" onclick="closeContacts()">&times;</button>
+        <div class="contactsHeader">
+            <span class="contactsEmoji">♡</span>
+            <div>
+                <h2>Связаться с нами</h2>
+                <p>Если нашли ошибку или хотите предложить улучшение</p>
             </div>
-            <div class="contactsList">
-                <div class="contactItem">
-                    <span>✉</span>
-                    <div>
-                        <small>Почта</small>
-                        <p>anastasiyakreslina@gmail.com</p>
-                    </div>
-                </div>
-                <div class="contactItem">
-                    <span>↗</span>
-                    <div>
-                        <small>Telegram</small>
-                        <p>@krazern</p>
-                    </div>
-                </div>
-                <div class="contactItem">
-                    <span>◷</span>
-                    <div>
-                        <small>Время ответа</small>
-                        <p>обычно 1–2 дня</p>
-                    </div>
-                </div>
-            </div>
-            <p class="contactsNote">
-                Отвечаю на вопросы о платформе, предложения, сообщения об ошибках и отзывы.
-            </p>
         </div>
-
-        <!-- ================= SIDEBAR ================= -->
-        <aside class="tasksSidebar" id="sidebar">
-            <a href="{{ url_for('main.error') }}" class="sidebarLogo">
-                sinus<span>.</span>
-            </a>
-
-            <nav class="listThings">
-                <a href="{{ url_for('main.home') }}">
-                    <span>⌂</span> Главная
-                </a>
-                <a href="{{ url_for('tasks.tasks') }}">
-                    <span>▦</span> Банк заданий
-                </a>
-                <a href="{{ url_for('tasks.tests') }}">
-                    <span>✦</span> Варианты ЕГЭ
-                </a>
-                <a href="{{ url_for('tasks.mistakes') }}">
-                    <span>↻</span> Работа над ошибками
-                </a>
-                <a href="{{ url_for('tasks.statistics') }}" class="active">
-                    <span>⌁</span> Статистика
-                </a>
-                <a href="{{ url_for('auth.profile') }}">
-                    <span>👤</span> Профиль
-                </a>
-            </nav>
-
-            <div class="sidebarBottom">
-                <a href="{{ url_for('auth.logout') }}" class="logoutLink">
-                    <span>↪</span> Выйти
-                </a>
-            </div>
-        </aside>
-
-        <!-- ================= MAIN ================= -->
-        <main class="statisticsMain">
-            <!-- HEADER -->
-            <header class="statisticsHeader">
+        <div class="contactsList">
+            <div class="contactItem">
+                <span>✉</span>
                 <div>
-                    <p class="profileEyebrow">SINUS / PROGRESS</p>
-                    <h1>Твоя статистика</h1>
-                    <p class="profileSubtitle">
-                        Здесь можно посмотреть прогресс, результаты решения задач и историю вариантов.
-                    </p>
+                    <small>Почта</small>
+                    <p>anastasiyakreslina@gmail.com</p>
                 </div>
-            </header>
-
-            <!-- ================= OVERVIEW ================= -->
-            <section class="statisticsOverview">
-                <div class="statisticCard">
-                    <span class="statisticIcon">◎</span>
-                    <div>
-                        <small>ЦЕЛЬ</small>
-                        <strong>{{ goal }}</strong>
-                        <span>баллов</span>
-                    </div>
+            </div>
+            <div class="contactItem">
+                <span>↗</span>
+                <div>
+                    <small>Telegram</small>
+                    <p>@krazern</p>
                 </div>
-
-                <div class="statisticCard">
-                    <span class="statisticIcon">✓</span>
-                    <div>
-                        <small>РЕШЕНО</small>
-                        <strong>{{ solved_count }}</strong>
-                        <span>задач</span>
-                    </div>
+            </div>
+            <div class="contactItem">
+                <span>◷</span>
+                <div>
+                    <small>Время ответа</small>
+                    <p>обычно 1–2 дня</p>
                 </div>
+            </div>
+        </div>
+        <p class="contactsNote">
+            Отвечаю на вопросы о платформе, предложения, сообщения об ошибках и отзывы.
+        </p>
+    </div>
 
-                <div class="statisticCard">
-                    <span class="statisticIcon">★</span>
-                    <div>
-                        <small>ВЕРНО</small>
-                        <strong>{{ correct }}</strong>
-                        <span>задач</span>
-                    </div>
+    <!-- ================= SIDEBAR ================= -->
+    <aside class="tasksSidebar" id="sidebar">
+        <a href="{{ url_for('main.error') }}" class="sidebarLogo">
+            sinus<span>.</span>
+        </a>
+        <nav class="listThings">
+            <a href="{{ url_for('main.home') }}">
+                <span>⌂</span> Главная
+            </a>
+            <a href="{{ url_for('tasks.tasks') }}">
+                <span>▦</span> Банк заданий
+            </a>
+            <a href="{{ url_for('tasks.tests') }}">
+                <span>✦</span> Варианты ЕГЭ
+            </a>
+            <a href="{{ url_for('tasks.mistakes') }}">
+                <span>↻</span> Работа над ошибками
+            </a>
+            <a href="{{ url_for('tasks.statistics') }}" class="active">
+                <span>⌁</span> Статистика
+            </a>
+            <a href="{{ url_for('auth.profile') }}">
+                <span>👤</span> Профиль
+            </a>
+        </nav>
+        <div class="sidebarBottom">
+            <a href="{{ url_for('auth.logout') }}" class="logoutLink">
+                <span>↪</span> Выйти
+            </a>
+        </div>
+    </aside>
+
+    <!-- ================= MAIN ================= -->
+    <main class="statisticsMain">
+        <!-- ================= HEADER ================= -->
+        <header class="statisticsHeader">
+            <div>
+                <p class="profileEyebrow">SINUS / PROGRESS</p>
+                <h1>Твоя статистика</h1>
+                <p class="profileSubtitle">
+                    Здесь можно посмотреть прогресс, результаты решения задач и историю вариантов.
+                </p>
+            </div>
+        </header>
+
+        <!-- ================= OVERVIEW ================= -->
+        <section class="statisticsOverview">
+            <div class="statisticCard">
+                <span class="statisticIcon">◎</span>
+                <div>
+                    <small>ЦЕЛЬ</small>
+                    <strong>{{ goal }}</strong>
+                    <span>баллов</span>
                 </div>
+            </div>
 
-                <div class="statisticCard accent">
-                    <span class="statisticIcon">%</span>
-                    <div>
-                        <small>ТОЧНОСТЬ</small>
-                        <strong>{{ percent }}%</strong>
-                        <span>правильных ответов</span>
-                    </div>
+            <div class="statisticCard">
+                <span class="statisticIcon">✓</span>
+                <div>
+                    <small>РЕШЕНО</small>
+                    <strong>{{ solved_count }}</strong>
+                    <span>задач</span>
                 </div>
-            </section>
+            </div>
 
-            <!-- ================= CHARTS ================= -->
-            <section class="statisticsGrid">
-                <div class="statisticsCard">
-                    <div class="statisticsCardHeader">
-                        <div>
-                            <small>АНАЛИЗ</small>
-                            <h2>Результаты по заданиям</h2>
-                            <p>Процент правильных решений</p>
-                        </div>
-                        <span class="statisticsCardIcon">◔</span>
-                    </div>
-                    <div class="chartWrapper">
-                        <canvas id="Chart"></canvas>
-                    </div>
+            <div class="statisticCard">
+                <span class="statisticIcon">★</span>
+                <div>
+                    <small>ВЕРНО</small>
+                    <strong>{{ correct }}</strong>
+                    <span>задач</span>
                 </div>
+            </div>
 
-                <div class="statisticsCard">
-                    <div class="statisticsCardHeader">
-                        <div>
-                            <small>ПЕРВАЯ ПОПЫТКА</small>
-                            <h2>Как решаешь с первого раза</h2>
-                            <p>Точность без повторных попыток</p>
-                        </div>
-                        <span class="statisticsCardIcon">↗</span>
-                    </div>
-                    <div class="chartWrapper">
-                        <canvas id="firstTryChart"></canvas>
-                    </div>
+            <div class="statisticCard accent">
+                <span class="statisticIcon">%</span>
+                <div>
+                    <small>ТОЧНОСТЬ</small>
+                    <strong>{{ percent }}%</strong>
+                    <span>правильных ответов</span>
                 </div>
-            </section>
+            </div>
+        </section>
 
-            <!-- ================= VARIANTS ================= -->
-            <section class="variantsSection">
+        <!-- ================= CHARTS ================= -->
+        <section class="statisticsGrid">
+            <!-- Результаты по заданиям -->
+            <div class="statisticsCard">
                 <div class="statisticsCardHeader">
                     <div>
-                        <small>ИСТОРИЯ</small>
-                        <h2>Варианты</h2>
-                        <p>Результаты пройденных вариантов ЕГЭ</p>
+                        <small>АНАЛИЗ</small>
+                        <h2>Результаты по заданиям</h2>
+                        <p>Процент правильных решений</p>
                     </div>
+                    <span class="statisticsCardIcon">◔</span>
                 </div>
+                <div class="chartWrapper">
+                    <canvas id="Chart"></canvas>
+                </div>
+            </div>
 
-                <div class="variantsTableWrapper">
+            <!-- Первая попытка -->
+            <div class="statisticsCard">
+                <div class="statisticsCardHeader">
+                    <div>
+                        <small>ПЕРВАЯ ПОПЫТКА</small>
+                        <h2>Как решаешь с первого раза</h2>
+                        <p>Точность без повторных попыток</p>
+                    </div>
+                    <span class="statisticsCardIcon">↗</span>
+                </div>
+                <div class="chartWrapper">
+                    <canvas id="firstTryChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= VARIANTS ================= -->
+        <section class="variantsSection">
+            <div class="statisticsCardHeader">
+                <div>
+                    <small>ИСТОРИЯ</small>
+                    <h2>Варианты</h2>
+                    <p>Результаты пройденных вариантов ЕГЭ</p>
+                </div>
+            </div>
+
+            <!-- ================= TABLE SLIDER ================= -->
+            <div class="variantsTableSlider">
+                <!-- Левая стрелка -->
+                <button class="tableArrow tableArrowLeft" type="button" aria-label="Прокрутить таблицу влево">‹</button>
+
+                <!-- Область таблицы -->
+                <div class="variantsTableWrapper" id="variantsTableWrapper">
                     <table class="variant_table">
+                        <!-- HEADER -->
                         <thead>
                             <tr>
                                 <th>Вариант</th>
@@ -185,18 +191,22 @@
                                 <th>Результат</th>
                             </tr>
                         </thead>
+
+                        <!-- BODY -->
                         <tbody>
                             {% for var_id, variant in variant_table.items() %}
                                 <tr>
+                                    <!-- Вариант -->
                                     <td class="variantInfo">
                                         <strong>Вариант {{ var_id }}</strong>
                                         <small>{{ variant.created_at }}</small>
                                     </td>
 
+                                    <!-- Задания -->
                                     {% for i in range(1,21) %}
                                         <td>
                                             {% if i in variant.tasks %}
-                                                <a href="tasks?task_id={{variant.tasks[i].task_id}}" class="variantTask">
+                                                <a href="tasks?task_id={{ variant.tasks[i].task_id }}" class="variantTask">
                                                     {% if variant.tasks[i].correct %}
                                                         <span class="correct">✓</span>
                                                     {% else %}
@@ -211,42 +221,78 @@
                                         </td>
                                     {% endfor %}
 
+                                    <!-- Результат -->
                                     <td class="variantScore">
-                                        <strong>{{ variant.score }}/19</strong>
+                                        <strong>{{ variant.score }}/20</strong>
                                     </td>
                                 </tr>
                             {% endfor %}
                         </tbody>
                     </table>
                 </div>
-            </section>
-        </main>
 
-        <!-- ================= FOOTER ================= -->
-        <footer class="profileFooter">
-            <div class="footerLinks">
-                <a href="https://t.me/karznl" target="_blank" rel="noopener">Телеграм-канал</a>
-                <a href="/">FAQ</a>
-                <button class="textButton" onclick="openContacts()">Контакты</button>
-                <a href="/">Поддержка</a>
-                <a href="{{ url_for('main.privacypolicy') }}">Политика конфиденциальности</a>
+                <!-- Правая стрелка -->
+                <button class="tableArrow tableArrowRight" type="button" aria-label="Прокрутить таблицу вправо">›</button>
             </div>
-            <span class="copyright">2026</span>
-        </footer>
+        </section>
+    </main>
 
-        <!-- DATA & SCRIPTS -->
-        <script>
-            const numbers = {{ numbers | tojson }};
-            const percents = {{ percents | tojson }};
-            const first_attempts_numbers = {{ first_attempts_numbers | tojson }};
-            const first_attempts_percents = {{ first_attempts_percents | tojson }};
-        </script>
-        
-        <!-- 1. Подключаем библиотеку Chart.js CDN -->
-        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-        
-        <!-- 2. Подключаем ваши скрипты -->
-        <script src="{{ url_for('static', filename='js/ui.js') }}"></script>
-        <script src="{{ url_for('static', filename='js/charts.js') }}"></script>
-    </body>
+    <!-- ================= FOOTER ================= -->
+    <footer class="profileFooter">
+        <div class="footerLinks">
+            <a href="https://t.me/karznl" target="_blank" rel="noopener">Телеграм-канал</a>
+            <a href="/">FAQ</a>
+            <button class="textButton" onclick="openContacts()">Контакты</button>
+            <a href="/">Поддержка</a>
+            <a href="{{ url_for('main.privacypolicy') }}">Политика конфиденциальности</a>
+        </div>
+        <span class="copyright">2026</span>
+    </footer>
+
+    <!-- ================= DATA ================= -->
+    <script>
+        const numbers = {{ numbers | tojson }};
+        const percents = {{ percents | tojson }};
+        const first_attempts_numbers = {{ first_attempts_numbers | tojson }};
+        const first_attempts_percents = {{ first_attempts_percents | tojson }};
+    </script>
+
+    <!-- ================= CHART.JS ================= -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- ================= SINUS SCRIPTS ================= -->
+    <script src="{{ url_for('static', filename='js/ui.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/charts.js') }}"></script>
+
+    <!-- ================= TABLE SLIDER ================= -->
+    <script>
+        const tableWrapper = document.getElementById('variantsTableWrapper');
+        const leftButton = document.querySelector('.tableArrowLeft');
+        const rightButton = document.querySelector('.tableArrowRight');
+
+        function updateTableArrows() {
+            const maxScroll = tableWrapper.scrollWidth - tableWrapper.clientWidth;
+            leftButton.disabled = tableWrapper.scrollLeft <= 5;
+            rightButton.disabled = tableWrapper.scrollLeft >= maxScroll - 5;
+        }
+
+        leftButton.addEventListener('click', function () {
+            tableWrapper.scrollBy({
+                left: -450,
+                behavior: 'smooth'
+            });
+        });
+
+        rightButton.addEventListener('click', function () {
+            tableWrapper.scrollBy({
+                left: 450,
+                behavior: 'smooth'
+            });
+        });
+
+        tableWrapper.addEventListener('scroll', updateTableArrows);
+        window.addEventListener('resize', updateTableArrows);
+        updateTableArrows();
+    </script>
+</body>
 </html>

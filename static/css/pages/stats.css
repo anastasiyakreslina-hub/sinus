@@ -655,3 +655,51 @@
         height: 240px;
     }
 }
+
+/* ================= VARIANTS TABLE SLIDER ================= */
+.variantsTableSlider { position: relative; width: 100%; display: flex; align-items: center; gap: 10px; }
+.variantsTableWrapper { width: 100%; overflow-x: auto; overflow-y: hidden; scroll-behavior: smooth; -webkit-overflow-scrolling: touch;
+/* скрываем стандартный scrollbar */
+    scrollbar-width: none;}
+.variantsTableWrapper::-webkit-scrollbar { display: none; }
+.variant_table { min-width: 1100px; width: max-content; border-collapse: collapse; }
+/* Кнопки */
+.tableArrow { flex: 0 0 38px; width: 38px; height: 38px;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 50%;
+
+    background: white;
+    color: #222;
+
+    font-size: 26px;
+    line-height: 1;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.2s ease,
+        opacity 0.2s ease,
+        box-shadow 0.2s ease;}
+.tableArrow:hover { transform: scale(1.05); box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08); }
+.tableArrow:active { transform: scale(0.95); }
+.tableArrow:disabled { opacity: 0.25; cursor: default; box-shadow: none; transform: none; }
+/* На маленьком экране стрелки становятся компактнее */
+@media (max-width: 700px) {
+.variantsTableSlider {
+    gap: 6px;
+}
+
+.tableArrow {
+    flex: 0 0 32px;
+    width: 32px;
+    height: 32px;
+    font-size: 22px;
+}
+
+.variant_table {
+    min-width: 1050px;
+}}

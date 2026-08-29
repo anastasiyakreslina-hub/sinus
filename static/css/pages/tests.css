@@ -1237,3 +1237,210 @@
     transform: translateX(4px);
     transition: transform 0.2s ease;
 }
+
+/* ================= OVERLAY ================= */
+.variantResultOverlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.45);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.25s ease, visibility 0.25s ease;
+}
+
+.variantResultOverlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* ================= MODAL ================= */
+.variantResultModal {
+    position: relative;
+    width: min(620px, 100%);
+    max-height: min(720px, 90vh);
+    overflow-y: auto;
+    background: var(--background, #ffffff);
+    border-radius: 28px;
+    padding: 36px;
+    box-shadow: 0 25px 80px rgba(0, 0, 0, 0.20);
+    transform: translateY(20px) scale(0.97);
+    transition: transform 0.25s ease;
+}
+
+.variantResultOverlay.active .variantResultModal {
+    transform: translateY(0) scale(1);
+}
+
+/* ================= CLOSE ================= */
+.variantResultClose {
+    position: absolute;
+    top: 18px;
+    right: 18px;
+    width: 38px;
+    height: 38px;
+    border: none;
+    border-radius: 50%;
+    background: rgba(128, 128, 128, 0.10);
+    font-size: 25px;
+    line-height: 1;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.variantResultClose:hover {
+    transform: rotate(5deg) scale(1.05);
+    background: rgba(128, 128, 128, 0.18);
+}
+
+/* ================= HEADER ================= */
+.variantResultHeader {
+    text-align: center;
+    padding: 5px 35px 20px;
+}
+
+.variantResultHeader h2 {
+    margin: 4px 0 8px;
+    font-size: 30px;
+}
+
+.variantResultSubtitle {
+    margin: 0;
+    opacity: 0.65;
+}
+
+/* ================= SCORE ================= */
+.variantResultScore {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    margin-bottom: 22px;
+    border-radius: 20px;
+    background: rgba(128, 128, 128, 0.08);
+}
+
+.variantResultScoreNumber {
+    font-size: 48px;
+    line-height: 1;
+    font-weight: 800;
+    letter-spacing: -2px;
+}
+
+.variantResultScoreText {
+    margin-top: 8px;
+    font-size: 14px;
+    opacity: 0.6;
+}
+
+/* ================= RESULTS GRID ================= */
+.variantResultsGrid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+}
+
+.variantResultItem {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    padding: 12px 6px;
+    border-radius: 14px;
+    background: rgba(128, 128, 128, 0.08);
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.2s ease;
+}
+
+.variantResultItem:hover {
+    transform: translateY(-2px);
+}
+
+.variantResultNumber {
+    font-size: 12px;
+    opacity: 0.55;
+}
+
+.variantResultIcon {
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.variantResultAnswer {
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 13px;
+}
+
+.variantResultCorrect {
+    border: 1px solid rgba(70, 180, 100, 0.25);
+    background: rgba(70, 180, 100, 0.08);
+}
+
+.variantResultIncorrect {
+    border: 1px solid rgba(220, 80, 80, 0.25);
+    background: rgba(220, 80, 80, 0.08);
+}
+
+/* ================= FOOTER ================= */
+.variantResultFooter {
+    display: flex;
+    justify-content: center;
+    margin-top: 26px;
+}
+
+/* ================= MOBILE ================= */
+@media (max-width: 600px) {
+    .variantResultOverlay {
+        padding: 12px;
+        align-items: flex-end;
+    }
+
+    .variantResultModal {
+        width: 100%;
+        max-height: 88vh;
+        padding: 26px 18px 20px;
+        border-radius: 24px;
+    }
+
+    .variantResultHeader {
+        padding-left: 25px;
+        padding-right: 25px;
+    }
+
+    .variantResultHeader h2 {
+        font-size: 25px;
+    }
+
+    .variantResultScore {
+        padding: 20px;
+    }
+
+    .variantResultScoreNumber {
+        font-size: 40px;
+    }
+
+    .variantResultsGrid {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 8px;
+    }
+
+    .variantResultItem {
+        padding: 10px 4px;
+    }
+}

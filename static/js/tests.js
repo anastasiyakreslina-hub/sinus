@@ -254,3 +254,118 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
 });
+
+document.addEventListener("DOMContentLoaded", function () {
+    /* =======================================================
+       KATEX RENDER
+    ======================================================= */
+    if (typeof renderMathInElement !== "undefined") {
+        renderMathInElement(document.body, {
+            delimiters: [
+                { left: "$$", right: "$$", display: true },
+                { left: "\\(", right: "\\)", display: false },
+                { left: "$", right: "$", display: false }
+            ]
+        });
+    }
+
+    /* =======================================================
+       MODAL & FORM LOGIC
+    ======================================================= */
+    const variantForm = document.getElementById('variantForm');
+    const resultModal = document.getElementById('variantResultModal');
+    const resultGrid = document.getElementById('variantResultsGrid');
+    const scoreElement = document.getElementById('variantScore');
+    const closeModalButton = document.getElementById('variantResultClose');
+    const closeResultButton = document.getElementById('variantResultCloseButton');
+    const checkButton = document.getElementById('checkVariantButton');
+
+    function openVariantResult(data) {
+        if (!resultGrid || !scoreElement || !resultModal) return;
+
+        resultGrid.innerHTML = '';
+        scoreElement.textContent = `${data.score}/${data.total}`;
+
+        data.results.forEach(function (result) {
+            const item = document.createElement('div');
+            item.className = 'variantResultItem ' + (
+                result.correct ? 'variantResultCorrect' : 'variantResultIncorrect'
+            );
+
+            const number = document.createElement('span');
+            number.className = 'variantResultNumber';
+            number.textContent = `№${result.task_number || result.task_id}`;
+
+            const icon = document.createElement('span');
+            icon.className = 'variantResultIcon';
+            icon.textContent = result.correct ? '✓' : '×';
+
+            const answer = document.createElement('span');
+            answer.className = 'variantResultAnswer';
+            answer.textContent = result.user_answer || '—';
+
+            item.appendChild(number);
+            item.appendChild(icon);
+            item.appendChild(answer);
+
+            resultGrid.appendChild(item);
+        });
+
+        resultModal.classList.add('active');
+        resultModal.setAttribute('aria-hidden', 'false');
+    }
+
+    function closeVariantResult() {
+        if (!resultModal) return;
+        resultModal.classList.remove('active');
+        resultModal.setAttribute('aria-hidden', 'true');
+    }
+
+    if (closeModalButton) closeModalButton.addEventListener('click', closeVariantResult);
+    if (closeResultButton) closeResultButton.addEventListener('click', closeVariantResult);
+
+    if (resultModal) {
+        resultModal.addEventListener('click', function (event) {
+            if (event.target === resultModal) {
+                closeVariantResult();
+            }
+        });
+    }
+
+    document.addEventListener('keydown', function (event) {
+        if (event.key === 'Escape' && resultModal && resultModal.classList.contains('active')) {
+            closeVariantResult();
+        }
+    });
+
+    if (variantForm) {
+        variantForm.addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            if (checkButton) checkButton.disabled = true;
+
+            const formData = new FormData(variantForm);
+            const actionUrl = variantForm.getAttribute('action');
+
+            fetch(actionUrl, {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success || data.score !== undefined) {
+                    openVariantResult(data);
+                } else {
+                    alert(data.error || 'Произошла ошибка при проверке варианта');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Ошибка соединения с сервером');
+            })
+            .finally(() => {
+                if (checkButton) checkButton.disabled = false;
+            });
+        });
+    }
+});

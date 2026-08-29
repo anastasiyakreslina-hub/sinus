@@ -1,352 +1,162 @@
 <!DOCTYPE html>
 <html lang="ru">
-
 <head>
-
     <meta charset="utf-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1"
-    >
-
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     {% if variant %}
         <title>{{ variant['name'] }} — Sinus</title>
     {% else %}
         <title>Сгенерированный вариант — Sinus</title>
     {% endif %}
 
-    <!-- KaTeX -->
-    <link
-        rel="stylesheet"
-        href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"
-    >
+    <!-- ================= KATEX ================= -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
 
-    <!-- Основные стили -->
-    <link
-        rel="stylesheet"
-        href="{{ url_for('static', filename='css/style.css') }}"
-    >
+    <!-- ================= STYLES ================= -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/variant_result.css') }}">
 
-    <!-- KaTeX -->
-    <script
-        defer
-        src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"
-    ></script>
-
-    <script
-        defer
-        src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
-    ></script>
-
-    <!-- Theme -->
-    <script
-        src="{{ url_for('static', filename='js/theme.js') }}"
-        defer
-    ></script>
-
+    <!-- ================= SCRIPTS ================= -->
+    <script src="{{ url_for('static', filename='js/theme.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='js/ui.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='js/variant_result.js') }}" defer></script>
 </head>
-
 
 <body class="tasksPage">
 
-    <!-- ================= MAIN ================= -->
-
+    <!-- ========================================================= -->
+    <!-- MAIN -->
+    <!-- ========================================================= -->
     <main class="tasksMain">
 
-
         <!-- ================= HEADER ================= -->
-
         <header class="tasksHeader">
-
             <div>
-
-                <a
-                    href="{{ url_for('tasks.tests') }}"
-                    class="lighttext"
-                >
+                <a href="{{ url_for('tasks.tests') }}" class="lighttext">
                     ← Все варианты
                 </a>
 
-
                 {% if variant %}
-
-                    <p class="classification">
-                        {{ variant['year'] }}
-                    </p>
-
-                    <h1 class="heading">
-                        {{ variant['name'] }}
-                    </h1>
-
-                    <p class="taskText">
-                        Реши все задания, а затем проверь вариант целиком.
-                    </p>
-
+                    <p class="classification">{{ variant['year'] }}</p>
+                    <h1 class="heading">{{ variant['name'] }}</h1>
+                    <p class="taskText">Реши все задания, а затем проверь вариант целиком.</p>
                 {% else %}
-
-                    <p class="classification">
-                        ТРЕНИРОВКА
-                    </p>
-
-                    <h1 class="heading">
-                        Сгенерированный вариант
-                    </h1>
-
-                    <p class="taskText">
-                        Реши все задания, а затем проверь вариант целиком.
-                    </p>
-
+                    <p class="classification">ТРЕНИРОВКА</p>
+                    <h1 class="heading">Сгенерированный вариант</h1>
+                    <p class="taskText">Реши все задания, а затем проверь вариант целиком.</p>
                 {% endif %}
-
             </div>
-
         </header>
 
-
-
-        <!-- ================= VARIANT FORM ================= -->
-
+        <!-- ========================================================= -->
+        <!-- VARIANT FORM -->
+        <!-- ========================================================= -->
         {% if var_tasks %}
-
             {% if variant %}
-
-                <form
-                    method="POST"
-                    action="{{ url_for(
-                        'tasks.check_saved_variant',
-                        variant_id=variant['id']
-                    ) }}"
-                    id="variantForm"
-                >
-
+                <form method="POST" action="{{ url_for('tasks.check_saved_variant', variant_id=variant['id']) }}" id="variantForm">
             {% else %}
-
-                <form
-                    method="POST"
-                    action="{{ url_for('tasks.check_var') }}"
-                    id="variantForm"
-                >
-
+                <form method="POST" action="{{ url_for('tasks.check_var') }}" id="variantForm">
             {% endif %}
 
-
                 <!-- ================= TASKS ================= -->
-
                 {% for task in var_tasks %}
-
                     <article class="taskCard">
-
-                        <!-- Информация о задаче -->
-
+                        <!-- TASK HEADER -->
                         <div class="taskCardHeader">
-
                             <div class="taskTags">
-
-                                <span class="taskTag taskId">
-                                    #{{ task['id'] }}
-                                </span>
-
-                                <span class="taskTag">
-                                    №{{ task['number'] }}
-                                </span>
-
-                                <span class="taskTag">
-                                    #{{ task['source'] }}
-                                </span>
-
+                                <span class="taskTag taskId">#{{ task['id'] }}</span>
+                                <span class="taskTag">№{{ task['number'] }}</span>
+                                <span class="taskTag">#{{ task['source'] }}</span>
                             </div>
-
                         </div>
 
+                        <!-- TASK ID -->
+                        <input type="hidden" name="task_id" value="{{ task['id'] }}">
 
+                        <!-- TASK TEXT -->
+                        <p class="taskText">{{ task['text'] }}</p>
 
-                        <!-- ID задания -->
-
-                        <input
-                            type="hidden"
-                            name="task_id"
-                            value="{{ task['id'] }}"
-                        >
-
-
-                        <!-- Текст задачи -->
-
-                        <p class="taskText">
-                            {{ task['text'] }}
-                        </p>
-
-
-                        <!-- Картинка -->
-
+                        <!-- IMAGE -->
                         {% if task['image'] %}
-
                             <div class="taskImageWrapper">
-
-                                <img
-                                    src="{{ url_for('static', filename=task['image']) }}?v={{ task['id'] }}"
-                                    class="taskImage"
-                                    alt="Изображение задания">
-
+                                <img src="{{ url_for('static', filename=task['image']) }}?v={{ task['id'] }}" class="taskImage" alt="Изображение задания">
                             </div>
-
                         {% endif %}
 
-
-                        <!-- Ответ -->
-
+                        <!-- ANSWER -->
                         <div class="phoneButtons filterButtons">
-
-                            <input
-                                type="text"
-                                name="answer_{{ task['id'] }}"
-                                class="taskInput answerInput"
-                                placeholder="ответ"
-                                autocomplete="off"
-                            >
-
+                            <input type="text" name="answer_{{ task['id'] }}" class="taskInput answerInput" placeholder="ответ" autocomplete="off">
                         </div>
-
-
                     </article>
-
                 {% endfor %}
 
-
                 <!-- ================= CHECK BUTTON ================= -->
-
-                <div
-                    style="
-                        margin-top: 30px;
-                        margin-bottom: 40px;
-                        display: flex;
-                        justify-content: center;
-                    "
-                >
-
-                    <button
-                        type="submit"
-                        class="taskPrimaryButton"
-                    >
+                <div style="margin-top: 30px; margin-bottom: 40px; display: flex; justify-content: center;">
+                    <button type="submit" class="taskPrimaryButton" id="checkVariantButton">
                         Проверить весь вариант
                     </button>
-
                 </div>
-
-
             </form>
-
 
         {% else %}
-
-            <div
-                class="taskCard"
-                style="
-                    text-align: center;
-                    padding: 50px 20px;
-                "
-            >
-
-                <h2 style="margin: 0 0 10px;">
-                    Вариант пуст
-                </h2>
-
-                <p class="tasksSubtitle">
-                    В этом варианте пока нет заданий.
-                </p>
-
+            <!-- ================= EMPTY VARIANT ================= -->
+            <div class="taskCard" style="text-align: center; padding: 50px 20px;">
+                <h2 style="margin: 0 0 10px;">Вариант пуст</h2>
+                <p class="tasksSubtitle">В этом варианте пока нет заданий.</p>
             </div>
-
         {% endif %}
 
-
-
-        <!-- ================= DELETE VARIANT ================= -->
-
+        <!-- ========================================================= -->
+        <!-- DELETE VARIANT -->
+        <!-- ========================================================= -->
         {% if session.get('role') == 'admin' and variant %}
-
-            <form
-                method="POST"
-                action="{{ url_for(
-                    'tasks.delete_variant',
-                    variant_id=variant['id']
-                ) }}"
-                onsubmit="
-                    return confirm(
-                        'Удалить этот вариант?'
-                    );
-                "
-                style="margin-top: 30px;"
-            >
-
-                <button
-                    type="submit"
-                    class="buttons lightBox"
-                >
+            <form method="POST" action="{{ url_for('tasks.delete_variant', variant_id=variant['id']) }}" onsubmit="return confirm('Удалить этот вариант?');" style="margin-top: 30px;">
+                <button type="submit" class="buttons lightBox">
                     Удалить вариант
                 </button>
-
             </form>
-
         {% endif %}
 
     </main>
 
+    <!-- ========================================================= -->
+    <!-- RESULT MODAL -->
+    <!-- ========================================================= -->
+    <div class="variantResultOverlay" id="variantResultModal" aria-hidden="true">
+        <div class="variantResultModal" role="dialog" aria-modal="true" aria-labelledby="variantResultTitle">
+            
+            <!-- CLOSE -->
+            <button type="button" class="variantResultClose" id="variantResultClose" aria-label="Закрыть">×</button>
 
+            <!-- HEADER -->
+            <div class="variantResultHeader">
+                <p class="classification">РЕЗУЛЬТАТ</p>
+                <h2 id="variantResultTitle">Вариант завершён</h2>
+                <p class="variantResultSubtitle">Посмотри, как ты справился с заданиями</p>
+            </div>
 
-    <!-- ================= KATEX ================= -->
+            <!-- SCORE -->
+            <div class="variantResultScore">
+                <span class="variantResultScoreNumber" id="variantScore">0/0</span>
+                <span class="variantResultScoreText">правильных ответов</span>
+            </div>
 
-    <script>
+            <!-- TASK RESULTS -->
+            <div class="variantResultsGrid" id="variantResultsGrid">
+                <!-- JS вставит результаты -->
+            </div>
 
-        document.addEventListener(
-            "DOMContentLoaded",
-            function () {
+            <!-- FOOTER -->
+            <div class="variantResultFooter">
+                <button type="button" class="taskPrimaryButton" id="variantResultCloseButton">
+                    Вернуться к варианту
+                </button>
+            </div>
 
-                if (
-                    typeof renderMathInElement !== "undefined"
-                ) {
-
-                    renderMathInElement(
-                        document.body,
-                        {
-                            delimiters: [
-
-                                {
-                                    left: "$$",
-                                    right: "$$",
-                                    display: true
-                                },
-
-                                {
-                                    left: "\\(",
-                                    right: "\\)",
-                                    display: false
-                                },
-
-                                {
-                                    left: "$",
-                                    right: "$",
-                                    display: false
-                                }
-
-                            ]
-                        }
-                    );
-
-                }
-
-            }
-        );
-
-    </script>
-
-
-    <!-- UI -->
-
-    <script
-        src="{{ url_for('static', filename='js/ui.js') }}"
-    ></script>
-
+        </div>
+    </div>
+    <script src="{{url_for('static', filename='js/tests.js')}}"
 </body>
-
 </html>
