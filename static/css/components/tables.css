@@ -1,0 +1,207 @@
+/* =========================================================
+   CALENDAR STYLES (MATCHED THEME)
+   ========================================================= */
+
+.calendarSection {
+    /* Добавлен верхний и увеличен нижний отступ, чтобы блок не лип к соседним */
+    margin-top: 24px;
+    margin-bottom: 24px;
+
+    padding: 24px;
+    border-radius: 20px;
+
+    /* НОВЫЙ ФОН И БОРДЕР */
+    background: #880d4d30;
+    border: 1px solid rgba(136, 13, 77, 0.12);
+
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.035);
+}
+
+.calendarHeader {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.calendarHeader small {
+    display: block;
+    margin-bottom: 5px;
+    color: #62072d;
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+}
+
+.calendarHeader h2 {
+    margin: 0;
+    font-size: 19px;
+    letter-spacing: -0.03em;
+}
+
+.calendarNav {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.calendarNavBtn {
+    position: relative;
+    z-index: 9999;
+    width: 34px;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 10px;
+    border: 1px solid rgba(136, 13, 77, 0.15);
+    background: rgba(136, 13, 77, 0.08);
+
+    color: #62072d;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+
+    transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.calendarNavBtn:hover {
+    transform: translateY(-1px);
+    background: rgba(136, 13, 77, 0.18);
+}
+
+.calendarGrid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 6px;
+    text-align: center;
+}
+
+.calendarDayHead {
+    padding-bottom: 8px;
+    color: #62072d;
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    opacity: 0.6;
+}
+
+.calendarCell {
+    aspect-ratio: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 10px;
+    background: var(--background);
+    color: var(--text);
+
+    font-size: 11px;
+    font-weight: 500;
+    position: relative;
+    cursor: default;
+    transition: transform 0.15s ease;
+}
+
+.calendarCell.empty {
+    background: transparent;
+}
+
+/* 1–4 решенных задачи */
+.calendarCell.hasTasks {
+    background: rgba(136, 13, 77, 0.18);
+    color: #62072d;
+    font-weight: 700;
+}
+
+/* 5+ решенных задач */
+.calendarCell.hasTasksHigh {
+    background: rgba(136, 13, 77, 0.35);
+    color: #62072d;
+    font-weight: 800;
+}
+
+/* Сегодняшний день */
+.calendarCell.today {
+    border: 1.5px solid #62072d;
+}
+
+.calendarCell .taskBadge {
+    margin-top: 2px;
+    font-size: 8px;
+    font-weight: 700;
+    color: #62072d;
+    opacity: 0.85;
+}
+
+/* ================= DARK THEME CALENDAR ================= */
+
+[data-theme="dark"] .calendarSection {
+    background: #880d4d30;
+    border-color: rgba(255, 255, 255, 0.07);
+}
+
+[data-theme="dark"] .calendarHeader small,
+[data-theme="dark"] .calendarDayHead {
+    color: #ffffff;
+    opacity: 0.7;
+}
+
+[data-theme="dark"] .calendarNavBtn {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+}
+
+[data-theme="dark"] .calendarNavBtn:hover {
+    background: rgba(255, 255, 255, 0.12);
+}
+
+[data-theme="dark"] .calendarCell {
+    background: var(--background);
+}
+
+[data-theme="dark"] .calendarCell.hasTasks {
+    background: rgba(136, 13, 77, 0.35);
+    color: #ffffff;
+}
+
+[data-theme="dark"] .calendarCell.hasTasksHigh {
+    background: rgba(136, 13, 77, 0.6);
+    color: #ffffff;
+}
+
+[data-theme="dark"] .calendarCell.today {
+    border-color: #ffffff;
+}
+
+[data-theme="dark"] .calendarCell .taskBadge {
+    color: #ffffff;
+}
+
+/* ================= MOBILE CALENDAR ================= */
+
+@media (max-width: 520px) {
+    .calendarSection {
+        padding: 18px;
+        border-radius: 17px;
+        margin-top: 18px;
+        margin-bottom: 18px;
+    }
+
+    .calendarGrid {
+        gap: 4px;
+    }
+
+    .calendarCell {
+        font-size: 10px;
+        border-radius: 7px;
+    }
+
+    .calendarCell .taskBadge {
+        font-size: 7px;
+    }
+}

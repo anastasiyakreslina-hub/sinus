@@ -94,6 +94,23 @@
         <!-- ================= OVERVIEW ================= -->
         <section class="statisticsOverview">
             <div class="statisticCard">
+                <span class="statisticIcon">🔥</span>
+                <div>
+                    <small>СЕРИЯ</small>
+                    <strong>{{ streak }}</strong>
+                    <span>
+                        {% if streak % 10 == 1 and streak % 100 != 11 %}
+                            день подряд
+                        {% elif streak % 10 in [2, 3, 4] and streak % 100 not in [12, 13, 14] %}
+                            дня подряд
+                        {% else %}
+                            дней подряд
+                        {% endif %}
+                    </span>
+                </div>
+            </div>
+
+            <div class="statisticCard">
                 <span class="statisticIcon">◎</span>
                 <div>
                     <small>ЦЕЛЬ</small>
@@ -129,7 +146,6 @@
                 </div>
             </div>
         </section>
-
         <!-- ================= CHARTS ================= -->
         <section class="statisticsGrid">
             <!-- Результаты по заданиям -->
@@ -163,6 +179,21 @@
             </div>
         </section>
 
+        <!-- ================= CALENDAR ================= -->
+        <section class="calendarSection">
+            <div class="calendarHeader">
+                <div>
+                    <small>АКТИВНОСТЬ</small>
+                    <h2 id="calendarMonthYear">Календарь решений</h2>
+                </div>
+                <div class="calendarNav">
+                    <button class="calendarNavBtn" id="prevMonthBtn">&lt;</button>
+                    <button class="calendarNavBtn" id="nextMonthBtn">&gt;</button>
+                </div>
+            </div>
+            <div class="calendarGrid" id="calendarGrid"></div>
+        </section>
+
         <!-- ================= VARIANTS ================= -->
         <section class="variantsSection">
             <div class="statisticsCardHeader">
@@ -173,15 +204,11 @@
                 </div>
             </div>
 
-            <!-- ================= TABLE SLIDER ================= -->
             <div class="variantsTableSlider">
-                <!-- Левая стрелка -->
                 <button class="tableArrow tableArrowLeft" type="button" aria-label="Прокрутить таблицу влево">‹</button>
 
-                <!-- Область таблицы -->
                 <div class="variantsTableWrapper" id="variantsTableWrapper">
                     <table class="variant_table">
-                        <!-- HEADER -->
                         <thead>
                             <tr>
                                 <th>Вариант</th>
@@ -191,18 +218,13 @@
                                 <th>Результат</th>
                             </tr>
                         </thead>
-
-                        <!-- BODY -->
                         <tbody>
                             {% for var_id, variant in variant_table.items() %}
                                 <tr>
-                                    <!-- Вариант -->
                                     <td class="variantInfo">
                                         <strong>Вариант {{ var_id }}</strong>
                                         <small>{{ variant.created_at }}</small>
                                     </td>
-
-                                    <!-- Задания -->
                                     {% for i in range(1,21) %}
                                         <td>
                                             {% if i in variant.tasks %}
@@ -220,8 +242,6 @@
                                             {% endif %}
                                         </td>
                                     {% endfor %}
-
-                                    <!-- Результат -->
                                     <td class="variantScore">
                                         <strong>{{ variant.score }}/20</strong>
                                     </td>
@@ -231,21 +251,17 @@
                     </table>
                 </div>
 
-                <!-- Правая стрелка -->
                 <button class="tableArrow tableArrowRight" type="button" aria-label="Прокрутить таблицу вправо">›</button>
             </div>
         </section>
     </main>
 
- <!-- =====================================================
-     FOOTER
-===================================================== -->
+    <!-- ================= FOOTER ================= -->
     <footer class="homeFooter">
         <div class="footerContainer">
-        <!-- Левая колонка: Бренд и описание -->
             <div class="footerBrand">
                 <a href="{{ url_for('main.home') if 'main.home' in request.endpoint else '/' }}" class="footerLogo">
-                sinus<span>.</span>
+                    sinus<span>.</span>
                 </a>
                 <p class="footerDescription">
                     Платформа для эффективной подготовки к экзаменам по математике.
@@ -253,7 +269,6 @@
                 <span class="footerCopyright">© 2026 Sinus. Все права защищены.</span>
             </div>
 
-        <!-- Правая часть: Логические группы ссылок -->
             <div class="footerNavGrid">
                 <div class="footerColumn">
                     <span class="footerColumnTitle">Проект</span>
@@ -278,51 +293,19 @@
         </div>
     </footer>   
 
-
-    <!-- ================= DATA ================= -->
+    <!-- ================= GLOBAL DATA ================= -->
     <script>
-        const numbers = {{ numbers | tojson }};
-        const percents = {{ percents | tojson }};
-        const first_attempts_numbers = {{ first_attempts_numbers | tojson }};
-        const first_attempts_percents = {{ first_attempts_percents | tojson }};
+        window.numbers = {{ numbers | tojson }};
+        window.percents = {{ percents | tojson }};
+        window.first_attempts_numbers = {{ first_attempts_numbers | tojson }};
+        window.first_attempts_percents = {{ first_attempts_percents | tojson }};
+        window.activityData = {{ activity_data | tojson }};
     </script>
 
-    <!-- ================= CHART.JS ================= -->
+    <!-- ================= EXTERNAL SCRIPTS ================= -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-    <!-- ================= SINUS SCRIPTS ================= -->
     <script src="{{ url_for('static', filename='js/ui.js') }}"></script>
     <script src="{{ url_for('static', filename='js/charts.js') }}"></script>
-
-    <!-- ================= TABLE SLIDER ================= -->
-    <script>
-        const tableWrapper = document.getElementById('variantsTableWrapper');
-        const leftButton = document.querySelector('.tableArrowLeft');
-        const rightButton = document.querySelector('.tableArrowRight');
-
-        function updateTableArrows() {
-            const maxScroll = tableWrapper.scrollWidth - tableWrapper.clientWidth;
-            leftButton.disabled = tableWrapper.scrollLeft <= 5;
-            rightButton.disabled = tableWrapper.scrollLeft >= maxScroll - 5;
-        }
-
-        leftButton.addEventListener('click', function () {
-            tableWrapper.scrollBy({
-                left: -450,
-                behavior: 'smooth'
-            });
-        });
-
-        rightButton.addEventListener('click', function () {
-            tableWrapper.scrollBy({
-                left: 450,
-                behavior: 'smooth'
-            });
-        });
-
-        tableWrapper.addEventListener('scroll', updateTableArrows);
-        window.addEventListener('resize', updateTableArrows);
-        updateTableArrows();
-    </script>
+    <script src="{{ url_for('static', filename='js/stats.js') }}"></script>
 </body>
 </html>

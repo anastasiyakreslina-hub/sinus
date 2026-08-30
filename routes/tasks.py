@@ -4,7 +4,7 @@
 
 import os
 import random
-from datetime import datetime
+from datetime import date, datetime, timedelta
 
 from flask import (
     Blueprint,
@@ -15,6 +15,7 @@ from flask import (
     request,
     session,
 )
+from werkzeug.utils import secure_filename
 
 from database import get_db
 from decorators import admin_only, regs_only
@@ -38,70 +39,71 @@ def tasks():
     conn = get_db()
     cur = conn.cursor()
 
-    query = '''
-        SELECT
-            tasks.*,
-            COALESCE(
-                user_tasks.status,
-                'Задача еще не решена'
-            ) AS status
-        FROM tasks
-        LEFT JOIN user_tasks
-            ON tasks.id = user_tasks.task_id
-            AND user_tasks.user_id = %s
-        WHERE 1=1
-    '''
+    try:
+        query = '''
+            SELECT
+                tasks.*,
+                COALESCE(
+                    user_tasks.status,
+                    'Задача еще не решена'
+                ) AS status
+            FROM tasks
+            LEFT JOIN user_tasks
+                ON tasks.id = user_tasks.task_id
+                AND user_tasks.user_id = %s
+            WHERE 1=1
+        '''
 
-    options = [user_id]
+        options = [user_id]
 
-    if number:
-        query += ' AND tasks.number = %s'
-        options.append(number)
+        if number:
+            query += ' AND tasks.number = %s'
+            options.append(number)
 
-    if task_id:
-        query += ' AND tasks.id = %s'
-        options.append(task_id)
+        if task_id:
+            query += ' AND tasks.id = %s'
+            options.append(task_id)
 
-    query += ' ORDER BY tasks.id'
+        query += ' ORDER BY tasks.id'
 
-    cur.execute(query, options)
-    tasks_list = cur.fetchall()
+        cur.execute(query, options)
+        tasks_list = cur.fetchall()
 
-    # Статистика первой попытки
-    cur.execute('''
-        SELECT
-            task_id,
-            COUNT(*) AS total,
-            SUM(
-                CASE
-                    WHEN attempt_number = 1 AND correct = 1
-                    THEN 1
-                    ELSE 0
-                END
-            ) AS correct_first_attempts
-        FROM task_attempts
-        GROUP BY task_id
-    ''')
+        # Статистика первой попытки
+        cur.execute('''
+            SELECT
+                task_id,
+                COUNT(*) AS total,
+                SUM(
+                    CASE
+                        WHEN attempt_number = 1 AND correct = 1
+                        THEN 1
+                        ELSE 0
+                    END
+                ) AS correct_first_attempts
+            FROM task_attempts
+            GROUP BY task_id
+        ''')
 
-    stats_raw = cur.fetchall()
-    stats = {}
+        stats_raw = cur.fetchall()
+        stats = {}
 
-    for r in stats_raw:
-        t_id = r['task_id']
-        total = r['total'] or 0
-        first_attempts = r['correct_first_attempts'] or 0
+        for r in stats_raw:
+            t_id = r['task_id']
+            total = r['total'] or 0
+            first_attempts = r['correct_first_attempts'] or 0
 
-        percent = (first_attempts / total * 100) if total > 0 else 0
-        stats[t_id] = round(percent, 2)
+            percent = (first_attempts / total * 100) if total > 0 else 0
+            stats[t_id] = round(percent, 2)
 
-    cur.close()
-    conn.close()
-
-    return render_template(
-        'tasks.html',
-        tasks=tasks_list,
-        stats=stats
-    )
+        return render_template(
+            'tasks.html',
+            tasks=tasks_list,
+            stats=stats
+        )
+    finally:
+        cur.close()
+        conn.close()
 
 
 # =========================================================
@@ -122,46 +124,49 @@ def add_task():
     conn = get_db()
     cur = conn.cursor()
 
-    cur.execute(
-        '''
-        INSERT INTO tasks(number, source, text, solution, answer)
-        VALUES(%s, %s, %s, %s, %s)
-        RETURNING id
-        ''',
-        (number, source, text, solution, answer)
-    )
-
-    task_id = cur.fetchone()['id']
-
-    if image and image.filename != '':
-        if not allowed_file(image.filename, ALLOWED_IMAGES):
-            flash('Упс! Неверный формат изображения!')
-            cur.close()
-            conn.close()
-            return redirect('/profile')
-
-        ext = image.filename.rsplit('.', 1)[1].lower()
-        image_name = f'task_{task_id}.{ext}'
-        folder = os.path.join('static', 'task_images')
-
-        os.makedirs(folder, exist_ok=True)
-        path = os.path.join(folder, image_name)
-        image.save(path)
-
+    try:
         cur.execute(
             '''
-            UPDATE tasks
-            SET image = %s
-            WHERE id = %s
+            INSERT INTO tasks(number, source, text, solution, answer)
+            VALUES(%s, %s, %s, %s, %s)
+            RETURNING id
             ''',
-            (f'task_images/{image_name}', task_id)
+            (number, source, text, solution, answer)
         )
 
-    conn.commit()
-    cur.close()
-    conn.close()
+        task_id = cur.fetchone()['id']
 
-    return redirect('/tasks')
+        if image and image.filename != '':
+            if not allowed_file(image.filename, ALLOWED_IMAGES):
+                flash('Упс! Неверный формат изображения!')
+                return redirect('/profile')
+
+            safe_fname = secure_filename(image.filename)
+            ext = safe_fname.rsplit('.', 1)[1].lower() if '.' in safe_fname else 'png'
+            image_name = f'task_{task_id}.{ext}'
+            folder = os.path.join('static', 'task_images')
+
+            os.makedirs(folder, exist_ok=True)
+            path = os.path.join(folder, image_name)
+            image.save(path)
+
+            cur.execute(
+                '''
+                UPDATE tasks
+                SET image = %s
+                WHERE id = %s
+                ''',
+                (f'task_images/{image_name}', task_id)
+            )
+
+        conn.commit()
+        return redirect('/tasks')
+    except Exception:
+        conn.rollback()
+        raise
+    finally:
+        cur.close()
+        conn.close()
 
 
 # =========================================================
@@ -180,25 +185,29 @@ def edit_task(task_id):
     conn = get_db()
     cur = conn.cursor()
 
-    cur.execute(
-        '''
-        UPDATE tasks
-        SET
-            number = %s,
-            source = %s,
-            text = %s,
-            solution = %s,
-            answer = %s
-        WHERE id = %s
-        ''',
-        (number, source, text, solution, answer, task_id)
-    )
+    try:
+        cur.execute(
+            '''
+            UPDATE tasks
+            SET
+                number = %s,
+                source = %s,
+                text = %s,
+                solution = %s,
+                answer = %s
+            WHERE id = %s
+            ''',
+            (number, source, text, solution, answer, task_id)
+        )
 
-    conn.commit()
-    cur.close()
-    conn.close()
-
-    return redirect('/tasks')
+        conn.commit()
+        return redirect('/tasks')
+    except Exception:
+        conn.rollback()
+        raise
+    finally:
+        cur.close()
+        conn.close()
 
 
 # =========================================================
@@ -211,19 +220,23 @@ def delete_task(task_id):
     conn = get_db()
     cur = conn.cursor()
 
-    cur.execute(
-        '''
-        DELETE FROM tasks
-        WHERE id = %s
-        ''',
-        (task_id,)
-    )
+    try:
+        cur.execute(
+            '''
+            DELETE FROM tasks
+            WHERE id = %s
+            ''',
+            (task_id,)
+        )
 
-    conn.commit()
-    cur.close()
-    conn.close()
-
-    return redirect('/tasks')
+        conn.commit()
+        return redirect('/tasks')
+    except Exception:
+        conn.rollback()
+        raise
+    finally:
+        cur.close()
+        conn.close()
 
 
 # =========================================================
@@ -245,72 +258,75 @@ def check_answer(task_id):
     conn = get_db()
     cur = conn.cursor()
 
-    cur.execute(
-        '''
-        SELECT answer
-        FROM tasks
-        WHERE id = %s
-        ''',
-        (task_id,)
-    )
+    try:
+        cur.execute(
+            '''
+            SELECT answer
+            FROM tasks
+            WHERE id = %s
+            ''',
+            (task_id,)
+        )
 
-    correct = cur.fetchone()
+        correct = cur.fetchone()
 
-    if correct is None:
+        if correct is None:
+            return {
+                'result': 'red',
+                'text': 'Задача не найдена'
+            }
+
+        is_correct = int(user_answer.strip() == correct['answer'].strip())
+        status = 'Правильно!' if is_correct else 'Неправильно!'
+        result = 'correct' if is_correct else 'wrong'
+
+        # Номер попытки
+        cur.execute(
+            '''
+            SELECT COUNT(*) AS total
+            FROM task_attempts
+            WHERE user_id = %s AND task_id = %s
+            ''',
+            (user_id, task_id)
+        )
+
+        attempt_number = cur.fetchone()['total'] + 1
+
+        # Записываем попытку
+        cur.execute(
+            '''
+            INSERT INTO task_attempts(user_id, task_id, correct, attempt_number)
+            VALUES(%s, %s, %s, %s)
+            ''',
+            (user_id, task_id, is_correct, attempt_number)
+        )
+
+        # Обновляем статус
+        cur.execute(
+            '''
+            INSERT INTO user_tasks(user_id, task_id, status, completed_at)
+            VALUES(%s, %s, %s, CURRENT_TIMESTAMP)
+            ON CONFLICT(user_id, task_id)
+            DO UPDATE SET
+                status = EXCLUDED.status,
+                completed_at = CURRENT_TIMESTAMP
+            ''',
+            (user_id, task_id, status)
+        )
+
+        conn.commit()
+
+        return {
+            'result': result,
+            'text': status,
+            'attempt_number': attempt_number
+        }
+    except Exception:
+        conn.rollback()
+        raise
+    finally:
         cur.close()
         conn.close()
-        return {
-            'result': 'red',
-            'text': 'Задача не найдена'
-        }
-
-    is_correct = int(user_answer.strip() == correct['answer'].strip())
-    status = 'Правильно!' if is_correct else 'Неправильно!'
-    result = 'correct' if is_correct else 'wrong'
-
-    # Номер попытки
-    cur.execute(
-        '''
-        SELECT COUNT(*) AS total
-        FROM task_attempts
-        WHERE user_id = %s AND task_id = %s
-        ''',
-        (user_id, task_id)
-    )
-
-    attempt_number = cur.fetchone()['total'] + 1
-
-    # Записываем попытку
-    cur.execute(
-        '''
-        INSERT INTO task_attempts(user_id, task_id, correct, attempt_number)
-        VALUES(%s, %s, %s, %s)
-        ''',
-        (user_id, task_id, is_correct, attempt_number)
-    )
-
-    # Обновляем статус
-    cur.execute(
-        '''
-        INSERT INTO user_tasks(user_id, task_id, status, completed_at)
-        VALUES(%s, %s, %s, CURRENT_TIMESTAMP)
-        ON CONFLICT(user_id, task_id)
-        DO UPDATE SET
-            status = EXCLUDED.status,
-            completed_at = CURRENT_TIMESTAMP
-        ''',
-        (user_id, task_id, status)
-    )
-
-    conn.commit()
-    cur.close()
-    conn.close()
-
-    return {
-        'result': result,
-        'text': status,
-        'attempt_number': attempt_number
-    }
 
 
 # =========================================================
@@ -325,56 +341,57 @@ def mistakes():
     conn = get_db()
     cur = conn.cursor()
 
-    cur.execute(
-        '''
-        SELECT tasks.*
-        FROM tasks
-        JOIN user_tasks
-            ON tasks.id = user_tasks.task_id
-        WHERE user_tasks.user_id = %s
-          AND user_tasks.status = 'Неправильно!'
-        ORDER BY tasks.id
-        ''',
-        (user_id,)
-    )
+    try:
+        cur.execute(
+            '''
+            SELECT tasks.*
+            FROM tasks
+            JOIN user_tasks
+                ON tasks.id = user_tasks.task_id
+            WHERE user_tasks.user_id = %s
+              AND user_tasks.status = 'Неправильно!'
+            ORDER BY tasks.id
+            ''',
+            (user_id,)
+        )
 
-    tasks_list = cur.fetchall()
+        tasks_list = cur.fetchall()
 
-    # Статистика
-    cur.execute('''
-        SELECT
-            task_id,
-            COUNT(*) AS total,
-            SUM(
-                CASE
-                    WHEN attempt_number = 1 AND correct = 1
-                    THEN 1
-                    ELSE 0
-                END
-            ) AS correct_first_attempts
-        FROM task_attempts
-        GROUP BY task_id
-    ''')
+        # Статистика
+        cur.execute('''
+            SELECT
+                task_id,
+                COUNT(*) AS total,
+                SUM(
+                    CASE
+                        WHEN attempt_number = 1 AND correct = 1
+                        THEN 1
+                        ELSE 0
+                    END
+                ) AS correct_first_attempts
+            FROM task_attempts
+            GROUP BY task_id
+        ''')
 
-    stats_raw = cur.fetchall()
-    stats = {}
+        stats_raw = cur.fetchall()
+        stats = {}
 
-    for r in stats_raw:
-        t_id = r['task_id']
-        total = r['total'] or 0
-        first_attempts = r['correct_first_attempts'] or 0
+        for r in stats_raw:
+            t_id = r['task_id']
+            total = r['total'] or 0
+            first_attempts = r['correct_first_attempts'] or 0
 
-        percent = (first_attempts / total * 100) if total > 0 else 0
-        stats[t_id] = round(percent, 2)
+            percent = (first_attempts / total * 100) if total > 0 else 0
+            stats[t_id] = round(percent, 2)
 
-    cur.close()
-    conn.close()
-
-    return render_template(
-        'mistakes.html',
-        tasks=tasks_list,
-        stats=stats
-    )
+        return render_template(
+            'mistakes.html',
+            tasks=tasks_list,
+            stats=stats
+        )
+    finally:
+        cur.close()
+        conn.close()
 
 
 # =========================================================
@@ -387,30 +404,29 @@ def tests():
     conn = get_db()
     cur = conn.cursor()
 
-    # Только общие варианты, созданные администратором
-    cur.execute(
-        '''
-        SELECT id, name, year, created_at
-        FROM variants
-        WHERE is_public = TRUE
-        ORDER BY year DESC, created_at DESC, id DESC
-        '''
-    )
+    try:
+        cur.execute(
+            '''
+            SELECT id, name, year, created_at
+            FROM variants
+            WHERE is_public = TRUE
+            ORDER BY year DESC, created_at DESC, id DESC
+            '''
+        )
 
-    variants = cur.fetchall()
+        variants = cur.fetchall()
 
-    # Группируем по годам
-    years = {}
-    for variant in variants:
-        year = variant['year']
-        if year not in years:
-            years[year] = []
-        years[year].append(variant)
+        years = {}
+        for variant in variants:
+            year = variant['year']
+            if year not in years:
+                years[year] = []
+            years[year].append(variant)
 
-    cur.close()
-    conn.close()
-
-    return render_template('tests.html', years=years)
+        return render_template('tests.html', years=years)
+    finally:
+        cur.close()
+        conn.close()
 
 
 # =========================================================
@@ -424,19 +440,16 @@ def add_variant():
     year = request.form.get('year', '').strip()
     task_ids_text = request.form.get('task_ids', '').strip()
 
-    # Проверяем название
     if not name:
         flash('Введите название варианта')
         return redirect('/tests')
 
-    # Проверяем год
     try:
         year = int(year)
     except (TypeError, ValueError):
         flash('Введите корректный год')
         return redirect('/tests')
 
-    # Получаем ID задач
     raw_ids = task_ids_text.replace(';', ',').split(',')
     task_ids = []
 
@@ -461,60 +474,58 @@ def add_variant():
     conn = get_db()
     cur = conn.cursor()
 
-    # Проверяем, что все задания существуют
-    placeholders = ','.join(['%s'] * len(task_ids))
-    cur.execute(
-        f'''
-        SELECT id
-        FROM tasks
-        WHERE id IN ({placeholders})
-        ''',
-        tuple(task_ids)
-    )
-
-    existing_ids = {row['id'] for row in cur.fetchall()}
-    missing_ids = [t_id for t_id in task_ids if t_id not in existing_ids]
-
-    if missing_ids:
-        flash('Не найдены задания: ' + ', '.join(map(str, missing_ids)))
-        cur.close()
-        conn.close()
-        return redirect('/tests')
-
-    # =====================================================
-    # СОЗДАЁМ ОБЩИЙ ВАРИАНТ
-    # =====================================================
-    cur.execute(
-        '''
-        INSERT INTO variants(user_id, score, created_at, name, year, is_public)
-        VALUES(NULL, NULL, %s, %s, %s, TRUE)
-        RETURNING id
-        ''',
-        (datetime.now(), name, year)
-    )
-
-    var_id = cur.fetchone()['id']
-
-    # Добавляем задачи варианта
-    for task_id in task_ids:
+    try:
+        placeholders = ','.join(['%s'] * len(task_ids))
         cur.execute(
-            '''
-            INSERT INTO variant_tasks(
-                var_id, task_id, task_number, user_id, user_answer, correct_answer, correct
-            )
-            SELECT %s, id, number, NULL, NULL, answer, NULL
+            f'''
+            SELECT id
             FROM tasks
-            WHERE id = %s
+            WHERE id IN ({placeholders})
             ''',
-            (var_id, task_id)
+            tuple(task_ids)
         )
 
-    conn.commit()
-    cur.close()
-    conn.close()
+        existing_ids = {row['id'] for row in cur.fetchall()}
+        missing_ids = [t_id for t_id in task_ids if t_id not in existing_ids]
 
-    flash('Вариант успешно добавлен!')
-    return redirect('/tests')
+        if missing_ids:
+            flash('Не найдены задания: ' + ', '.join(map(str, missing_ids)))
+            return redirect('/tests')
+
+        cur.execute(
+            '''
+            INSERT INTO variants(user_id, score, created_at, name, year, is_public)
+            VALUES(NULL, NULL, %s, %s, %s, TRUE)
+            RETURNING id
+            ''',
+            (datetime.now(), name, year)
+        )
+
+        var_id = cur.fetchone()['id']
+
+        for task_id in task_ids:
+            cur.execute(
+                '''
+                INSERT INTO variant_tasks(
+                    var_id, task_id, task_number, user_id, user_answer, correct_answer, correct
+                )
+                SELECT %s, id, number, NULL, NULL, answer, NULL
+                FROM tasks
+                WHERE id = %s
+                ''',
+                (var_id, task_id)
+            )
+
+        conn.commit()
+
+        flash('Вариант успешно добавлен!')
+        return redirect('/tests')
+    except Exception:
+        conn.rollback()
+        raise
+    finally:
+        cur.close()
+        conn.close()
 
 
 # =========================================================
@@ -527,51 +538,48 @@ def view_variant(variant_id):
     conn = get_db()
     cur = conn.cursor()
 
-    # Проверяем, что это общий вариант
-    cur.execute(
-        '''
-        SELECT id, name, year, created_at
-        FROM variants
-        WHERE id = %s AND is_public = TRUE
-        ''',
-        (variant_id,)
-    )
+    try:
+        cur.execute(
+            '''
+            SELECT id, name, year, created_at
+            FROM variants
+            WHERE id = %s AND is_public = TRUE
+            ''',
+            (variant_id,)
+        )
 
-    variant = cur.fetchone()
+        variant = cur.fetchone()
 
-    if variant is None:
+        if variant is None:
+            flash('Вариант не найден')
+            return redirect('/tests')
+
+        cur.execute(
+            '''
+            SELECT
+                tasks.*,
+                variant_tasks.id AS variant_task_id
+            FROM variant_tasks
+            JOIN tasks
+                ON tasks.id = variant_tasks.task_id
+            WHERE variant_tasks.var_id = %s
+            ORDER BY variant_tasks.id
+            ''',
+            (variant_id,)
+        )
+
+        var_tasks = cur.fetchall()
+
+        return render_template(
+            'var.html',
+            variant=variant,
+            var_tasks=var_tasks,
+            variant_id=variant_id,
+            is_saved_variant=True
+        )
+    finally:
         cur.close()
         conn.close()
-        flash('Вариант не найден')
-        return redirect('/tests')
-
-    # Получаем задания
-    cur.execute(
-        '''
-        SELECT
-            tasks.*,
-            variant_tasks.id AS variant_task_id
-        FROM variant_tasks
-        JOIN tasks
-            ON tasks.id = variant_tasks.task_id
-        WHERE variant_tasks.var_id = %s
-        ORDER BY variant_tasks.id
-        ''',
-        (variant_id,)
-    )
-
-    var_tasks = cur.fetchall()
-
-    cur.close()
-    conn.close()
-
-    return render_template(
-        'var.html',
-        variant=variant,
-        var_tasks=var_tasks,
-        variant_id=variant_id,
-        is_saved_variant=True
-    )
 
 
 # =========================================================
@@ -584,220 +592,173 @@ def delete_variant(variant_id):
     conn = get_db()
     cur = conn.cursor()
 
-    # Проверяем, существует ли вариант
-    cur.execute(
-        '''
-        SELECT id
-        FROM variants
-        WHERE id = %s
-        ''',
-        (variant_id,)
-    )
+    try:
+        cur.execute(
+            '''
+            SELECT id
+            FROM variants
+            WHERE id = %s
+            ''',
+            (variant_id,)
+        )
 
-    variant = cur.fetchone()
+        variant = cur.fetchone()
 
-    if variant is None:
+        if variant is None:
+            flash('Вариант не найден')
+            return redirect('/tests')
+
+        cur.execute(
+            '''
+            DELETE FROM variant_tasks
+            WHERE var_id = %s
+            ''',
+            (variant_id,)
+        )
+
+        cur.execute(
+            '''
+            DELETE FROM variants
+            WHERE id = %s
+            ''',
+            (variant_id,)
+        )
+
+        conn.commit()
+
+        flash('Вариант успешно удалён!')
+        return redirect('/tests')
+    except Exception:
+        conn.rollback()
+        raise
+    finally:
         cur.close()
         conn.close()
-        flash('Вариант не найден')
-        return redirect('/tests')
-
-    # Сначала удаляем связанные задания варианта
-    cur.execute(
-        '''
-        DELETE FROM variant_tasks
-        WHERE var_id = %s
-        ''',
-        (variant_id,)
-    )
-
-    # Затем удаляем сам вариант
-    cur.execute(
-        '''
-        DELETE FROM variants
-        WHERE id = %s
-        ''',
-        (variant_id,)
-    )
-
-    conn.commit()
-    cur.close()
-    conn.close()
-
-    flash('Вариант успешно удалён!')
-    return redirect('/tests')
 
 
 # =========================================================
 # ПРОВЕРКА ГОТОВОГО ВАРИАНТА
 # =========================================================
 
-@tasks_bp.route(
-    '/check_saved_variant/<int:variant_id>',
-    methods=['POST']
-)
+@tasks_bp.route('/check_saved_variant/<int:variant_id>', methods=['POST'])
 @regs_only
 def check_saved_variant(variant_id):
     user_id = session['user_id']
     conn = get_db()
     cur = conn.cursor()
+
     try:
-        # =========================
-        # ПРОВЕРЯЕМ ВАРИАНТ
-        # =========================
         cur.execute(
             '''
             SELECT *
             FROM variants
-            WHERE id = %s
-            AND is_public = TRUE
+            WHERE id = %s AND is_public = TRUE
             ''',
             (variant_id,)
         )
         variant = cur.fetchone()
+
         if variant is None:
             return jsonify({
                 'success': False,
                 'error': 'Вариант не найден'
             }), 404
-        # =========================
-        # ПОЛУЧАЕМ ЗАДАНИЯ
-        # =========================
+
         cur.execute(
             '''
-            SELECT
-                tasks.*
+            SELECT tasks.*
             FROM variant_tasks
-            JOIN tasks
-                ON tasks.id = variant_tasks.task_id
+            JOIN tasks ON tasks.id = variant_tasks.task_id
             WHERE variant_tasks.var_id = %s
             ORDER BY variant_tasks.id
             ''',
             (variant_id,)
         )
         var_tasks = cur.fetchall()
-        # =========================
-        # ПРОВЕРЯЕМ ОТВЕТЫ
-        # =========================
+
         score = 0
         results = []
+
         for task in var_tasks:
             task_id = task['id']
-            # Ответ пользователя
-            user_answer = request.form.get(
-                f'answer_{task_id}',
-                ''
-            ).strip()
-            # Правильный ответ
-            correct_answer = (
-                task['answer'] or ''
-            ).strip()
-            # ВАЖНО:
-            # correct должен быть INTEGER:
-            # 1 = правильно
-            # 0 = неправильно
-            is_correct = int(
-                user_answer == correct_answer
-            )
+            user_answer = request.form.get(f'answer_{task_id}', '').strip()
+            correct_answer = (task['answer'] or '').strip()
+            is_correct = int(user_answer == correct_answer)
+
             if is_correct == 1:
                 score += 1
-            # =========================
-            # РЕЗУЛЬТАТ ДЛЯ МОДАЛКИ
-            # =========================
+
             results.append({
                 'task_id': task_id,
                 'task_number': task['number'],
                 'user_answer': user_answer,
                 'correct_answer': correct_answer,
-                # НЕ bool, а integer 0/1
                 'correct': is_correct
             })
-            # =========================
-            # НОМЕР ПОПЫТКИ
-            # =========================
+
             cur.execute(
                 '''
                 SELECT COUNT(*) AS total
                 FROM task_attempts
-                WHERE user_id = %s
-                AND task_id = %s
+                WHERE user_id = %s AND task_id = %s
                 ''',
-                (
-                    user_id,
-                    task_id
-                )
+                (user_id, task_id)
             )
-            attempt_number = (
-                cur.fetchone()['total']
-                + 1
-            )
-            # =========================
-            # СОХРАНЯЕМ ПОПЫТКУ
-            # =========================
+            attempt_number = cur.fetchone()['total'] + 1
+
             cur.execute(
                 '''
-                INSERT INTO task_attempts(
-                    user_id,
-                    task_id,
-                    correct,
-                    attempt_number
-                )
-                VALUES(
-                    %s,
-                    %s,
-                    %s,
-                    %s
-                )
+                INSERT INTO task_attempts(user_id, task_id, correct, attempt_number)
+                VALUES(%s, %s, %s, %s)
                 ''',
-                (
-                    user_id,
-                    task_id,
-                    # INTEGER 0/1
-                    is_correct,
-                    attempt_number
-                )
+                (user_id, task_id, is_correct, attempt_number)
             )
-            # =========================
-            # USER TASKS
-            # =========================
-            status = (
-                'Правильно!'
-                if is_correct == 1
-                else
-                'Неправильно!'
-            )
+
+            status = 'Правильно!' if is_correct == 1 else 'Неправильно!'
             cur.execute(
                 '''
-                INSERT INTO user_tasks(
-                    user_id,
-                    task_id,
-                    status,
-                    completed_at
-                )
-                VALUES(
-                    %s,
-                    %s,
-                    %s,
-                    CURRENT_TIMESTAMP
-                )
+                INSERT INTO user_tasks(user_id, task_id, status, completed_at)
+                VALUES(%s, %s, %s, CURRENT_TIMESTAMP)
                 ON CONFLICT(user_id, task_id)
                 DO UPDATE SET
                     status = EXCLUDED.status,
                     completed_at = CURRENT_TIMESTAMP
                 ''',
+                (user_id, task_id, status)
+            )
+
+        # Создаём запись в истории пользователя
+        cur.execute(
+            '''
+            INSERT INTO variants(user_id, score, created_at, name, year, is_public)
+            VALUES(%s, %s, %s, %s, %s, FALSE)
+            RETURNING id
+            ''',
+            (user_id, score, datetime.now(), variant['name'], variant['year'])
+        )
+        result_variant_id = cur.fetchone()['id']
+
+        for res in results:
+            cur.execute(
+                '''
+                INSERT INTO variant_tasks(
+                    var_id, task_id, task_number, user_id, user_answer, correct_answer, correct
+                )
+                VALUES(%s, %s, %s, %s, %s, %s, %s)
+                ''',
                 (
+                    result_variant_id,
+                    res['task_id'],
+                    res['task_number'],
                     user_id,
-                    task_id,
-                    status
+                    res['user_answer'],
+                    res['correct_answer'],
+                    res['correct']
                 )
             )
-        # =========================
-        # СОХРАНЯЕМ
-        # =========================
+
         conn.commit()
-        # =========================
-        # JSON ДЛЯ МОДАЛКИ
-        # =========================
+
         return jsonify({
             'success': True,
             'variant_id': variant_id,
@@ -805,150 +766,13 @@ def check_saved_variant(variant_id):
             'total': len(var_tasks),
             'results': results
         })
+
     except Exception:
-        # Если произошла ошибка,
-        # отменяем незавершённую транзакцию
         conn.rollback()
         raise
     finally:
         cur.close()
         conn.close()
-        
-
-    # =========================
-    # ПОЛУЧАЕМ ЗАДАНИЯ
-    # =========================
-    cur.execute(
-        '''
-        SELECT tasks.*
-        FROM variant_tasks
-        JOIN tasks
-            ON tasks.id = variant_tasks.task_id
-        WHERE variant_tasks.var_id = %s
-        ORDER BY variant_tasks.id
-        ''',
-        (variant_id,)
-    )
-
-    var_tasks = cur.fetchall()
-
-    # =========================
-    # ПРОВЕРЯЕМ ОТВЕТЫ
-    # =========================
-    score = 0
-    results = []
-
-    for task in var_tasks:
-        task_id = task['id']
-
-        # Ответ пользователя
-        user_answer = request.form.get(f'answer_{task_id}', '').strip()
-
-        # Правильный ответ
-        correct_answer = (task['answer'] or '').strip()
-
-        # Проверка
-        is_correct = int(user_answer == correct_answer)
-
-        if is_correct:
-            score += 1
-
-        # Сохраняем результат для модалки
-        results.append({
-            'task_id': task_id,
-            'task_number': task['number'],
-            'user_answer': user_answer,
-            'correct_answer': correct_answer,
-            'correct': bool(is_correct)
-        })
-
-        # =========================
-        # ЗАПИСЫВАЕМ ПОПЫТКУ
-        # =========================
-        cur.execute(
-            '''
-            SELECT COUNT(*) AS total
-            FROM task_attempts
-            WHERE user_id = %s AND task_id = %s
-            ''',
-            (user_id, task_id)
-        )
-
-        attempt_number = cur.fetchone()['total'] + 1
-
-        cur.execute(
-            '''
-            INSERT INTO task_attempts(user_id, task_id, correct, attempt_number)
-            VALUES(%s, %s, %s, %s)
-            ''',
-            (user_id, task_id, is_correct, attempt_number)
-        )
-
-        # =========================
-        # ОБНОВЛЯЕМ USER_TASKS
-        # =========================
-        status = 'Правильно!' if is_correct else 'Неправильно!'
-
-        cur.execute(
-            '''
-            INSERT INTO user_tasks(user_id, task_id, status, completed_at)
-            VALUES(%s, %s, %s, CURRENT_TIMESTAMP)
-            ON CONFLICT(user_id, task_id)
-            DO UPDATE SET
-                status = EXCLUDED.status,
-                completed_at = CURRENT_TIMESTAMP
-            ''',
-            (user_id, task_id, status)
-        )
-
-    # =====================================================
-    # СОЗДАЁМ ЗАПИСЬ О ПРОХОЖДЕНИИ
-    # =====================================================
-    cur.execute(
-        '''
-        INSERT INTO variants(user_id, score, created_at, name, year, is_public)
-        VALUES(%s, %s, %s, %s, %s, FALSE)
-        RETURNING id
-        ''',
-        (user_id, score, datetime.now(), variant['name'], variant['year'])
-    )
-
-    result_variant_id = cur.fetchone()['id']
-
-    # Записываем результаты
-    for result in results:
-        cur.execute(
-            '''
-            INSERT INTO variant_tasks(
-                var_id, task_id, task_number, user_id, user_answer, correct_answer, correct
-            )
-            VALUES(%s, %s, %s, %s, %s, %s, %s)
-            ''',
-            (
-                result_variant_id,
-                result['task_id'],
-                result['task_number'],
-                user_id,
-                result['user_answer'],
-                result['correct_answer'],
-                result['correct']
-            )
-        )
-
-    conn.commit()
-    cur.close()
-    conn.close()
-
-    # =========================
-    # ВОЗВРАЩАЕМ РЕЗУЛЬТАТ
-    # =========================
-    return jsonify({
-        'success': True,
-        'variant_id': variant_id,
-        'score': score,
-        'total': len(var_tasks),
-        'results': results
-    })
 
 
 # =========================================================
@@ -961,32 +785,33 @@ def generate_var():
     conn = get_db()
     cur = conn.cursor()
 
-    var_tasks = []
-    nums = list(range(1, 20))
+    try:
+        var_tasks = []
+        nums = list(range(1, 20))
 
-    for number in nums:
-        cur.execute(
-            '''
-            SELECT *
-            FROM tasks
-            WHERE number = %s
-            ''',
-            (number,)
+        for number in nums:
+            cur.execute(
+                '''
+                SELECT *
+                FROM tasks
+                WHERE number = %s
+                ''',
+                (number,)
+            )
+            t_list = cur.fetchall()
+
+            if t_list:
+                var_tasks.append(random.choice(t_list))
+
+        return render_template(
+            'var.html',
+            variant=None,
+            var_tasks=var_tasks,
+            is_saved_variant=False
         )
-        t_list = cur.fetchall()
-
-        if t_list:
-            var_tasks.append(random.choice(t_list))
-
-    cur.close()
-    conn.close()
-
-    return render_template(
-        'var.html',
-        variant=None,
-        var_tasks=var_tasks,
-        is_saved_variant=False
-    )
+    finally:
+        cur.close()
+        conn.close()
 
 
 # =========================================================
@@ -999,90 +824,92 @@ def check_var():
     conn = get_db()
     cur = conn.cursor()
 
-    task_ids = request.form.getlist('task_id')
-    score = 0
-    answers = []
+    try:
+        task_ids = request.form.getlist('task_id')
+        score = 0
+        answers = []
 
-    for task_id in task_ids:
-        cur.execute(
-            '''
-            SELECT *
-            FROM tasks
-            WHERE id = %s
-            ''',
-            (task_id,)
-        )
-        task = cur.fetchone()
-
-        if task is None:
-            continue
-
-        user_answer = request.form.get(f'answer_{task_id}', '').strip()
-        correct = (task['answer'] or '').strip()
-        is_correct = int(user_answer == correct)
-
-        if is_correct:
-            score += 1
-
-        answers.append({
-            'task_id': task_id,
-            'task_number': task['number'],
-            'user_answer': user_answer,
-            'correct_answer': correct,
-            'correct': is_correct
-        })
-
-    # =====================================================
-    # СОХРАНЯЕМ ПРОХОЖДЕНИЕ
-    # =====================================================
-    cur.execute(
-        '''
-        INSERT INTO variants(user_id, score, created_at, name, year, is_public)
-        VALUES(%s, %s, %s, %s, %s, FALSE)
-        RETURNING id
-        ''',
-        (
-            session['user_id'],
-            score,
-            datetime.now(),
-            'Сгенерированный вариант',
-            datetime.now().year
-        )
-    )
-
-    var_id = cur.fetchone()['id']
-
-    for ans in answers:
-        cur.execute(
-            '''
-            INSERT INTO variant_tasks(
-                var_id, task_id, task_number, user_id, user_answer, correct_answer, correct
+        for task_id in task_ids:
+            cur.execute(
+                '''
+                SELECT *
+                FROM tasks
+                WHERE id = %s
+                ''',
+                (task_id,)
             )
-            VALUES(%s, %s, %s, %s, %s, %s, %s)
+            task = cur.fetchone()
+
+            if task is None:
+                continue
+
+            user_answer = request.form.get(f'answer_{task_id}', '').strip()
+            correct = (task['answer'] or '').strip()
+            is_correct = int(user_answer == correct)
+
+            if is_correct:
+                score += 1
+
+            answers.append({
+                'task_id': task_id,
+                'task_number': task['number'],
+                'user_answer': user_answer,
+                'correct_answer': correct,
+                'correct': is_correct
+            })
+
+        cur.execute(
+            '''
+            INSERT INTO variants(user_id, score, created_at, name, year, is_public)
+            VALUES(%s, %s, %s, %s, %s, FALSE)
+            RETURNING id
             ''',
             (
-                var_id,
-                ans['task_id'],
-                ans['task_number'],
                 session['user_id'],
-                ans['user_answer'],
-                ans['correct_answer'],
-                ans['correct']
+                score,
+                datetime.now(),
+                'Сгенерированный вариант',
+                datetime.now().year
             )
         )
 
-    conn.commit()
-    cur.close()
-    conn.close()
+        var_id = cur.fetchone()['id']
 
-    return {
-        'score': score,
-        'total': len(task_ids)
-    }
+        for ans in answers:
+            cur.execute(
+                '''
+                INSERT INTO variant_tasks(
+                    var_id, task_id, task_number, user_id, user_answer, correct_answer, correct
+                )
+                VALUES(%s, %s, %s, %s, %s, %s, %s)
+                ''',
+                (
+                    var_id,
+                    ans['task_id'],
+                    ans['task_number'],
+                    session['user_id'],
+                    ans['user_answer'],
+                    ans['correct_answer'],
+                    ans['correct']
+                )
+            )
+
+        conn.commit()
+
+        return {
+            'score': score,
+            'total': len(task_ids)
+        }
+    except Exception:
+        conn.rollback()
+        raise
+    finally:
+        cur.close()
+        conn.close()
 
 
 # =========================================================
-# STATISTICS
+# СТАТИСТИКА
 # =========================================================
 
 @tasks_bp.route('/statistics')
@@ -1093,156 +920,207 @@ def statistics():
     conn = get_db()
     cur = conn.cursor()
 
-    cur.execute(
-        '''
-        SELECT *
-        FROM users
-        WHERE id = %s
-        ''',
-        (user_id,)
-    )
-    user = cur.fetchone()
+    try:
+        cur.execute(
+            '''
+            SELECT *
+            FROM users
+            WHERE id = %s
+            ''',
+            (user_id,)
+        )
+        user = cur.fetchone()
 
-    solved_count = all_count(user_id)
-    correct = correct_count(user_id)
-    goal = user['goal']
+        solved_count = all_count(user_id)
+        correct = correct_count(user_id)
+        goal = user['goal'] if user and 'goal' in user else 0
 
-    percent = int(correct / solved_count * 100) if solved_count else 0
+        percent = int(correct / solved_count * 100) if solved_count else 0
 
-    # =====================================================
-    # СТАТИСТИКА ПО НОМЕРАМ
-    # =====================================================
-    cur.execute(
-        '''
-        SELECT
-            tasks.number,
-            ROUND(
-                100.0 * SUM(
+        # Стрик дней
+        cur.execute(
+            '''
+            SELECT DISTINCT active_date FROM (
+                SELECT DATE(completed_at) AS active_date
+                FROM user_tasks 
+                WHERE user_id = %s AND completed_at IS NOT NULL
+                
+                UNION
+                
+                SELECT DATE(created_at) AS active_date
+                FROM variants 
+                WHERE user_id = %s AND created_at IS NOT NULL
+            ) AS dates
+            ORDER BY active_date DESC
+            ''',
+            (user_id, user_id)
+        )
+
+        date_rows = cur.fetchall()
+        active_dates = [row['active_date'] for row in date_rows]
+
+        streak = 0
+        today = date.today()
+
+        if active_dates:
+            parsed_dates = []
+            for d in active_dates:
+                if isinstance(d, str):
+                    parsed_dates.append(datetime.strptime(d, '%Y-%m-%d').date())
+                elif isinstance(d, datetime):
+                    parsed_dates.append(d.date())
+                else:
+                    parsed_dates.append(d)
+
+            if parsed_dates[0] == today:
+                streak = 1
+                check_date = today - timedelta(days=1)
+                dates_to_check = parsed_dates[1:]
+            elif parsed_dates[0] == today - timedelta(days=1):
+                streak = 1
+                check_date = today - timedelta(days=2)
+                dates_to_check = parsed_dates[1:]
+            else:
+                dates_to_check = []
+
+            for d in dates_to_check:
+                if d == check_date:
+                    streak += 1
+                    check_date -= timedelta(days=1)
+                elif d > check_date:
+                    continue
+                else:
+                    break
+
+        # Активность по дням
+        cur.execute(
+            '''
+            SELECT DATE(completed_at) AS task_date, COUNT(*) AS count
+            FROM user_tasks
+            WHERE user_id = %s AND completed_at IS NOT NULL
+            GROUP BY DATE(completed_at)
+            ''',
+            (user_id,)
+        )
+        activity_rows = cur.fetchall()
+        activity_data = {}
+        for r in activity_rows:
+            d_str = r['task_date'].strftime('%Y-%m-%d') if isinstance(r['task_date'], (date, datetime)) else str(r['task_date'])
+            activity_data[d_str] = r['count']
+
+        # Процент решения по номерам
+        cur.execute(
+            '''
+            SELECT
+                tasks.number,
+                ROUND(
+                    100.0 * SUM(
+                        CASE WHEN user_tasks.status LIKE 'Правильно%%' THEN 1 ELSE 0 END
+                    ) / COUNT(*),
+                    1
+                ) AS percent
+            FROM user_tasks
+            JOIN tasks ON user_tasks.task_id = tasks.id
+            WHERE user_tasks.user_id = %s
+            GROUP BY tasks.number
+            ORDER BY tasks.number
+            ''',
+            (user_id,)
+        )
+
+        data = cur.fetchall()
+        numbers = [row['number'] for row in data]
+        percents = [row['percent'] for row in data]
+
+        # Первые попытки
+        cur.execute(
+            '''
+            SELECT
+                tasks.number,
+                COUNT(CASE WHEN task_attempts.attempt_number = 1 THEN 1 END) AS total_first_attempts,
+                SUM(
                     CASE
-                        WHEN user_tasks.status LIKE 'Правильно%%'
+                        WHEN task_attempts.attempt_number = 1 AND task_attempts.correct = 1
                         THEN 1
                         ELSE 0
                     END
-                ) / COUNT(*),
-                1
-            ) AS percent
-        FROM user_tasks
-        JOIN tasks
-            ON user_tasks.task_id = tasks.id
-        WHERE user_tasks.user_id = %s
-        GROUP BY tasks.number
-        ORDER BY tasks.number
-        ''',
-        (user_id,)
-    )
+                ) AS correct_first_attempts
+            FROM task_attempts
+            JOIN tasks ON tasks.id = task_attempts.task_id
+            WHERE task_attempts.user_id = %s
+            GROUP BY tasks.number
+            ORDER BY tasks.number
+            ''',
+            (user_id,)
+        )
 
-    data = cur.fetchall()
-    numbers = [row['number'] for row in data]
-    percents = [row['percent'] for row in data]
+        raw = cur.fetchall()
+        first_attempts_numbers = []
+        first_attempts_percents = []
 
-    # =====================================================
-    # ПЕРВАЯ ПОПЫТКА
-    # =====================================================
-    cur.execute(
-        '''
-        SELECT
-            tasks.number,
-            COUNT(CASE WHEN task_attempts.attempt_number = 1 THEN 1 END) AS total_first_attempts,
-            SUM(
-                CASE
-                    WHEN task_attempts.attempt_number = 1
-                     AND task_attempts.correct = 1
-                    THEN 1
-                    ELSE 0
-                END
-            ) AS correct_first_attempts
-        FROM task_attempts
-        JOIN tasks
-            ON tasks.id = task_attempts.task_id
-        WHERE task_attempts.user_id = %s
-        GROUP BY tasks.number
-        ORDER BY tasks.number
-        ''',
-        (user_id,)
-    )
+        for r in raw:
+            num = r['number']
+            total = r['total_first_attempts'] or 0
+            first = r['correct_first_attempts'] or 0
+            p_first = (first / total * 100) if total > 0 else 0
 
-    raw = cur.fetchall()
-    first_attempts_numbers = []
-    first_attempts_percents = []
+            first_attempts_numbers.append(num)
+            first_attempts_percents.append(round(p_first, 2))
 
-    for r in raw:
-        num = r['number']
-        total = r['total_first_attempts'] or 0
-        first = r['correct_first_attempts'] or 0
-        
-        # Считаем процент именно от количества Первых попыток
-        p_first = (first / total * 100) if total > 0 else 0
+        # История прохождений
+        cur.execute(
+            '''
+            SELECT
+                variant_tasks.var_id,
+                tasks.number AS task_number,
+                variant_tasks.task_id,
+                variant_tasks.user_answer,
+                variant_tasks.correct_answer,
+                variant_tasks.correct,
+                variants.score,
+                variants.created_at,
+                variants.name,
+                variants.year
+            FROM variant_tasks
+            JOIN variants ON variant_tasks.var_id = variants.id
+            JOIN tasks ON variant_tasks.task_id = tasks.id
+            WHERE variants.user_id = %s
+            ORDER BY variants.created_at DESC, variant_tasks.var_id DESC, tasks.number
+            ''',
+            (user_id,)
+        )
 
-        first_attempts_numbers.append(num)
-        first_attempts_percents.append(round(p_first, 2))
+        history_rows = cur.fetchall()
+        history = {}
 
-    # =====================================================
-    # ИСТОРИЯ ПРОХОЖДЕНИЯ ВАРИАНТОВ
-    # =====================================================
-    cur.execute(
-        '''
-        SELECT
-            variant_tasks.var_id,
-            tasks.number AS task_number,
-            variant_tasks.task_id,
-            variant_tasks.user_answer,
-            variant_tasks.correct_answer,
-            variant_tasks.correct,
-            variants.score,
-            variants.created_at,
-            variants.name,
-            variants.year
-        FROM variant_tasks
-        JOIN variants
-            ON variant_tasks.var_id = variants.id
-        JOIN tasks
-            ON variant_tasks.task_id = tasks.id
-        WHERE variants.user_id = %s
-        ORDER BY variant_tasks.var_id, tasks.number
-        ''',
-        (user_id,)
-    )
+        for row in history_rows:
+            var_id = row['var_id']
+            if var_id not in history:
+                history[var_id] = {
+                    'name': row['name'],
+                    'year': row['year'],
+                    'score': row['score'],
+                    'created_at': row['created_at'],
+                    'tasks': []
+                }
+            history[var_id]['tasks'].append(row)
 
-    variant_data = cur.fetchall()
-    variant_table = {}
-
-    for row in variant_data:
-        var_id = row['var_id']
-
-        if var_id not in variant_table:
-            variant_table[var_id] = {
-                'score': row['score'],
-                'created_at': row['created_at'],
-                'name': row['name'],
-                'year': row['year'],
-                'tasks': {}
-            }
-
-        variant_table[var_id]['tasks'][row['task_number']] = {
-            'task_id': row['task_id'],
-            'answer': row['user_answer'],
-            'correct_answer': row['correct_answer'],
-            'correct': row['correct']
-        }
-
-    cur.close()
-    conn.close()
-
-    return render_template(
-        'statistics.html',
-        user=user,
-        solved_count=solved_count,
-        correct=correct,
-        goal=goal,
-        percent=percent,
-        numbers=numbers,
-        percents=percents,
-        first_attempts_numbers=first_attempts_numbers,
-        first_attempts_percents=first_attempts_percents,
-        variant_table=variant_table
-    )
+        return render_template(
+            'statistics.html',
+            user=user,
+            solved_count=solved_count,
+            correct=correct,
+            goal=goal,
+            percent=percent,
+            streak=streak,
+            activity_data=activity_data,
+            numbers=numbers,
+            percents=percents,
+            first_attempts_numbers=first_attempts_numbers,
+            first_attempts_percents=first_attempts_percents,
+            variant_table=history,
+            history=history
+        )
+    finally:
+        cur.close()
+        conn.close()

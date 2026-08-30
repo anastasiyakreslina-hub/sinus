@@ -217,8 +217,16 @@
 
                 <div class="statsGrid">
                     <a href="{{ url_for('tasks.statistics') }}" class="statItem">
-                        <strong>0</strong>
-                        <span>дней нарешки</span>
+                        <strong>{{ streak }}</strong>
+                        <span>
+                            {% if streak % 10 == 1 and streak % 100 != 11 %}
+                                день нарешки
+                            {% elif streak % 10 in [2, 3, 4] and streak % 100 not in [12, 13, 14] %}
+                                дня нарешки
+                            {% else %}
+                                дней нарешки
+                            {% endif %}
+                        </span>
                     </a>
 
                     <a href="{{ url_for('tasks.statistics') }}" class="statItem">
@@ -241,14 +249,14 @@
     </main>
 
     <!-- =====================================================
-     FOOTER
-===================================================== -->
+         FOOTER
+    ===================================================== -->
     <footer class="homeFooter">
         <div class="footerContainer">
-        <!-- Левая колонка: Бренд и описание -->
+            <!-- Левая колонка: Бренд и описание -->
             <div class="footerBrand">
                 <a href="{{ url_for('main.home') if 'main.home' in request.endpoint else '/' }}" class="footerLogo">
-                sinus<span>.</span>
+                    sinus<span>.</span>
                 </a>
                 <p class="footerDescription">
                     Платформа для эффективной подготовки к экзаменам по математике.
@@ -256,7 +264,7 @@
                 <span class="footerCopyright">© 2026 Sinus. Все права защищены.</span>
             </div>
 
-        <!-- Правая часть: Логические группы ссылок -->
+            <!-- Правая часть: Логические группы ссылок -->
             <div class="footerNavGrid">
                 <div class="footerColumn">
                     <span class="footerColumnTitle">Проект</span>

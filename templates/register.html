@@ -10,7 +10,6 @@
 </head>
 
 <body class="authPage">
-    <!-- Контакты -->
     <div id="contacts" class="modal contactsModal" style="display: none;">
         <button class="closeModal" onclick="closeContacts()">
             &times;
@@ -57,11 +56,9 @@
         </p>
     </div>
 
-    <!-- Регистрация -->
     <main class="authWrapper">
         <section class="login">
 
-            <!-- Маскот -->
             <div class="loginMascot">
                 <img
                     src="{{url_for('static', filename='images/mascot/coolMascot.png')}}"
@@ -70,7 +67,6 @@
                 >
             </div>
 
-            <!-- Заголовок -->
             <div class="loginHeader">
                 <p class="authEyebrow">
                     SINUS
@@ -84,7 +80,6 @@
                 </p>
             </div>
 
-            <!-- Форма -->
             <form method="POST" class="loginForm">
 
                 <label class="inputLabel">
@@ -111,6 +106,18 @@
                     >
                 </label>
 
+                <label class="checkboxLabel">
+                    <input
+                        type="checkbox"
+                        name="privacy_policy"
+                        class="checkboxInput"
+                        required
+                    >
+                    <span>
+                        Я соглашаюсь с <a href="{{ url_for('main.privacypolicy') }}" target="_blank">политикой конфиденциальности</a>
+                    </span>
+                </label>
+
                 <button
                     class="enterButton lightBox"
                     type="submit"
@@ -125,7 +132,6 @@
 
             </form>
 
-            <!-- Переход ко входу -->
             <div class="registerHint">
                 <span>
                     Уже есть аккаунт?
@@ -134,8 +140,7 @@
                     Войти
                 </a>
             </div>
-        <!-- Ошибка -->
-            {% if error %}
+        {% if error %}
                 <div class="toast" id="toast">
                     <img
                         src="{{url_for('static', filename='images/mascot/errorMascot.png')}}"
@@ -149,7 +154,6 @@
             {% endif %}
         </section>
     </main>
-    <!-- Нижняя навигация -->
     <footer class="authFooter smallInfo">
         <li><a href="https://t.me/karznl">Телеграмм-канал</a></li>
         <li><a href="/">FAQ</a></li>
@@ -161,4 +165,3 @@
     <script src="{{url_for('static',filename='js/ui.js')}}"></script>
 </body>
 </html>
-

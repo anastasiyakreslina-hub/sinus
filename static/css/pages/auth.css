@@ -277,3 +277,21 @@ to {
     box-shadow:
         0 20px 60px rgba(42, 13, 13, 0.25);
 }
+
+.checkboxLabel {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    margin: 8px 0 16px;
+}
+
+.checkboxInput {
+    cursor: pointer;
+    accent-color: var(--primary-color, #000); /* Адаптирует цвет галочки под стиль проекта */
+}
+
+.checkboxLabel a {
+    text-decoration: underline;
+}
