@@ -4,6 +4,7 @@
 @import url('base/fonts.css');
 @import url('base/global.css');
 @import url('base/slow.css');
+@import url('base/quill-custom.css');
 
 /* Переиспользуемые компоненты */
 @import url('components/card.css');

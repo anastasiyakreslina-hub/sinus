@@ -1,719 +1,1183 @@
-html, body {
-    max-width: 100%;
-    overflow-x: hidden; /* Запрещает горизонтальную прокрутку */
+/* =========================================================
+SINUS · ABOUT PAGE (CENTERED MASCOT ON TOP)
+========================================================= */
+
+.aboutPage {
+  overflow-x: hidden;
+  background: var(--background, #fafafa);
 }
 
-details {
-    position: relative;
-    z-index: 9999;
+/* =========================================================
+BACKGROUND
+========================================================= */
+.aboutBackground {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+  overflow: hidden;
 }
 
-summary {
-    height: 30px;
-    padding: 10px 5px;
-    color: #9b6881;
+.gridNoise {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(0,0,0,.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,0,0,.025) 1px, transparent 1px);
+  background-size: 70px 70px;
+  mask-image: linear-gradient(to bottom, black, transparent 80%);
 }
 
-.information {
-    border-radius: 15px;
-    width: 95%;
-    margin: 0 auto;
-    padding: 10px;
+.bgMath {
+  position: absolute;
+  font-family: Georgia, serif;
+  font-size: 100px;
+  opacity: .035;
+  animation: backgroundFloat 12s ease-in-out infinite;
 }
 
-.infoBlock {
-    position: relative;
-    width: 100%;
-    /* height: 100vh; */
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    text-align: center;
-    padding: 40px;
+.bgMath1 { top: 10%; left: 4%; }
+.bgMath2 { top: 36%; right: 4%; animation-delay: -3s; }
+.bgMath3 { top: 65%; left: 5%; animation-delay: -6s; }
+.bgMath4 { bottom: 8%; right: 7%; animation-delay: -8s; }
+
+@keyframes backgroundFloat {
+  0%, 100% { transform: translateY(0) rotate(-4deg); }
+  50% { transform: translateY(-25px) rotate(4deg); }
 }
 
-.infoBlock::after {
-    content: "";
-    position: absolute;
-    left: 50%;
-    bottom: 0;
-    transform: translateX(-50%);
-    width: 70%;
-    height: 2px;
-    background-color: var(--text-secondary);
+/* =========================================================
+HERO LAYOUT & TOP BAR
+========================================================= */
+.aboutHero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding: 25px clamp(25px, 6vw, 100px) 0;
+  overflow: hidden;
 }
 
-.actualInformation {
-    white-space: pre-wrap;
-    width: 60%;
-    font-size: 16px;
-    margin: 0 auto 20px auto;
-    text-align: start;
-    font-family: 'Task';
-    color: var(--task-text);
+.heroTopBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  z-index: 10;
 }
 
-.infoImage {
-    width: 60%;
-    margin-top: 20px;
-    border-radius: 35px;
+.aboutLogo {
+  font-size: 30px;
+  font-weight: 800;
+  color: inherit;
+  text-decoration: none;
+  letter-spacing: -2px;
 }
 
-.smallInfo {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    margin: auto auto 20px auto;
-    font-size: 10px;
-    list-style: none;
-    z-index: 9999;
+.aboutLogo span {
+  color: #e00560;
 }
 
-.smallInfo a,
-.smallInfo li {
-    color: var(--text-secondary);
+.aboutThemeButton {
+  border: 1px solid rgba(0,0,0,.1);
+  background: rgba(255,255,255,.45);
+  backdrop-filter: blur(15px);
+  padding: 10px 15px;
+  border-radius: 100px;
+  cursor: pointer;
+  transition: .25s;
 }
 
-.smallInfo li+li {
-    margin-top: 5px;
+.aboutThemeButton:hover {
+  transform: translateY(-2px);
 }
 
-.modal {
-    position: fixed;
-    inset: 0;
-    border: 2px solid #ffffff42;
-    backdrop-filter: blur(15px);
-    box-shadow: 0 8px 32px rgba(0,0,0,0.2);
-    padding: 10px;
-    background: #a9686813;
-    width: 90%;
-    height: 90%;
-    border-radius: 35px;
-    margin: auto;
-    z-index: 99999;
+/* =========================================================
+HERO MAIN (MASCOT TOP & CENTERED CONTENT)
+========================================================= */
+.heroMain {
+  display: flex;
+  flex-direction: column; /* Маскот сверху, текст снизу */
+  align-items: center;    /* Центрирование по горизонтали */
+  text-align: center;     /* Центрирование текста */
+  gap: 1.5rem;
+  width: 100%;
+  max-width: 900px;
+  margin: 20px auto 0;
 }
 
-.modalObjects {
-    display: flex;
-    flex-direction: column;
-    width: 80%;
-    height: 90%;
-    gap: 5%;
-    margin: 0 auto;
+/* Визуальный блок маскота */
+.heroVisualElevated {
+  transform: translateY(0);
 }
 
-.myLinks {
-    display: flex;
-    flex-direction: column;
+.heroVisual {
+  position: relative;
+  flex: 0 0 auto;
+  width: 100%;
+  max-width: 480px;
+  height: 320px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+  z-index: 2;
 }
 
-.hero {
-    position:relative;
-    text-align: center;
-    display:flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 50px 20px;
-    overflow:hidden;
+/* Свечение за маскотом */
+.heroMascotGlow {
+  position: absolute;
+  width: 340px;
+  height: 340px;
+  border-radius: 50%;
+  background: rgba(224, 5, 96, 0.18);
+  filter: blur(45px);
 }
 
-.hero .main_Thing {
-    position: relative;
-    z-index: 2;
-    width: auto !important;
-    min-width: 230px;
-    margin: 5px 0 0 !important;
-    padding: 14px 24px !important;
-    border-radius: 14px;
-    text-decoration: none;
-    transition:
-        transform 0.25s ease,
-        box-shadow 0.25s ease;
-}
-
-.hero .main_Thing:hover {
-    transform: translateY(-4px);
-    box-shadow:
-        0 12px 30px rgba(205, 48, 95, 0.18);
-}
-
-.hero .arrow {
-    display: inline-block;
-    margin-left: 8px;
-    transition:
-        transform 0.25s ease;
-}
-
-.hero .main_Thing:hover .arrow {
-    transform: translateX(5px);
-}
-
-.sinus-title {
-    margin: 5px 0 0;
-    margin-bottom: clamp(55px, 9vw, 90px);
-    font-weight: 800;
-    letter-spacing: -4px;
-    color: rgb(205,48,95);
-    min-height: 1.1em;
-}
-
-.cursor {
-    animation: blink 0.8s infinite;
-    font-weight:400;
-}
-
-.sinus-subtitle {
-    margin: 5px 0 20px;
-    font-size: 18px;
-    color: #777;
-    letter-spacing: 1px;
-}
-
-.math-float {
-    position: absolute;
-    color: rgb(205,48,95);
-    opacity:0.18;
-    font-size: 28px;
-    font-weight: 600;
-    user-select: none;
-}
-
-.math-1 {
-    top: 20%;
-    left: 18%;
-    animation: float1 4s ease-in-out infinite;
-}
-
-.math-2 {
-    top: 35%;
-    right: 15%;
-    animation: float2 5s ease-in-out infinite;
-}
-
-.math-3 {
-    bottom: 25%;
-    left: 12%;
-    animation: float2 4.5s ease-in-out infinite;
-}
-
-.math-4 {
-    bottom: 20%;
-    right: 20%;
-    animation: float1 5s ease-in-out infinite;
-}
-
-@keyframes blink {
-    0%, 45% {
-        opacity: 1;
-    }
-    46%, 100% {
-        opacity: 0;
-    }
+/* Маскот */
+.heroMascot {
+  position: relative;
+  z-index: 3;
+  width: 100%;
+  max-width: 240px;
+  height: auto;
+  display: block;
+  object-fit: contain;
+  filter: drop-shadow(0 25px 30px rgba(0, 0, 0, 0.15));
+  animation: mascotFloat 5s ease-in-out infinite;
 }
 
 @keyframes mascotFloat {
-    0%, 100% {
-        transform: translateY(0);
-    }
-    50% {
-        transform: translateY(-8px);
-    }
+  0%, 100% { transform: translateY(0) rotate(-1deg); }
+  50% { transform: translateY(-16px) rotate(1deg); }
 }
 
-@keyframes float1 {
-    0%, 100% {
-        transform: translate(0, 0) rotate(-5deg);
-    }
-    50% {
-        transform: translate(8px, -12px) rotate(5deg);
-    }
+/* =========================================================
+INTERACTIVE FLOATING MATH CARDS
+========================================================= */
+.mathCard {
+  position: absolute;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border-radius: 15px;
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  box-shadow: 0 20px 50px rgba(0,0,0,.1);
+  font-size: 13px;
+  cursor: pointer;
+  will-change: transform;
+  white-space: nowrap;
 }
 
-@keyframes float2 {
-    0%, 100% {
-        transform: translate(0, 0) rotate(5deg);
-    }
-    50% {
-        transform: translate(-10px, 8px) rotate(-5deg);
-    }
+.mathCard span {
+  font-size: 22px;
+  color: #e00560;
 }
 
-.featuresBlock {
-    position: relative;
-    width: min(1050px, 88%);
-    min-height: 480px;
-    margin: 80px auto;
-    padding: 55px;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    align-items: center;
-    gap: 70px;
-    text-align: left;
-    border-radius: 35px;
-    background:
-        linear-gradient(
-            135deg,
-            var(--card-border),
-            rgba(255, 247, 249, 0.85)
-        );
-    border: 1px solid rgba(205, 48, 95, 0.08);
-    box-shadow:
-        0 25px 70px rgba(0, 0, 0, 0.07);
-    overflow: hidden;
+.mathCardInteractive {
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease, border-color 0.3s ease;
 }
 
-.featuresBlock::before { 
-    content: "";
-    position: absolute;
-    width: 350px;
-    height: 350px;
-    left: -120px;
-    bottom: -160px;
-    border-radius: 50%;
-    background: rgba(205, 48, 95, 0.08);
-    filter: blur(60px);
-    pointer-events: none;
+/* Позиционирование карточек вокруг центрального маскота */
+.cardRoot {
+  top: 10%;
+  left: 2%;
+  animation: cardFloatOne 6s ease-in-out infinite;
 }
 
-.featuresImage {
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 350px;
+.cardPi {
+  top: 15%;
+  right: 2%;
+  animation: cardFloatTwo 7s ease-in-out infinite;
 }
 
-/* ========================================== MODERN IMAGE ========================================== */
-:root {
-    --primary-pink: rgb(205, 48, 95);
-    --primary-pink-light: rgba(205, 48, 95, 0.15);
-    --primary-pink-glow: rgba(205, 48, 95, 0.35);
+.cardSum {
+  bottom: 8%;
+  left: 12%;
+  animation: cardFloatThree 8s ease-in-out infinite;
 }
 
-/* ========================================== КОНТЕЙНЕР ========================================== */
-.featuresImage { 
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 380px;
-    perspective: 1200px;
+.cardRoot:hover {
+  transform: translate(-20px, -15px) rotate(-8deg) scale(1.1) !important;
+  box-shadow: 0 20px 40px rgba(224, 5, 96, 0.22);
+  border-color: rgba(224, 5, 96, 0.4);
 }
 
-.featuresImage::after {
-    content: "";
-    position: absolute;
-    width: 60%;
-    height: 60%;
-    border-radius: 50%;
-    background: var(--primary-pink);
-    filter: blur(50px);
-    opacity: 0.12;
-    z-index: 0;
-    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.6s ease;
+.cardPi:hover {
+  transform: translate(20px, -15px) rotate(8deg) scale(1.1) !important;
+  box-shadow: 0 20px 40px rgba(224, 5, 96, 0.22);
+  border-color: rgba(224, 5, 96, 0.4);
 }
 
-/* ========================================== САМА КАРТИНКА ========================================== */
-.featuresImage .infoImage {
-    position: relative;
-    z-index: 2;
-    display: block;
-    width: 100%;
-    max-width: 440px;
-    margin: 0;
-    border-radius: 28px;
-    
-    /* Стеклянная рамка с лёгким градиентом */
-    border: 3px solid rgba(255, 255, 255, 0.399);
-    box-sizing: border-box;
-    backdrop-filter: blur(8px);
-    
-    /* Составная глубинная тень */
-    box-shadow:
-        0 20px 40px -10px rgba(0, 0, 0, 0.08),
-        0 10px 20px -5px rgba(205, 48, 95, 0.08),
-        inset 0 0 0 1px rgba(255, 255, 255, 0.5);
-
-    transform: translateY(0) rotateX(2deg) rotateY(-2deg) rotate(0deg);
-    transition:
-        transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
-        box-shadow 0.5s ease,
-        border-color 0.5s ease;
+.cardSum:hover {
+  transform: translate(-15px, 20px) rotate(-6deg) scale(1.1) !important;
+  box-shadow: 0 20px 40px rgba(224, 5, 96, 0.22);
+  border-color: rgba(224, 5, 96, 0.4);
 }
 
-/* ========================================== HOVER ========================================== */
-.featuresImage:hover .infoImage {
-    transform: translateY(-8px) rotateX(0deg) rotateY(0deg) scale(1.02);
-    border-color: rgba(255, 255, 255, 0.9);
-    box-shadow:
-        0 30px 60px -12px rgba(0, 0, 0, 0.12),
-        0 18px 36px -8px rgba(205, 48, 95, 0.22),
-        inset 0 0 0 1px #ffffff;
+@keyframes cardFloatOne {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
 }
 
-.featuresImage:hover::before { 
-    transform: translate(-6px, 10px) rotate(-9deg) scale(1.04);
-    opacity: 0.85;
-    filter: blur(16px);
+@keyframes cardFloatTwo {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-16px); }
 }
 
-.featuresImage:hover::after { 
-    transform: scale(1.3);
-    opacity: 0.18;
+@keyframes cardFloatThree {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
 }
 
-/* ========================================== ДЕКОРАТИВНЫЕ ФОРМУЛЫ ========================================== */
-.imageDecoration {
-    position: absolute;
-    z-index: 3;
-    color: var(--primary-pink);
+/* =========================================================
+HERO TEXT & COPY
+========================================================= */
+.heroCopy {
+  position: relative;
+  z-index: 4;
+  padding: 10px 0 60px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.heroKicker,
+.sectionEyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: .16em;
+  color: #e00560;
+}
+
+.kickerDot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #e00560;
+  box-shadow:
+    0 0 0 5px rgba(224,5,96,.08),
+    0 0 20px rgba(224,5,96,.35);
+  animation: pulseDot 2s infinite;
+}
+
+@keyframes pulseDot {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.35); }
+}
+
+.heroTitle {
+  margin: 15px 0 20px;
+  font-size: clamp(50px, 7vw, 110px);
+  line-height: .9;
+  letter-spacing: -.06em;
+  font-weight: 800;
+}
+
+.heroTitle span {
+  color: #e00560;
+}
+
+.heroDescription {
+  max-width: 620px;
+  font-size: 18px;
+  line-height: 1.65;
+  opacity: .7;
+  margin: 0 auto 35px;
+}
+
+/* =========================================================
+HERO BUTTONS
+========================================================= */
+.heroActions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.heroPrimaryButton,
+.heroSecondaryButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  text-decoration: none;
+  border-radius: 100px;
+  transition: transform .3s, box-shadow .3s;
+}
+
+.heroPrimaryButton {
+  gap: 25px;
+  padding: 14px 18px 14px 24px;
+  color: white;
+  background: #111;
+  font-weight: 700;
+}
+
+.heroPrimaryButton b {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: #e00560;
+  font-size: 20px;
+}
+
+.heroPrimaryButton:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 15px 35px rgba(0,0,0,.15);
+}
+
+.heroSecondaryButton {
+  gap: 15px;
+  padding: 15px 24px;
+  border: 1px solid rgba(0,0,0,.12);
+  color: inherit;
+  background: rgba(255,255,255,.35);
+  backdrop-filter: blur(10px);
+}
+
+.heroSecondaryButton:hover {
+  transform: translateY(-3px);
+}
+
+/* =========================================================
+CIRCLE TEXT
+========================================================= */
+.heroCircleText {
+  position: absolute;
+  width: 135px;
+  height: 135px;
+  right: 4%;
+  bottom: 8%;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  border: 1px solid rgba(0,0,0,.1);
+  animation: spinSlow 18s linear infinite;
+}
+
+.heroCircleText span {
+  font-size: 9px;
+  letter-spacing: .25em;
+  font-weight: 800;
+}
+
+@keyframes spinSlow {
+  to { transform: rotate(360deg); }
+}
+
+/* =========================================================
+TICKER
+========================================================= */
+.mathTicker {
+  width: calc(100% + 200px);
+  margin-left: -100px;
+  overflow: hidden;
+  padding: 22px 0;
+  border-top: 1px solid rgba(0,0,0,.08);
+  border-bottom: 1px solid rgba(0,0,0,.08);
+  transform: rotate(-1deg);
+  background: rgba(255,255,255,.3);
+}
+
+.tickerTrack {
+  display: flex;
+  width: max-content;
+  gap: 35px;
+  align-items: center;
+  animation: tickerMove 30s linear infinite;
+}
+
+.tickerTrack span {
+  font-family: Georgia, serif;
+  font-size: 25px;
+  white-space: nowrap;
+  opacity: .55;
+}
+
+.tickerTrack i {
+  color: #e00560;
+}
+
+@keyframes tickerMove {
+  to { transform: translateX(-50%); }
+}
+
+/* =========================================================
+INTRO & FEATURES
+========================================================= */
+.aboutIntro {
+  max-width: 1150px;
+  margin: 150px auto;
+  padding: 0 30px;
+  display: grid;
+  grid-template-columns: 100px 1fr;
+  gap: 50px;
+}
+
+.introNumber {
+  font-size: 14px;
+  color: #e00560;
+  font-weight: 800;
+}
+
+.introText h2,
+.featuresHeader h2,
+.howHeading h2,
+.forWhoContentModern h2,
+.finalCtaContent h2 {
+  font-size: clamp(45px, 6vw, 85px);
+  line-height: .95;
+  letter-spacing: -.055em;
+  margin: 20px 0;
+}
+
+.introText h2 span,
+.featuresHeader h2 span,
+.howHeading h2 span,
+.forWhoContentModern h2 span,
+.finalCtaContent h2 span {
+  color: #e00560;
+}
+
+.introText p {
+  max-width: 650px;
+  font-size: 18px;
+  line-height: 1.7;
+  opacity: .65;
+}
+
+.featuresModern {
+  max-width: 1250px;
+  margin: 0 auto 170px;
+  padding: 0 30px;
+}
+
+.featuresHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 50px;
+  gap: 50px;
+}
+
+.featuresHeader > p {
+  max-width: 350px;
+  opacity: .55;
+  line-height: 1.6;
+}
+
+.heroFeatures {
+  display: flex;
+  justify-content: center;
+  margin-top: 40px;
+  width: 100%;
+}
+
+.featureGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 18px;
+}
+
+.featureCard {
+  position: relative;
+  min-height: 390px;
+  padding: 30px;
+  border-radius: 30px;
+  overflow: hidden;
+  background: linear-gradient(135deg, rgba(255,255,255,.75), rgba(255,255,255,.4));
+  border: 1px solid rgba(0,0,0,.08);
+  backdrop-filter: blur(15px);
+  transition: transform .4s cubic-bezier(.2,.8,.2,1), box-shadow .4s, border-color .4s;
+}
+
+.featureCard:hover {
+  transform: translateY(-10px) rotateX(2deg) rotateY(-1deg);
+  box-shadow: 0 30px 70px rgba(0,0,0,.1);
+  border-color: rgba(224,5,96,.2);
+}
+
+.featureCardTop {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  opacity: .5;
+}
+
+.featureIcon {
+  margin-top: 35px;
+  font-family: Georgia, serif;
+  font-size: 65px;
+  color: #e00560;
+  line-height: 1;
+}
+
+.featureCard h3 {
+  font-size: 30px;
+  letter-spacing: -.04em;
+  margin: 15px 0 10px;
+}
+
+.featureCard p {
+  max-width: 440px;
+  line-height: 1.6;
+  opacity: .6;
+}
+
+/* =========================================================
+STATS PREVIEW
+========================================================= */
+.statsPreview {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 60px;
+}
+
+.statsCircle {
+  width: 170px;
+  height: 170px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 12px solid rgba(224,5,96,.12);
+  border-top-color: #e00560;
+  transform: rotate(-25deg);
+}
+
+.statsCircle span {
+  font-size: 35px;
+  font-weight: 800;
+  transform: rotate(25deg);
+}
+
+.statsCircle small {
+  font-size: 9px;
+  letter-spacing: .12em;
+  opacity: .5;
+  transform: rotate(25deg);
+}
+
+.statsBars {
+  width: 180px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.statsBars div {
+  height: 7px;
+  background: rgba(0,0,0,.07);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.statsBars span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: #e00560;
+}
+
+/* =========================================================
+HOW IT WORKS
+========================================================= */
+.howSection {
+  max-width: 1100px;
+  margin: 0 auto 180px;
+  padding: 0 30px;
+}
+
+.howHeading {
+  margin-bottom: 80px;
+}
+
+.process {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 55px;
+}
+
+.processLine {
+  position: absolute;
+  left: 29px;
+  top: 35px;
+  bottom: 35px;
+  width: 1px;
+  background: linear-gradient(to bottom, #e00560, rgba(224,5,96,.05));
+}
+
+.processStep {
+  position: relative;
+  display: grid;
+  grid-template-columns: 60px 1fr;
+  gap: 35px;
+  align-items: start;
+}
+
+.processCircle {
+  position: relative;
+  z-index: 2;
+  width: 60px;
+  height: 60px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  color: #e00560;
+  border: 1px solid rgba(224,5,96,.25);
+  background: var(--background, #fafafa);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.processFinal {
+  background: #e00560;
+  color: white;
+  border: none;
+  box-shadow: 0 0 0 10px rgba(224,5,96,.08);
+}
+
+.processStep span {
+  font-size: 9px;
+  letter-spacing: .15em;
+  color: #e00560;
+  font-weight: 800;
+}
+
+.processStep h3 {
+  font-size: 30px;
+  margin: 8px 0;
+}
+
+.processStep p {
+  max-width: 500px;
+  line-height: 1.6;
+  opacity: .6;
+}
+
+/* =========================================================
+FOR WHO SECTION
+========================================================= */
+.forWhoModern {
+  max-width: 1250px;
+  margin: 0 auto 180px;
+  padding: 0 30px;
+  display: grid;
+  grid-template-columns: .9fr 1.1fr;
+  gap: 80px;
+  align-items: center;
+}
+
+.forWhoVisual {
+  position: relative;
+  min-height: 550px;
+  display: grid;
+  place-items: center;
+}
+
+.forWhoOrb {
+  position: absolute;
+  width: 400px;
+  height: 400px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(224,5,96,.17), transparent 68%);
+}
+
+.forWhoVisual img {
+  position: relative;
+  z-index: 2;
+  width: 330px;
+  filter: drop-shadow(0 30px 30px rgba(0,0,0,.15));
+  animation: mascotFloat 5s ease-in-out infinite;
+}
+
+.floatingBadge {
+  position: absolute;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 15px;
+  border-radius: 14px;
+  background: rgba(255,255,255,.8);
+  backdrop-filter: blur(15px);
+  box-shadow: 0 15px 40px rgba(0,0,0,.08);
+  font-size: 12px;
+  animation: cardFloat 5s ease-in-out infinite;
+}
+
+.floatingBadge span {
+  color: #e00560;
+  font-weight: 800;
+}
+
+.badgeOne { top: 17%; left: 3%; }
+.badgeTwo { top: 40%; right: 0; animation-delay: -2s; }
+.badgeThree { bottom: 15%; left: 8%; animation-delay: -3.5s; }
+
+.forWhoContentModern > p {
+  max-width: 600px;
+  line-height: 1.7;
+  opacity: .6;
+  font-size: 17px;
+}
+
+.forWhoPoints {
+  margin-top: 35px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.forWhoPoints > div {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 14px 0;
+  border-bottom: 1px solid rgba(0,0,0,.08);
+}
+
+.forWhoPoints span {
+  font-size: 11px;
+  color: #e00560;
+  font-weight: 800;
+}
+
+.forWhoPoints p {
+  margin: 0;
+  font-size: 14px;
+}
+
+/* =========================================================
+FINAL CTA
+========================================================= */
+.finalCta {
+  position: relative;
+  max-width: 1400px;
+  min-height: 650px;
+  margin: 0 auto 100px;
+  border-radius: 45px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  padding: 70px clamp(35px, 8vw, 110px);
+  background: #111;
+  color: white;
+}
+
+.finalCta::before {
+  content: "";
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  right: -100px;
+  top: -150px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(224,5,96,.45), transparent 68%);
+  filter: blur(15px);
+}
+
+.ctaNoise {
+  position: absolute;
+  inset: 0;
+  opacity: .04;
+  background-image: radial-gradient(white 1px, transparent 1px);
+  background-size: 5px 5px;
+}
+
+.finalCtaContent {
+  position: relative;
+  z-index: 4;
+}
+
+.finalCtaContent h2 {
+  max-width: 800px;
+  margin-top: 25px;
+}
+
+.finalCtaContent p {
+  opacity: .6;
+  font-size: 17px;
+  margin: 25px 0 35px;
+}
+
+.finalCtaButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 30px;
+  padding: 7px 8px 7px 25px;
+  border-radius: 100px;
+  background: white;
+  color: #111;
+  text-decoration: none;
+  font-weight: 700;
+  transition: .3s;
+}
+
+.finalCtaButton b {
+  display: grid;
+  place-items: center;
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  color: white;
+  background: #e00560;
+  font-size: 22px;
+}
+
+.finalCtaButton:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 50px rgba(0,0,0,.3);
+}
+
+.finalMascot {
+  position: absolute;
+  z-index: 3;
+  width: 430px;
+  right: 7%;
+  bottom: -30px;
+  filter: drop-shadow(0 25px 30px rgba(0,0,0,.4));
+  animation: mascotFloat 5s ease-in-out infinite;
+}
+
+.ctaMath {
+  position: absolute;
+  z-index: 2;
+  font-family: Georgia, serif;
+  color: white;
+  opacity: .08;
+  font-size: 120px;
+}
+
+.ctaMathOne { top: 8%; right: 38%; }
+.ctaMathTwo { bottom: 10%; right: 42%; }
+.ctaMathThree { top: 30%; left: 45%; }
+
+/* =========================================================
+CONTACT MODAL
+========================================================= */
+.aboutContacts {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: grid;
+  place-items: center;
+  background: rgba(0,0,0,.45);
+  backdrop-filter: blur(15px);
+  padding: 20px;
+}
+
+.contactsModalContent {
+  position: relative;
+  width: min(520px, 100%);
+  padding: 45px;
+  border-radius: 30px;
+  background: var(--background, #fafafa);
+  box-shadow: 0 40px 100px rgba(0,0,0,.25);
+}
+
+.contactsMiniLabel {
+  font-size: 10px;
+  color: #e00560;
+  font-weight: 800;
+  letter-spacing: .15em;
+}
+
+.contactsModalContent h2 {
+  font-size: 40px;
+  letter-spacing: -.05em;
+  margin: 15px 0 10px;
+}
+
+.contactsModalContent > p {
+  opacity: .6;
+  line-height: 1.6;
+}
+
+.contactsClose {
+  position: absolute;
+  top: 25px;
+  right: 30px;
+  z-index: 5;
+  border: 0;
+  background: transparent;
+  color: white;
+  font-size: 35px;
+  cursor: pointer;
+}
+
+.contactRows {
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.contactRow {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 15px;
+  border-radius: 15px;
+  background: rgba(0,0,0,.035);
+}
+
+.contactRow > span {
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  background: rgba(224,5,96,.08);
+  color: #e00560;
+}
+
+.contactRow small {
+  display: block;
+  font-size: 10px;
+  opacity: .5;
+}
+
+.contactRow strong {
+  display: block;
+  margin-top: 3px;
+  font-size: 14px;
+}
+
+.contactHint {
+  margin-top: 20px;
+  padding: 15px;
+  border-radius: 14px;
+  color: #e00560;
+  background: rgba(224,5,96,.06);
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+/* =========================================================
+REVEAL ANIMATIONS
+========================================================= */
+.reveal {
+  opacity: 0;
+  transform: translateY(35px);
+  transition: opacity .8s ease, transform .8s cubic-bezier(.2,.8,.2,1);
+}
+
+.reveal.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.delay-1 { transition-delay: .12s; }
+.delay-2 { transition-delay: .24s; }
+.delay-3 { transition-delay: .36s; }
+
+/* =========================================================
+DARK THEME
+========================================================= */
+.dark-theme .aboutPage,
+[data-theme="dark"] .aboutPage {
+  background: #101010;
+  color: #f5f5f5;
+}
+
+.dark-theme .aboutThemeButton,
+[data-theme="dark"] .aboutThemeButton {
+  background: rgba(30,30,30,.65);
+  border-color: rgba(255,255,255,.1);
+  color: white;
+}
+
+.dark-theme .featureCard,
+[data-theme="dark"] .featureCard {
+  background: linear-gradient(135deg, rgba(35,35,35,.8), rgba(25,25,25,.6));
+  border-color: rgba(255,255,255,.08);
+}
+
+.dark-theme .mathCard,
+[data-theme="dark"] .mathCard,
+.dark-theme .floatingBadge,
+[data-theme="dark"] .floatingBadge {
+  background: rgba(30,30,30,.8);
+  border-color: rgba(255,255,255,.08);
+}
+
+.dark-theme .processCircle,
+[data-theme="dark"] .processCircle {
+  background: #101010;
+}
+
+.dark-theme .aboutContacts .contactsModalContent,
+[data-theme="dark"] .aboutContacts .contactsModalContent {
+  background: #181818;
+}
+
+.dark-theme .contactRow,
+[data-theme="dark"] .contactRow {
+  background: rgba(255,255,255,.04);
+}
+
+/* =========================================================
+RESPONSIVE (TABLET & MOBILE)
+========================================================= */
+@media (max-width: 992px) {
+  .heroVisual {
+    max-width: 380px;
+    height: 280px;
+  }
+
+  .heroMascot {
+    max-width: 200px;
+  }
+
+  .featureGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .forWhoModern {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+
+  .finalMascot {
+    width: 280px;
+    opacity: .45;
+    right: -40px;
+  }
+}
+
+@media (max-width: 600px) {
+  .aboutHero {
+    padding: 20px 18px 0;
+  }
+
+  .heroTitle {
     font-size: 52px;
-    font-weight: 800;
-    opacity: 0.15;
-    pointer-events: none;
-    user-select: none;
-    transition: 
-        transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
-        opacity 0.4s ease;
-}
+  }
 
-.decorationA {
-    top: 0px; 
-    left: 10px;
-    transform: rotate(-12deg);
-    animation: mathFloatA 6s ease-in-out infinite;
-}
-
-.decorationB {
-    /* Отодвигаем с запасом от правого и нижнего края */
-    right: 45px; 
-    bottom: 35px;
-    transform: rotate(10deg);
-    animation: mathFloatB 7s ease-in-out infinite;
-}
-
-/* При наведении смещаем строго ВНУТРЬ карточки (влево и вверх) */
-.featuresImage:hover .decorationB { 
-    transform: translate(-8px, -8px) rotate(16deg) scale(1.05); 
-    opacity: 0.3;
-}
-
-.featuresImage:hover .decorationA { 
-    transform: translate(-8px, -8px) rotate(-18deg) scale(1.1); 
-    opacity: 0.3;
-}
-
-/* Мягкая анимация покачивания символов */
-@keyframes mathFloatA {
-    0%, 100% { transform: translateY(0) rotate(-12deg); }
-    50% { transform: translateY(-6px) rotate(-8deg); }
-}
-
-@keyframes mathFloatB {
-    0%, 100% { transform: translateY(0) rotate(10deg); }
-    50% { transform: translateY(6px) rotate(14deg); }
-}
-
-/* ========================================== MOBILE ========================================== */
-@media (max-width: 750px) {
-    .featuresImage {
-        min-height: auto;
-        padding: 20px 0;
-    }
-
-    .featuresImage .infoImage {
-        max-width: 320px;
-        border-width: 5px;
-        border-radius: 22px;
-    }
-
-    .featuresImage::before {
-        width: 85%;
-        height: 85%;
-        border-radius: 28px;
-    }
-
-    .imageDecoration {
-        font-size: 36px;
-    }
-}
-
-.forWhoSection {
-    padding: 60px 20px;
-    box-sizing: border-box;
-}
-
-.forWhoCard {
-    position: relative;
-    display: flex;
-    align-items: center;
-    gap: 50px;
-    width: 100%;
-    max-width: 1050px;
-    margin: 0 auto;
-    padding: 45px 50px;
-    border-radius: 32px;
-    background: linear-gradient(135deg, rgba(255, 245, 248, 0.95), rgba(255, 255, 255, 0.98));
-    box-shadow: 0 20px 45px rgba(205, 48, 95, 0.08);
-    border: 1px solid rgba(255, 255, 255, 0.9);
-}
-
-.forWhoMascotWrapper {
-    position: relative;
-    flex: 0 0 220px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.forWhoMascotWrapper .mascot {
-    position: relative;
-    z-index: 2;
-    width: 200px;
-    height: auto;
-    animation: coolMascotFloat 4s ease-in-out infinite;
-}
-
-.mascotGlow {
-    position: absolute;
-    width: 180px;
-    height: 180px;
-    border-radius: 50%;
-    background: rgba(205, 48, 95, 0.18);
-    filter: blur(40px);
-}
-
-.forWhoContent {
-    flex: 1;
-}
-
-.forWhoContent .infoLabel {
-    display: inline-block;
-    margin-bottom: 8px;
-    font-size: 12px;
-    font-weight: 800;
-    letter-spacing: 2.5px;
-    color: rgb(205, 48, 95);
-}
-
-.forWhoContent .h2heading {
-    margin: 0 0 14px 0;
-    font-size: clamp(26px, 3.5vw, 34px);
-    font-weight: 800;
-    line-height: 1.25;
-    color: #222;
-}
-
-.forWhoContent .featuresLine {
-    width: 45px;
-    height: 4px;
-    background: linear-gradient(90deg, rgb(205, 48, 95), rgba(205, 48, 95, 0.3));
-    border-radius: 2px;
-    margin-bottom: 18px;
-}
-
-.forWhoContent .actualInformation {
-    width: 100%;
-    margin: 0;
+  .heroDescription {
     font-size: 16px;
-    line-height: 1.7;
-    color: #555;
-}
+  }
 
-@keyframes coolMascotFloat {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-8px); }
-}
+  .heroVisual {
+    max-width: 300px;
+    height: 240px;
+  }
 
-@media (max-width: 750px) {
-    .forWhoCard {
-        flex-direction: column;
-        gap: 20px;
-        padding: 35px 25px;
-        text-align: center;
-    }
+  .heroMascot {
+    max-width: 170px;
+  }
 
-    .forWhoMascotWrapper {
-        flex: 0 0 auto;
-    }
+  .heroMascotGlow {
+    width: 240px;
+    height: 240px;
+  }
 
-    .forWhoMascotWrapper .mascot {
-        width: 160px;
-    }
+  .mathCard {
+    transform: scale(.8);
+  }
 
-    .forWhoContent .featuresLine {
-        margin: 0 auto 18px auto;
-    }
-}
+  .cardRoot { left: -15px; top: 5%; }
+  .cardPi { right: -15px; top: 10%; }
+  .cardSum { left: -5px; bottom: 0; }
 
-/* ========================================== CTA БЛОК ========================================== */
-.ctaSection {
-    padding: 60px 20px 20px;
-}
+  .heroCircleText {
+    display: none; /* Скрываем на совсем маленьких экранах, чтобы не перекрывать UI */
+  }
 
-.ctaCard {
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+  .mathTicker {
+    width: calc(100% + 36px);
+    margin-left: -18px;
+  }
+
+  .aboutIntro {
+    margin: 80px auto;
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+
+  .featuresHeader {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .statsPreview {
+    gap: 20px;
+    flex-direction: column;
+  }
+
+  .statsCircle {
+    width: 130px;
+    height: 130px;
+  }
+
+  .statsBars {
     width: 100%;
-    max-width: 1050px;
-    margin: 0 auto;
-    padding: 50px 60px;
-    border-radius: 32px;
-    background: linear-gradient(135deg, rgb(205, 48, 95) 0%, rgb(225, 75, 120) 100%);
-    box-shadow: 0 20px 50px rgba(205, 48, 95, 0.25);
-    overflow: hidden;
-    box-sizing: border-box;
-}
+  }
 
-.ctaContent {
-    position: relative;
-    z-index: 2;
-    max-width: 520px;
-    color: #ffffff;
-}
+  .processStep {
+    grid-template-columns: 50px 1fr;
+    gap: 20px;
+  }
 
-.ctaLabel {
-    display: inline-block;
-    margin-bottom: 8px;
-    font-size: 12px;
-    font-weight: 800;
-    letter-spacing: 2.5px;
-    color: rgba(255, 255, 255, 0.8);
-}
+  .processCircle {
+    width: 50px;
+    height: 50px;
+  }
 
-.ctaTitle {
-    margin: 0 0 12px 0;
-    font-size: clamp(32px, 4vw, 44px);
-    font-weight: 800;
-    line-height: 1.15;
-    letter-spacing: -1px;
-}
+  .processLine {
+    left: 24px;
+  }
 
-.ctaText {
-    margin: 0 0 28px 0;
-    font-size: 16px;
-    line-height: 1.6;
-    color: rgba(255, 255, 255, 0.9);
-}
+  .forWhoVisual {
+    min-height: 400px;
+  }
 
-.ctaButtons {
-    display: flex;
-    gap: 14px;
-    flex-wrap: wrap;
-}
+  .forWhoVisual img {
+    width: 250px;
+  }
 
-.ctaBtn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 13px 26px;
-    border-radius: 14px;
-    font-size: 15px;
-    font-weight: 600;
-    text-decoration: none;
-    transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
-}
+  .forWhoOrb {
+    width: 300px;
+    height: 300px;
+  }
 
-.ctaPrimary {
-    background: #ffffff;
-    color: rgb(205, 48, 95);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-}
+  .floatingBadge {
+    transform: scale(.85);
+  }
 
-.ctaPrimary span {
-    display: inline-block;
-    margin-left: 6px;
-    transition: transform 0.25s ease;
-}
+  .finalCta {
+    border-radius: 30px;
+    min-height: 570px;
+    margin: 0 15px 60px;
+    padding: 40px 30px;
+  }
 
-.ctaPrimary:hover span {
-    transform: translateX(4px);
-}
+  .finalCtaContent h2 {
+    font-size: 45px;
+  }
 
-.ctaSecondary {
-    background: rgba(255, 255, 255, 0.15);
-    color: #ffffff;
-    border: 1px solid rgba(255, 255, 255, 0.35);
-    backdrop-filter: blur(5px);
-}
+  .finalMascot {
+    width: 260px;
+    right: -50px;
+    bottom: -10px;
+  }
 
-.ctaBtn:hover {
-    transform: translateY(-2px);
-}
-
-.ctaPrimary:hover {
-    background: #fff8f9;
-    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
-}
-
-.ctaSecondary:hover {
-    background: rgba(255, 255, 255, 0.25);
-}
-
-.ctaSecondary span {
-    display: inline-block;
-    margin-left: 6px;
-    transition: transform 0.25s ease;
-}
-
-.ctaSecondary:hover span {
-    transform: translateX(4px);
-}
-
-/* Маскот в карточке */
-.ctaMascot {
-    position: relative;
-    z-index: 2;
-    width: 220px;
-    height: auto;
-    object-fit: contain;
-    transition: transform 0.4s ease;
-}
-
-.ctaCard:hover .ctaMascot {
-    transform: translateY(-5px) rotate(2deg);
-}
-
-/* ========================================== ФУТЕР ========================================== */
-.footer {
-    padding: 40px 20px 30px;
-    margin-top: 20px;
-}
-
-
-
-/* ========================================== МОБИЛЬНАЯ ВЕРСИЯ ========================================== */
-@media (max-width: 820px) {
-    .ctaCard {
-        flex-direction: column;
-        text-align: center;
-        padding: 40px 24px 30px;
-    }
-
-    .ctaContent {
-        max-width: 100%;
-    }
-
-    .ctaButtons {
-        flex-direction: column;
-        width: 100%;
-        margin-bottom: 25px;
-    }
-
-    .ctaBtn {
-        width: 100%;
-        box-sizing: border-box;
-    }
-
-    .ctaMascot {
-        width: 180px;
-    }
-
-    .smallInfo {
-        flex-direction: column;
-        gap: 12px;
-    }
+  .contactsModalContent {
+    padding: 30px 22px;
+  }
 }

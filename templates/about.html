@@ -1,167 +1,295 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>О проекте — Sinus</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    <script src="{{ url_for('static', filename='js/theme.js') }}" defer></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>О проекте — Sinus</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/about.css') }}">
+  <script src="{{ url_for('static', filename='js/theme.js') }}" defer></script>
 </head>
-<body>
-    <!-- Модальное окно -->
-    <div id="contacts" style="display: none; width:50%;height:35%" class="modal">
-        <span onclick="closeContacts()">&times;</span>
-        <p class="main_Thing questions">почта: anastasiyakreslina@gmail.com</p>
-        <p class="main_Thing questions">телеграмм: @krazern</p>
-        <p class="main_Thing questions">Время ответа: 1-2 дня</p>
-        <p class="main_Thing questions">Отвечаю исключительно на вопросы о платформе, предложения, сообщения об ошибке и отзывы</p>
-        <p class="main_Thing questions">^_^</p>
+<body class="aboutPage">
+  <!-- =====================================================
+       BACKGROUND
+  ===================================================== -->
+  <div class="aboutBackground">
+    <div class="gridNoise"></div>
+    <span class="bgMath bgMath1">x² + y²</span>
+    <span class="bgMath bgMath2">∫ f(x)dx</span>
+    <span class="bgMath bgMath3">sin α</span>
+    <span class="bgMath bgMath4">√a²+b²</span>
+  </div>
+
+  <!-- =====================================================
+       CONTACTS MODAL
+  ===================================================== -->
+  <div id="contacts" class="aboutContacts" style="display:none;">
+    <button class="contactsClose" type="button" onclick="closeContacts()">×</button>
+    <div class="contactsModalContent">
+      <span class="contactsMiniLabel">SINUS · CONTACTS</span>
+      <h2>Остались вопросы?</h2>
+      <p>Напиши нам — отвечаем обычно в течение 1–2 дней.</p>
+      <div class="contactRows">
+        <div class="contactRow">
+          <span>✉</span>
+          <div>
+            <small>Почта</small>
+            <strong>anastasiyakreslina@gmail.com</strong>
+          </div>
+        </div>
+        <div class="contactRow">
+          <span>↗</span>
+          <div>
+            <small>Telegram</small>
+            <strong>@krazern</strong>
+          </div>
+        </div>
+      </div>
+      <div class="contactHint">Вопросы о платформе · предложения · ошибки · отзывы</div>
+    </div>
+  </div>
+
+  <!-- =====================================================
+       HERO
+  ===================================================== -->
+  <section class="aboutHero">
+    <div class="heroTopBar">
+      <a href="{{ url_for('main.home') }}" class="aboutLogo">sinus<span>.</span></a>
     </div>
 
-    <!-- Hero Блок (проявляется первым) -->
-    <div class="infoBlock reveal">
-        <div class="hero">
-            <div class="math-float math-1">x²</div>
-            <div class="math-float math-2">√x</div>
-            <div class="math-float math-3">π</div>
-            <div class="math-float math-4">∫</div>
-            <img src="{{url_for('static', filename='images/mascot/mainMascot.png')}}" class="mascot">
-            <h1 class="sinus-title">
-                <span id="sinusText"></span><span class="cursor">|</span>
-            </h1>
-            <p class="sinus-subtitle heading">математика становится понятнее</p>
-            <p class="actualInformation">{{about_text}}</p>
-            <a href="{{url_for('auth.register')}}" 
-                class="buttons lightBox lighttext main_Thing"
-                style="width:30%; margin: 10% auto 20px auto; padding:10px">
-                создать аккаунт
-                <span class="arrow">→</span>
-            </a>
+    <div class="heroMain heroMainAligned">
+      <!-- 1. МАСКОТ С ТАБЛИЧКАМИ (Теперь ВЫШЕ текста) -->
+      <div class="heroVisual heroVisualElevated reveal delay-1">
+        <div class="heroOrb"></div>
+
+        <!-- Индивидуальные карточки с отдельными классами для независимого движения -->
+        <div class="mathCard mathCardInteractive cardRoot">
+          <span>√</span>
+          <b>x² + y²</b>
         </div>
+        <div class="mathCard mathCardInteractive cardPi">
+          <span>π</span>
+          <b>3.14159</b>
+        </div>
+        <div class="mathCard mathCardInteractive cardSum">
+          <span>∑</span>
+          <b>n → ∞</b>
+        </div>
+
+        <div class="heroMascotGlow"></div>
+        <img src="{{ url_for('static', filename='images/mascot/mainMascot.png') }}" class="heroMascot" alt="Sinus">
+        <div class="heroCircleText">
+          <span>LEARN · PRACTICE · IMPROVE ·</span>
+        </div>
+      </div>
+
+      <!-- 2. ТЕКСТ (Под маскотом) -->
+      <div class="heroCopy reveal">
+        <div class="heroKicker">
+          <span class="kickerDot"></span>
+          ПЛАТФОРМА ДЛЯ ПОДГОТОВКИ
+        </div>
+        <h1 class="heroTitle">
+          Математика<br>
+          <span>без хаоса.</span>
+        </h1>
+        <p class="heroDescription">{{ about_text }}</p>
+        <div class="heroActions">
+          <a href="{{ url_for('auth.register') }}" class="heroPrimaryButton">
+            <span>Начать подготовку</span>
+            <b>→</b>
+          </a>
+          <a href="#how" class="heroSecondaryButton">
+            Как это работает
+            <span>↓</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =====================================================
+       HOW IT WORKS
+  ===================================================== -->
+  <section class="howSection" id="how">
+    <div class="howHeading reveal">
+      <span class="sectionEyebrow">03 · КАК ЭТО РАБОТАЕТ</span>
+      <h2>
+        От «не понимаю»<br>
+        <span>до «я умею».</span>
+      </h2>
     </div>
 
-    <!-- Возможности -->
-    <div class="infoBlock featuresBlock">
-        <div class="featuresImage reveal">
-            <img
-                src="{{url_for('static', filename='images/mainPicture.png')}}"
-                class="infoImage"
-                alt="возможности платформы">
-            <div class="imageDecoration decorationA">∫</div>
-            <div class="imageDecoration decorationB">x²</div>
+    <div class="process">
+      <div class="processLine"></div>
+      <article class="processStep reveal">
+        <div class="processCircle">01</div>
+        <div>
+          <span>ШАГ ПЕРВЫЙ</span>
+          <h3>Выбираешь тему</h3>
+          <p>Открываешь нужный номер или тему и смотришь необходимую теорию.</p>
         </div>
-        <div class="featuresContent reveal delay-1">
-            <span class="featuresLabel heading">SINUS · ВОЗМОЖНОСТИ</span>
-            <p class="h2heading">Платформа включает в себя:</p>
-            <div class="featuresLine"></div>
-            <p class="actualInformation">{{ include_text }}</p>
+      </article>
+
+      <article class="processStep reveal delay-1">
+        <div class="processCircle">02</div>
+        <div>
+          <span>ШАГ ВТОРОЙ</span>
+          <h3>Решаешь</h3>
+          <p>Закрепляешь материал на заданиях и сразу видишь результат.</p>
         </div>
+      </article>
+
+      <article class="processStep reveal delay-2">
+        <div class="processCircle">03</div>
+        <div>
+          <span>ШАГ ТРЕТИЙ</span>
+          <h3>Разбираешь ошибки</h3>
+          <p>Возвращаешься к заданиям, которые пока не получаются.</p>
+        </div>
+      </article>
+
+      <article class="processStep reveal delay-3">
+        <div class="processCircle processFinal">✓</div>
+        <div>
+          <span>ШАГ ЧЕТВЁРТЫЙ</span>
+          <h3>Видишь прогресс</h3>
+          <p>Статистика показывает, как меняется твой результат.</p>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- =====================================================
+       FOR WHO
+  ===================================================== -->
+  <section class="forWhoModern">
+    <div class="forWhoVisual reveal">
+      <div class="forWhoOrb"></div>
+      <img src="{{ url_for('static', filename='images/mascot/coolMascot.png') }}" alt="Sinus mascot">
+      <div class="floatingBadge badgeOne">
+        <span>✓</span> теорию
+      </div>
+      <div class="floatingBadge badgeTwo">
+        <span>↗</span> прогресс
+      </div>
+      <div class="floatingBadge badgeThree">
+        <span>+</span> практика
+      </div>
     </div>
 
-    <!-- Тебе сюда если -->
-    <div class="infoBlock forWhoSection">
-        <div class="forWhoCard reveal">
-            <div class="forWhoMascotWrapper reveal delay-1">
-                <div class="mascotGlow"></div>
-                <img src="{{ url_for('static', filename='images/mascot/coolMascot.png') }}" class="mascot" alt="Крутой маскот">
-            </div>
-            <div class="forWhoContent reveal delay-2">
-                <span class="infoLabel">ТЕБЕ СЮДА ЕСЛИ</span>
-                <div class="featuresLine"></div>
-                <p class="actualInformation">{{ forWho_text }}</p>
-            </div>
+    <div class="forWhoContentModern reveal delay-1">
+      <span class="sectionEyebrow">04 · ТЕБЕ СЮДА ЕСЛИ</span>
+      <h2>
+        Хочешь понимать,<br>
+        <span>а не угадывать.</span>
+      </h2>
+      <p>{{ forWho_text }}</p>
+      <div class="forWhoPoints">
+        <div>
+          <span>01</span>
+          <p>Нужна понятная структура подготовки</p>
         </div>
+        <div>
+          <span>02</span>
+          <p>Хочется видеть реальный прогресс</p>
+        </div>
+        <div>
+          <span>03</span>
+          <p>Надоело постоянно искать материалы</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =====================================================
+       STATS
+  ===================================================== -->
+  <section class="heroFeatures reveal delay-2">
+    <article class="featureCard">
+      <div class="featureCardTop">
+        <span class="featureNumber">04</span>
+        <span class="featureArrow">↗</span>
+      </div>
+      <div class="featureIcon">%</div>
+      <h3>Статистика</h3>
+      <p>Следи не только за количеством решённых заданий, но и за тем, насколько уверенно ты двигаешься вперёд.</p>
+      <div class="statsPreview">
+        <div class="statsCircle">
+          <span>78%</span>
+          <small>ПРОГРЕСС</small>
+        </div>
+        <div class="statsBars">
+          <div><span style="width:84%"></span></div>
+          <div><span style="width:67%"></span></div>
+          <div><span style="width:92%"></span></div>
+          <div><span style="width:73%"></span></div>
+        </div>
+      </div>
+    </article>
+  </section>
+
+  <!-- =====================================================
+       FINAL CTA
+  ===================================================== -->
+  <section class="finalCta">
+    <div class="ctaNoise"></div>
+    <div class="ctaMath ctaMathOne">x²</div>
+    <div class="ctaMath ctaMathTwo">π</div>
+    <div class="ctaMath ctaMathThree">∫</div>
+
+    <div class="finalCtaContent reveal">
+      <span class="sectionEyebrow">05 · SINUS</span>
+      <h2>
+        Давай разберёмся<br>
+        <span>с математикой.</span>
+      </h2>
+      <p>Создай аккаунт и начни подготовку уже сегодня.</p>
+      <a href="{{ url_for('auth.register') }}" class="finalCtaButton">
+        <span>Создать аккаунт</span>
+        <b>→</b>
+      </a>
     </div>
 
-    <!-- CTA Блок -->
-    <div class="infoBlock ctaSection">
-        <div class="ctaCard reveal">
-            <div class="ctaContent reveal delay-1">
-                <span class="ctaLabel">ГОТОВЫ НАЧАТЬ?</span>
-                <h2 class="ctaTitle">Попробуй Sinus</h2>
-                <p class="ctaText">Присоединяйся к платформе и начни разбираться в математике без лишней суеты.</p>
-            
-                <div class="ctaButtons">
-                    <a href="{{ url_for('auth.register') }}" class="ctaBtn ctaPrimary">
-                        Создать аккаунт <span>→</span>
-                    </a>
-                    <a href="{{ url_for('auth.login') }}" class="ctaBtn ctaSecondary">
-                        Войти на платформу <span>→</span>
-                    </a>
-                </div>
-            </div>
+    <img src="{{ url_for('static', filename='images/mascot/lyingMascot.png') }}" class="finalMascot" alt="Sinus">
+  </section>
 
-            <img src="{{ url_for('static', filename='images/mascot/lyingMascot.png') }}" class="ctaMascot reveal delay-2" alt="Отдыхающий маскот">
+  <!-- =====================================================
+       FOOTER
+  ===================================================== -->
+  <footer class="homeFooter">
+    <div class="footerContainer">
+      <div class="footerBrand">
+        <a href="{{ url_for('main.home') }}" class="footerLogo">sinus<span>.</span></a>
+        <p class="footerDescription">Платформа для эффективной подготовки к экзаменам по математике.</p>
+        <span class="footerCopyright">© 2026 Sinus. Все права защищены.</span>
+      </div>
+
+      <div class="footerNavGrid">
+        <div class="footerColumn">
+          <span class="footerColumnTitle">Проект</span>
+          <a href="https://t.me/karznl" target="_blank" rel="noopener">Телеграм-канал</a>
+          <a href="{{ url_for('main.about') }}">О проекте</a>
         </div>
+
+        <div class="footerColumn">
+          <span class="footerColumnTitle">Помощь</span>
+          <a href="/">FAQ</a>
+          <button type="button" class="footerLinkBtn" onclick="openContacts()">Контакты</button>
+          <a href="/">Поддержка</a>
+        </div>
+
+        <div class="footerColumn">
+          <span class="footerColumnTitle">Документы</span>
+          <a href="{{ url_for('main.privacypolicy') }}">Конфиденциальность</a>
+          <a href="{{ url_for('main.offer') }}">Публичная оферта</a>
+          <a href="{{ url_for('main.refund') }}">Правила возврата</a>
+        </div>
+      </div>
     </div>
+  </footer>
 
-    <!-- Подвал сайта -->
-   <!-- =====================================================
-     FOOTER
-===================================================== -->
-    <footer class="homeFooter">
-        <div class="footerContainer">
-        <!-- Левая колонка: Бренд и описание -->
-            <div class="footerBrand">
-                <a href="{{ url_for('main.home') if 'main.home' in request.endpoint else '/' }}" class="footerLogo">
-                sinus<span>.</span>
-                </a>
-                <p class="footerDescription">
-                    Платформа для эффективной подготовки к экзаменам по математике.
-                </p>
-                <span class="footerCopyright">© 2026 Sinus. Все права защищены.</span>
-            </div>
-
-        <!-- Правая часть: Логические группы ссылок -->
-            <div class="footerNavGrid">
-                <div class="footerColumn">
-                    <span class="footerColumnTitle">Проект</span>
-                    <a href="https://t.me/karznl" target="_blank" rel="noopener">Телеграм-канал</a>
-                    <a href="{{ url_for('main.about') if 'main.about' in request.endpoint else '/' }}">О проекте</a>
-                </div>
-
-                <div class="footerColumn">
-                    <span class="footerColumnTitle">Помощь</span>
-                    <a href="/">FAQ</a>
-                    <button type="button" class="footerLinkBtn" onclick="openContacts()">Контакты</button>
-                    <a href="/">Поддержка</a>
-                </div>
-
-                <div class="footerColumn">
-                    <span class="footerColumnTitle">Документы</span>
-                    <a href="{{ url_for('main.privacypolicy') }}">Конфиденциальность</a>
-                    <a href="{{ url_for('main.offer') }}">Публичная оферта</a>
-                    <a href="{{ url_for('main.refund') }}">Правила возврата</a>
-                </div>
-            </div>
-        </div>
-    </footer>   
-
-
-    <!-- Скрипт плавного скролла -->
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const observerOptions = {
-                root: null,
-                rootMargin: '0px 0px -50px 0px', // Элемент начнет проявляться за 50px до достижения края экрана
-                threshold: 0.15 // Порог видимости 15%
-            };
-
-            const observer = new IntersectionObserver((entries, observer) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('active');
-                        // Если хотите, чтобы анимация срабатывала только 1 раз при первом скролле:
-                        observer.unobserve(entry.target);
-                    }
-                });
-            }, observerOptions);
-
-            const revealElements = document.querySelectorAll('.reveal');
-            revealElements.forEach(el => observer.observe(el));
-        });
-    </script>
-    <script src="{{url_for('static', filename='js/about.js')}}"></script>
-    <script src="{{url_for('static',filename='js/ui.js')}}"></script> 
+  <script src="{{ url_for('static', filename='js/about.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/ui.js') }}"></script>
 </body>
 </html>

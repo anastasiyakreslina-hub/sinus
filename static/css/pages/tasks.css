@@ -676,6 +676,8 @@
 
 .dangerButton,
 .secondaryButton {
+    position: relative;
+    z-index: 9999;
     padding: 9px 12px;
 
     border-radius: 10px;

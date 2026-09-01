@@ -1104,6 +1104,16 @@ def statistics():
                     'tasks': []
                 }
             history[var_id]['tasks'].append(row)
+        CONVERT_TABLE = {
+            0: 0, 1: 6, 2: 11, 3: 17, 4: 22, 5: 27, 6: 34, 7: 40, 8: 46,
+            9: 52, 10: 58, 11: 64, 12: 70, 13: 72, 14: 74, 15: 76, 16: 78,
+            17: 80, 18: 82, 19: 84, 20: 86, 21: 88, 22: 90, 23: 92, 24: 94,
+            25: 96, 26: 98, 27: 100, 28: 100, 29: 100, 30: 100, 31: 100, 32: 100
+        }
+
+# Пример простой логики: переводим среднюю точность в примерный первичный балл из 32
+        estimated_primary = round((percent / 100) * 32)
+        predicted_score = CONVERT_TABLE.get(estimated_primary, 0)
 
         return render_template(
             'statistics.html',
@@ -1119,7 +1129,8 @@ def statistics():
             first_attempts_numbers=first_attempts_numbers,
             first_attempts_percents=first_attempts_percents,
             variant_table=history,
-            history=history
+            history=history,
+            predicted_score=predicted_score
         )
     finally:
         cur.close()

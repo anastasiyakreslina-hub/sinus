@@ -1,0 +1,164 @@
+/* ================= СТИЛИЗАЦИЯ QUILL ПОД ДИЗАЙН SINUS ================= */
+.ql-toolbar.ql-snow {
+  border-radius: 12px 12px 0 0;
+  background: var(--bg-card, #1c1c1e);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 10px 12px;
+}
+
+.ql-container.ql-snow {
+  border-radius: 0 0 12px 12px;
+  min-height: 240px;
+  font-size: 15px;
+  font-family: inherit;
+  background: var(--bg-card, #1c1c1e);
+  color: var(--text-main, #ffffff);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-top: none;
+}
+
+/* Цвет плейсхолдера */
+.ql-editor.ql-blank::before {
+  color: rgba(255, 255, 255, 0.4);
+  font-style: normal;
+}
+
+/* Иконки панели инструментов */
+.ql-snow .ql-stroke {
+  stroke: rgba(255, 255, 255, 0.7) !important;
+}
+
+.ql-snow .ql-fill {
+  fill: rgba(255, 255, 255, 0.7) !important;
+}
+
+.ql-snow .ql-picker {
+  color: rgba(255, 255, 255, 0.8) !important;
+}
+
+/* Наведение и активное состояние элементов */
+.ql-snow .ql-picker-label:hover,
+.ql-snow button:hover .ql-stroke,
+.ql-snow button.ql-active .ql-stroke,
+.ql-snow .ql-picker-label.ql-active .ql-stroke {
+  stroke: #e00560 !important;
+}
+
+.ql-snow button:hover .ql-fill,
+.ql-snow button.ql-active .ql-fill,
+.ql-snow .ql-picker-label.ql-active .ql-fill {
+  fill: #e00560 !important;
+}
+
+/* Выпадающие списки (Picker Options) */
+.ql-snow .ql-picker-options {
+  background-color: var(--bg-card, #252528) !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  border-radius: 8px !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  padding: 6px !important;
+}
+
+.ql-snow .ql-picker-item {
+  color: rgba(255, 255, 255, 0.8) !important;
+  border-radius: 4px;
+}
+
+.ql-snow .ql-picker-item:hover {
+  color: #e00560 !important;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+/* Всплывающее окно вставки ссылки */
+.ql-snow .ql-tooltip {
+  background-color: var(--bg-card, #252528) !important;
+  color: #fff !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5) !important;
+  border-radius: 8px !important;
+  padding: 8px 12px !important;
+}
+
+.ql-snow .ql-tooltip input[type=text] {
+  background: rgba(255, 255, 255, 0.08) !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  color: #fff !important;
+  border-radius: 6px !important;
+  padding: 4px 8px !important;
+}
+
+/* Адаптивность контента внутри карточки теории */
+.taskText img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin: 12px 0;
+  display: block;
+}
+
+.taskText iframe {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 8px;
+  margin: 14px 0;
+  border: none;
+}
+
+.taskText table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 14px 0;
+}
+
+.taskText td, 
+.taskText th {
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 8px 12px;
+}
+/* Стили для расширенной панели цветов Quill */
+.colorPickerWrapper {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 2px 6px;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.customColorBtn {
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  position: relative;
+}
+
+.customColorBtn input[type="color"] {
+  position: absolute;
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+
+.recentColorsBox {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.colorSwatch {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  transition: transform 0.15s ease;
+}
+
+.colorSwatch:hover {
+  transform: scale(1.2);
+}

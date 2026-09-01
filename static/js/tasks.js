@@ -81,12 +81,24 @@ function editTask(btn) {
 }
 
 function editTheory(btn) {
-    const id = btn.dataset.id;
-    document.getElementById('title').value = btn.dataset.title;
-    document.getElementById('task_number').value = btn.dataset.task;
-    document.getElementById('text').value = btn.dataset.text;
-    
-    const form = document.getElementById('theoryForm');
-    form.action = '/edit_theory/' + id;
-    openTheoryAdding();
+  openTheoryAdding();
+
+  const blockId = btn.dataset.id;
+  const form = document.getElementById('theoryForm');
+
+  // Указываем прямой путь к endpoint редактирования в вашем Flask-приложении
+  form.action = `/theory/edit/${blockId}`; // Если префикс блюпринта /theory
+
+  document.getElementById('modalTitleText').innerText = 'Редактирование теории';
+  document.getElementById('title').value = btn.dataset.title || '';
+  document.getElementById('task_number').value = btn.dataset.task || '';
+
+  // Загружаем текст в Quill из карточки
+  const card = btn.closest('.taskCard');
+  if (card) {
+    const textContainer = card.querySelector('.taskText');
+    if (quill && textContainer) {
+      quill.root.innerHTML = textContainer.innerHTML.trim();
+    }
+  }
 }
