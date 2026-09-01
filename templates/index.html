@@ -1,320 +1,320 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Sinus — главная</title>
-    <link rel="stylesheet"
-          href="{{ url_for('static', filename='css/style.css') }}">
-    <script
-        src="{{ url_for('static', filename='js/theme.js') }}"
-        defer>
-    </script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sinus — главная</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <script src="{{ url_for('static', filename='js/theme.js') }}" defer></script>
 </head>
 <body>
 
-    <!-- =====================================================
-         PRO MODAL
-    ===================================================== -->
-    {% if not tariff_info or not tariff_info.is_pro %}
+  <!-- =====================================================
+       PRO MODAL
+  ===================================================== -->
+  {% if not tariff_info or not tariff_info.is_pro %}
     <div id="proModal" class="proModal" onclick="closeProModal(event)">
-        <div class="proModalContent">
-            <button type="button" class="proModalClose" onclick="closeProModal()">&times;</button>
-            <span class="proModalBadge">Тариф Pro</span>
-            <h2 class="proModalTitle">Открой все возможности</h2>
-            <p class="proModalDescription">Получи неограниченный доступ к материалам и инструментам для максимального балла.</p>
+      <div class="proModalContent">
+        <button type="button" class="proModalClose" onclick="closeProModal()">&times;</button>
+        <span class="proModalBadge">Тариф Pro</span>
+        <h2 class="proModalTitle">Открой все возможности</h2>
+        <p class="proModalDescription">Получи неограниченный доступ к материалам и инструментам для максимального балла.</p>
 
-            <div class="proFeatures">
-                <div class="proFeature">
-                    <span class="proFeatureIcon">✓</span>
-                    <span>Полный банк задач</span>
-                </div>
-                <div class="proFeature">
-                    <span class="proFeatureIcon">✓</span>
-                    <span>Все варианты ЕГЭ и ОГЭ</span>
-                </div>
-                <div class="proFeature">
-                    <span class="proFeatureIcon">✓</span>
-                    <span>Умная работа над ошибками</span>
-                </div>
-                <div class="proFeature">
-                    <span class="proFeatureIcon">✓</span>
-                    <span>Расширенная статистика</span>
-                </div>
-                <div class="proFeature">
-                    <span class="proFeatureIcon">✓</span>
-                    <span>Доступ ко всем теоретическим материалам</span>
-                </div>
-            </div>
-
-            <div class="proPrice">
-                <span class="proPriceValue">299 ₽</span>
-                <span class="proPricePeriod">/ 30 дней</span>
-            </div>
-
-            <form action="{{ url_for('payment.create_payment') }}" method="POST">
-                <button type="submit" class="proPayButton">
-                    Оплатить Pro →
-                </button>
-            </form>
-
-            <p class="proModalNote">
-                После оплаты доступ Pro активируется автоматически.
-            </p>
+        <div class="proFeatures">
+          <div class="proFeature">
+            <span class="proFeatureIcon">✓</span>
+            <span>Полный банк задач</span>
+          </div>
+          <div class="proFeature">
+            <span class="proFeatureIcon">✓</span>
+            <span>Все варианты ЕГЭ и ОГЭ</span>
+          </div>
+          <div class="proFeature">
+            <span class="proFeatureIcon">✓</span>
+            <span>Умная работа над ошибками</span>
+          </div>
+          <div class="proFeature">
+            <span class="proFeatureIcon">✓</span>
+            <span>Расширенная статистика</span>
+          </div>
+          <div class="proFeature">
+            <span class="proFeatureIcon">✓</span>
+            <span>Доступ ко всем теоретическим материалам</span>
+          </div>
         </div>
+
+        <div class="proPrice">
+          <span class="proPriceValue">299 ₽</span>
+          <span class="proPricePeriod">/ 30 дней</span>
+        </div>
+
+        <form action="{{ url_for('payment.create_payment') }}" method="POST">
+          <button type="submit" class="proPayButton">
+            Оплатить Pro →
+          </button>
+        </form>
+
+        <p class="proModalNote">
+          После оплаты доступ Pro активируется автоматически.
+        </p>
+      </div>
     </div>
-    {% endif %}
+  {% endif %}
 
-    <!-- =====================================================
-         HEADER
-    ===================================================== -->
-    <header class="homeHeader">
-        <a href="{{ url_for('main.error') }}" class="homeLogo">
-            sinus<span>.</span>
+  <!-- =====================================================
+       HEADER
+  ===================================================== -->
+  <header class="homeHeader">
+    <a href="{{ url_for('main.error') }}" class="homeLogo">
+      sinus<span>.</span>
+    </a>
+    <nav class="homeNav">
+      <a href="{{ url_for('main.about') }}">О проекте</a>
+      <a href="{{ url_for('auth.profile') }}">Профиль</a>
+    </nav>
+  </header>
+
+  <!-- =====================================================
+       MAIN
+  ===================================================== -->
+  <main class="homeMain">
+
+    <!-- Время -->
+    <div class="homeTime">
+      <span id="time"></span>
+    </div>
+
+    <!-- Приветствие -->
+    <section class="welcomeBlock">
+      <div>
+        <p class="homeEyebrow">SINUS · ПОДГОТОВКА К ЕГЭ</p>
+        <h1 id="greeting"></h1>
+        <p>Продолжим подготовку?</p>
+      </div>
+      <div class="welcomeDecoration">✦</div>
+    </section>
+
+    <!-- =================================================
+         DASHBOARD
+    ================================================= -->
+    <section class="dashboard">
+
+      <!-- Профиль -->
+      <div class="studentCard dashboardCard">
+        <div class="studentTop">
+          <div class="studentAvatar">
+            {% if user['avatar'] %}
+              <img src="{{ url_for('static', filename=user['avatar']) }}?v={{ user['id'] }}" alt="Фото профиля">
+            {% else %}
+              <img src="{{ url_for('static', filename='images/studentsphoto.jpg') }}" alt="Фото профиля">
+            {% endif %}
+          </div>
+
+          <div>
+            <p class="cardLabel">ТВОЙ ПРОФИЛЬ</p>
+            <h2>{{ username }}</h2>
+          </div>
+        </div>
+
+        <div class="studentGoal">
+          <span>Цель</span>
+          <strong>{{ goal }}</strong>
+          <small>баллов</small>
+        </div>
+      </div>
+
+      <!-- =================================================
+           ТАРИФ
+      ================================================= -->
+      <div class="rateCard dashboardCard">
+        <div class="cardIcon">✦</div>
+
+        <div>
+          <p class="cardLabel">ТАРИФ</p>
+
+          {% if tariff_info and tariff_info.is_pro %}
+            <!-- PRO -->
+            <h3>Pro</h3>
+            {% if tariff_info.is_admin %}
+              <p class="proActiveInfo">Доступ администратора (Бессрочно)</p>
+            {% elif tariff_info.pro_until %}
+              <p class="proActiveInfo">
+                {% if tariff_info.pro_until is string %}
+                  Активен: {{ tariff_info.pro_until }}
+                {% else %}
+                  Активен до {{ tariff_info.pro_until.strftime('%d.%m.%Y') }}
+                {% endif %}
+              </p>
+            {% endif %}
+
+          {% else %}
+            <!-- SIMPLE -->
+            <h3>Simple</h3>
+            <button type="button" class="textButton" onclick="openProModal()">
+              Повысить тариф →
+            </button>
+          {% endif %}
+        </div>
+      </div>
+
+      <!-- =================================================
+           ЗАНЯТИЯ
+      ================================================= -->
+      <div class="tasksCard dashboardCard">
+        <div class="cardHeading">
+          <div>
+            <p class="cardLabel">СЕГОДНЯ</p>
+            <h2>Чем займёмся?</h2>
+          </div>
+          <span class="cardHeadingIcon">→</span>
+        </div>
+
+        <div class="taskLinks">
+          <a href="{{ url_for('tasks.tasks') }}">
+            <span>▦</span>
+            <b>Банк задач</b>
+            <small>Практика</small>
+            <i>→</i>
+          </a>
+
+          <a href="{{ url_for('tasks.tests') }}">
+            <span>✦</span>
+            <b>Варианты</b>
+            <small>ЕГЭ</small>
+            <i>→</i>
+          </a>
+
+          <a href="{{ url_for('tasks.mistakes') }}">
+            <span>↻</span>
+            <b>Работа над ошибками</b>
+            <small>Повторение</small>
+            <i>→</i>
+          </a>
+
+          <a href="{{ url_for('theory.theory') }}">
+            <span>☰</span>
+            <b>Теория</b>
+            <small>Изучение</small>
+            <i>→</i>
+          </a>
+        </div>
+      </div>
+
+      <!-- =================================================
+           СТАТИСТИКА
+      ================================================= -->
+      <div class="statsCard dashboardCard">
+        <div class="cardHeading">
+          <div>
+            <p class="cardLabel">ТВОЙ ПРОГРЕСС</p>
+            <h2>Достижения</h2>
+          </div>
+
+          <a href="{{ url_for('tasks.statistics') }}" class="statsMore">
+            подробнее
+          </a>
+        </div>
+
+        <div class="statsGrid">
+          <a href="{{ url_for('tasks.statistics') }}" class="statItem">
+            <strong>{{ streak }}</strong>
+            <span>
+              {% if streak % 10 == 1 and streak % 100 != 11 %}
+                день нарешки
+              {% elif streak % 10 in [2, 3, 4] and streak % 100 not in [12, 13, 14] %}
+                дня нарешки
+              {% else %}
+                дней нарешки
+              {% endif %}
+            </span>
+          </a>
+
+          <a href="{{ url_for('tasks.statistics') }}" class="statItem">
+            <strong>{{ solved_count }}</strong>
+            <span>задач решено</span>
+          </a>
+
+          <a href="{{ url_for('tasks.statistics') }}" class="statItem">
+            <strong>{{ correct }}</strong>
+            <span>правильных</span>
+          </a>
+
+          <a href="{{ url_for('tasks.statistics') }}" class="statItem accentStat">
+            <strong>{{ percent }}%</strong>
+            <span>успех</span>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- =====================================================
+       FOOTER
+  ===================================================== -->
+  <footer class="homeFooter">
+    <div class="footerContainer">
+      <!-- Левая колонка: Бренд и описание -->
+      <div class="footerBrand">
+        <a href="{{ url_for('main.home') if 'main.home' in request.endpoint else '/' }}" class="footerLogo">
+          sinus<span>.</span>
         </a>
-        <nav class="homeNav">
-            <a href="{{ url_for('main.about') }}">О проекте</a>
-            <a href="{{ url_for('auth.profile') }}">Профиль</a>
-        </nav>
-    </header>
+        <p class="footerDescription">
+          Платформа для эффективной подготовки к экзаменам по математике.
+        </p>
+        <span class="footerCopyright">© 2026 Sinus. Все права защищены.</span>
+      </div>
 
-    <!-- =====================================================
-         MAIN
-    ===================================================== -->
-    <main class="homeMain">
-
-        <!-- Время -->
-        <div class="homeTime">
-            <span id="time"></span>
+      <!-- Правая часть: Логические группы ссылок -->
+      <div class="footerNavGrid">
+        <div class="footerColumn">
+          <span class="footerColumnTitle">Проект</span>
+          <a href="https://t.me/karznl" target="_blank" rel="noopener">Телеграм-канал</a>
+          <a href="{{ url_for('main.about') if 'main.about' in request.endpoint else '/' }}">О проекте</a>
         </div>
 
-        <!-- Приветствие -->
-        <section class="welcomeBlock">
-            <div>
-                <p class="homeEyebrow">SINUS · ПОДГОТОВКА К ЕГЭ</p>
-                <h1 id="greeting"></h1>
-                <p>Продолжим подготовку?</p>
-            </div>
-            <div class="welcomeDecoration">✦</div>
-        </section>
-
-        <!-- =================================================
-             DASHBOARD
-        ================================================= -->
-        <section class="dashboard">
-
-            <!-- Профиль -->
-            <div class="studentCard dashboardCard">
-                <div class="studentTop">
-                    <div class="studentAvatar">
-                        {% if user['avatar'] %}
-                            <img src="{{ url_for('static', filename=user['avatar']) }}?v={{ user['id'] }}" alt="Фото профиля">
-                        {% else %}
-                            <img src="{{ url_for('static', filename='images/studentsphoto.jpg') }}" alt="Фото профиля">
-                        {% endif %}
-                    </div>
-
-                    <div>
-                        <p class="cardLabel">ТВОЙ ПРОФИЛЬ</p>
-                        <h2>{{ username }}</h2>
-                    </div>
-                </div>
-
-                <div class="studentGoal">
-                    <span>Цель</span>
-                    <strong>{{ goal }}</strong>
-                    <small>баллов</small>
-                </div>
-            </div>
-
-            <!-- =================================================
-                 ТАРИФ
-            ================================================= -->
-            <div class="rateCard dashboardCard">
-                <div class="cardIcon">✦</div>
-
-                <div>
-                    <p class="cardLabel">ТАРИФ</p>
-
-                    {% if tariff_info and tariff_info.is_pro %}
-                        <!-- PRO -->
-                        <h3>Pro</h3>
-                        {% if tariff_info.is_admin %}
-                            <p class="proActiveInfo">Доступ администратора</p>
-                        {% elif tariff_info.pro_until %}
-                            <p class="proActiveInfo">
-                                Активен до {{ tariff_info.pro_until.strftime('%d.%m.%Y') }}
-                            </p>
-                        {% endif %}
-
-                    {% else %}
-                        <!-- SIMPLE -->
-                        <h3>Simple</h3>
-                        <button type="button" class="textButton" onclick="openProModal()">
-                            Повысить тариф →
-                        </button>
-                    {% endif %}
-                </div>
-            </div>
-
-            <!-- =================================================
-                 ЗАНЯТИЯ
-            ================================================= -->
-            <div class="tasksCard dashboardCard">
-                <div class="cardHeading">
-                    <div>
-                        <p class="cardLabel">СЕГОДНЯ</p>
-                        <h2>Чем займёмся?</h2>
-                    </div>
-                    <span class="cardHeadingIcon">→</span>
-                </div>
-
-                <div class="taskLinks">
-                    <a href="{{ url_for('tasks.tasks') }}">
-                        <span>▦</span>
-                        <b>Банк задач</b>
-                        <small>Практика</small>
-                        <i>→</i>
-                    </a>
-
-                    <a href="{{ url_for('tasks.tests') }}">
-                        <span>✦</span>
-                        <b>Варианты</b>
-                        <small>ЕГЭ</small>
-                        <i>→</i>
-                    </a>
-
-                    <a href="{{ url_for('tasks.mistakes') }}">
-                        <span>↻</span>
-                        <b>Работа над ошибками</b>
-                        <small>Повторение</small>
-                        <i>→</i>
-                    </a>
-
-                    <a href="{{ url_for('theory.theory') }}">
-                        <span>☰</span>
-                        <b>Теория</b>
-                        <small>Изучение</small>
-                        <i>→</i>
-                    </a>
-                </div>
-            </div>
-
-            <!-- =================================================
-                 СТАТИСТИКА
-            ================================================= -->
-            <div class="statsCard dashboardCard">
-                <div class="cardHeading">
-                    <div>
-                        <p class="cardLabel">ТВОЙ ПРОГРЕСС</p>
-                        <h2>Достижения</h2>
-                    </div>
-
-                    <a href="{{ url_for('tasks.statistics') }}" class="statsMore">
-                        подробнее
-                    </a>
-                </div>
-
-                <div class="statsGrid">
-                    <a href="{{ url_for('tasks.statistics') }}" class="statItem">
-                        <strong>{{ streak }}</strong>
-                        <span>
-                            {% if streak % 10 == 1 and streak % 100 != 11 %}
-                                день нарешки
-                            {% elif streak % 10 in [2, 3, 4] and streak % 100 not in [12, 13, 14] %}
-                                дня нарешки
-                            {% else %}
-                                дней нарешки
-                            {% endif %}
-                        </span>
-                    </a>
-
-                    <a href="{{ url_for('tasks.statistics') }}" class="statItem">
-                        <strong>{{ solved_count }}</strong>
-                        <span>задач решено</span>
-                    </a>
-
-                    <a href="{{ url_for('tasks.statistics') }}" class="statItem">
-                        <strong>{{ correct }}</strong>
-                        <span>правильных</span>
-                    </a>
-
-                    <a href="{{ url_for('tasks.statistics') }}" class="statItem accentStat">
-                        <strong>{{ percent }}%</strong>
-                        <span>успех</span>
-                    </a>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <!-- =====================================================
-         FOOTER
-    ===================================================== -->
-    <footer class="homeFooter">
-        <div class="footerContainer">
-            <!-- Левая колонка: Бренд и описание -->
-            <div class="footerBrand">
-                <a href="{{ url_for('main.home') if 'main.home' in request.endpoint else '/' }}" class="footerLogo">
-                    sinus<span>.</span>
-                </a>
-                <p class="footerDescription">
-                    Платформа для эффективной подготовки к экзаменам по математике.
-                </p>
-                <span class="footerCopyright">© 2026 Sinus. Все права защищены.</span>
-            </div>
-
-            <!-- Правая часть: Логические группы ссылок -->
-            <div class="footerNavGrid">
-                <div class="footerColumn">
-                    <span class="footerColumnTitle">Проект</span>
-                    <a href="https://t.me/karznl" target="_blank" rel="noopener">Телеграм-канал</a>
-                    <a href="{{ url_for('main.about') if 'main.about' in request.endpoint else '/' }}">О проекте</a>
-                </div>
-
-                <div class="footerColumn">
-                    <span class="footerColumnTitle">Помощь</span>
-                    <a href="/">FAQ</a>
-                    <button type="button" class="footerLinkBtn" onclick="openContacts()">Контакты</button>
-                    <a href="/">Поддержка</a>
-                </div>
-
-                <div class="footerColumn">
-                    <span class="footerColumnTitle">Документы</span>
-                    <a href="{{ url_for('main.privacypolicy') }}">Конфиденциальность</a>
-                    <a href="{{ url_for('main.offer') }}">Публичная оферта</a>
-                    <a href="{{ url_for('main.refund') }}">Правила возврата</a>
-                </div>
-            </div>
+        <div class="footerColumn">
+          <span class="footerColumnTitle">Помощь</span>
+          <a href="/">FAQ</a>
+          <button type="button" class="footerLinkBtn" onclick="openContacts()">Контакты</button>
+          <a href="/">Поддержка</a>
         </div>
-    </footer>   
 
-    <!-- =====================================================
-         JS
-    ===================================================== -->
-    <script>
-        function openProModal() {
-            const modal = document.getElementById("proModal");
-            if (!modal) return;
-            modal.classList.add("active");
-            document.body.classList.add("modalOpen");
-        }
+        <div class="footerColumn">
+          <span class="footerColumnTitle">Документы</span>
+          <a href="{{ url_for('main.privacypolicy') }}">Конфиденциальность</a>
+          <a href="{{ url_for('main.offer') }}">Публичная оферта</a>
+          <a href="{{ url_for('main.refund') }}">Правила возврата</a>
+        </div>
+      </div>
+    </div>
+  </footer>   
 
-        function closeProModal(event) {
-            if (event && event.target !== event.currentTarget) return;
-            const modal = document.getElementById("proModal");
-            if (!modal) return;
-            modal.classList.remove("active");
-            document.body.classList.remove("modalOpen");
-        }
+  <!-- =====================================================
+       JS
+  ===================================================== -->
+  <script>
+    function openProModal() {
+      const modal = document.getElementById("proModal");
+      if (!modal) return;
+      modal.classList.add("active");
+      document.body.classList.add("modalOpen");
+    }
 
-        document.addEventListener("keydown", function(event) {
-            if (event.key === "Escape") {
-                closeProModal();
-            }
-        });
-    </script>
+    function closeProModal(event) {
+      if (event && event.target !== event.currentTarget) return;
+      const modal = document.getElementById("proModal");
+      if (!modal) return;
+      modal.classList.remove("active");
+      document.body.classList.remove("modalOpen");
+    }
 
-    <script src="{{ url_for('static', filename='js/ui.js') }}"></script>
+    document.addEventListener("keydown", function(event) {
+      if (event.key === "Escape") {
+        closeProModal();
+      }
+    });
+  </script>
+
+  <script src="{{ url_for('static', filename='js/ui.js') }}"></script>
 </body>
 </html>

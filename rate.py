@@ -107,13 +107,16 @@ def get_tariff_info(user: dict) -> dict:
             "pro_until": None,
         }
 
-    return {
-        "name": get_tariff_name(user),
-        "is_pro": has_pro_access(user),
-        "is_admin": is_admin(user),
-        "pro_until": user.get("pro_until"),
-    }
+    admin = is_admin(user)
+    pro = has_pro_access(user)
 
+    return {
+        "name": PRO_TARIFF if pro else SIMPLE_TARIFF,
+        "is_pro": pro,
+        "is_admin": admin,
+        # Для админа возвращаем "Бессрочно", либо его реальную дату, если она есть
+        "pro_until": user.get("pro_until") or ("Бессрочно" if admin else None),
+    }
 
 # ============================================================
 # ИНФОРМАЦИЯ О PRO

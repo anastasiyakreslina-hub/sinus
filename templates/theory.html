@@ -1,340 +1,362 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Теория — Sinus</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Теория — Sinus</title>
 
-  <!-- KaTeX -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<!-- KaTeX -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
 
-  <!-- Quill -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css">
+<!-- Quill -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css">
 
-  <!-- CSS -->
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+<!-- CSS -->
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 
-  <!-- JS libraries -->
-  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
-  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
-  <script defer src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
-  <script defer src="{{ url_for('static', filename='js/theme.js') }}"></script>
+<!-- JS libraries -->
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
+<script defer src="{{ url_for('static', filename='js/theme.js') }}"></script>
 </head>
 <body class="tasksPage">
 
-  <!-- ================= SIDEBAR ================= -->
-  <aside class="sidebar tasksSidebar">
-    <a href="{{ url_for('main.home') }}" class="name sidebarLogo">
-      sinus<span>.</span>
-    </a>
+<!-- ================= SIDEBAR ================= -->
+<aside class="sidebar tasksSidebar">
+<a href="{{ url_for('main.home') }}" class="name sidebarLogo">
+sinus<span>.</span>
+</a>
 
-    <nav class="listThings">
-      <a href="{{ url_for('main.home') }}">
-        <span>⌂</span>
-        Главная
-      </a>
-      <a href="{{ url_for('tasks.tasks') }}">
-        <span>▦</span>
-        Банк заданий
-      </a>
-      <a href="{{ url_for('tasks.tests') }}">
-        <span>✦</span>
-        Варианты ЕГЭ
-      </a>
-      <a href="{{ url_for('tasks.mistakes') }}">
-        <span>↻</span>
-        Работа над ошибками
-      </a>
-      <a href="{{ url_for('tasks.statistics') }}">
-        <span>⌁</span>
-        Статистика
-      </a>
-      <a href="{{ url_for('auth.profile') }}">
-        <span>👤</span>
-        Профиль
-      </a>
-    </nav>
+<nav class="listThings">
+<a href="{{ url_for('main.home') }}">
+<span>⌂</span>
+Главная
+</a>
+<a href="{{ url_for('tasks.tasks') }}">
+<span>▦</span>
+Банк заданий
+</a>
+<a href="{{ url_for('tasks.tests') }}">
+<span>✦</span>
+Варианты ЕГЭ
+</a>
+<a href="{{ url_for('tasks.mistakes') }}">
+<span>↻</span>
+Работа над ошибками
+</a>
+<a href="{{ url_for('tasks.statistics') }}">
+<span>⌁</span>
+Статистика
+</a>
+<a href="{{ url_for('auth.profile') }}">
+<span>👤</span>
+Профиль
+</a>
+</nav>
 
-    <div class="sidebarBottom">
-      <a href="{{ url_for('auth.logout') }}" class="logoutLink">
-        <span>↪</span>
-        Выйти
-      </a>
-    </div>
-  </aside>
+<div class="sidebarBottom">
+<a href="{{ url_for('auth.logout') }}" class="logoutLink">
+<span>↪</span>
+Выйти
+</a>
+</div>
+</aside>
 
-  <!-- ================= MAIN ================= -->
-  <main class="tasksMain">
+<!-- ================= MAIN ================= -->
+<main class="tasksMain">
 
-    <!-- HEADER -->
-    <header class="tasksHeader reveal">
-      <div>
-        <p class="tasksEyebrow">БАЗА ЗНАНИЙ</p>
-        <h1>Теория по математике</h1>
-        <p class="tasksSubtitle">
-          Изучай теоретический материал, формулы и разбирай правила для успешного решения заданий.
-        </p>
-      </div>
+<!-- HEADER -->
+<header class="tasksHeader reveal">
+<div>
+<p class="tasksEyebrow">БАЗА ЗНАНИЙ</p>
+<h1>Теория по математике</h1>
+<p class="tasksSubtitle">
+Изучай теоретический материал, формулы и разбирай правила для успешного решения заданий.
+</p>
+</div>
 
-      <button type="button" class="themeButton" id="themeToggleBtn">
-        🌙
-        <span>Тёмная тема</span>
-      </button>
-    </header>
+<button type="button" class="themeButton" id="themeToggleBtn">
+🌙
+<span>Тёмная тема</span>
+</button>
+</header>
 
-    <!-- ================= ADD BUTTON ================= -->
-    {% if session.get('role') == 'admin' %}
-    <section class="tasksFilters reveal delay-1">
-      <button type="button" onclick="openTheoryAdding()" class="adminAddButton">
-        <span>＋</span>
-        Добавить теорию
-      </button>
-    </section>
-    {% endif %}
+<!-- ================= ADD BUTTON ================= -->
+{% if session.get('role') == 'admin' %}
+<section class="tasksFilters reveal delay-1">
+<button type="button" onclick="openTheoryAdding()" class="adminAddButton">
+<span>＋</span>
+Добавить теорию
+</button>
+</section>
+{% endif %}
 
-    <!-- ================= MODAL ================= -->
-    {% if session.get('role') == 'admin' %}
-    <div id="theoryAdding" class="modal taskModal" style="display: none;">
-      <div class="taskModalBox">
-        <button type="button" class="closeModal" onclick="closeTheoryAdding()">&times;</button>
+<!-- ================= MODAL ================= -->
+{% if session.get('role') == 'admin' %}
+<div id="theoryAdding" class="modal taskModal" style="display: none;">
+<div class="taskModalBox">
+<button type="button" class="closeModal" onclick="closeTheoryAdding()">&times;</button>
 
-        <div class="modalHeader">
-          <span class="modalIcon">＋</span>
-          <div>
-            <h2 id="modalTitleText">Новая теория</h2>
-            <p>Добавь или измени теоретический блок к заданию</p>
-          </div>
-        </div>
+<div class="modalHeader">
+<span class="modalIcon">＋</span>
+<div>
+<h2 id="modalTitleText">Новая теория</h2>
+<p>Добавь или измени теоретический блок к заданию</p>
+</div>
+</div>
 
-        <!-- Добавлен атрибут data-add-url -->
-        <form method="POST" action="{{ url_for('theory.add_theory') }}" data-add-url="{{ url_for('theory.add_theory') }}" id="theoryForm" enctype="multipart/form-data" class="taskModalForm">
-          <div class="modalGrid">
-            <label>
-              Название темы
-              <input id="title" name="title" class="taskInput" placeholder="Например, Свойства логарифмов" required>
-            </label>
+<!-- Добавлен атрибут data-add-url -->
+<form method="POST" action="{{ url_for('theory.add_theory') }}" data-add-url="{{ url_for('theory.add_theory') }}" id="theoryForm" enctype="multipart/form-data" class="taskModalForm">
+<div class="modalGrid">
+<label>
+Название темы
+<input id="title" name="title" class="taskInput" placeholder="Например, Свойства логарифмов" required>
+</label>
 
-            <label>
-              Номер задания
-              <input id="task_number" name="task_number" class="taskInput" placeholder="Например, 7" required>
-            </label>
-          </div>
+<label>
+Номер задания
+<input id="task_number" name="task_number" class="taskInput" placeholder="Например, 7" required>
+</label>
+</div>
 
-          <!-- Quill HTML -->
-          <input type="hidden" name="text" id="hiddenText">
+<!-- Quill HTML -->
+<input type="hidden" name="text" id="hiddenText">
 
-          <label style="margin-bottom: 8px; display: block;">
-            Текст теории (заметки, картинки, таблицы, видео)
-          </label>
+<label style="margin-bottom: 8px; display: block;">
+Текст теории (заметки, картинки, таблицы, видео)
+</label>
 
-          <!-- Контейнер Quill с расширенной палитрой -->
-            <div class="quillWrapper">
-  <!-- Панель инструментов Quill -->
-                <div id="toolbar">
-                    <span class="ql-formats">
-                        <select class="ql-header">
-                            <option value="1">Заголовок 1</option>
-                            <option value="2">Заголовок 2</option>
-                            <option selected>Обычный</option>
-                        </select>
-                    </span>
+<!-- Контейнер Quill с расширенной палитрой -->
+<div class="quillWrapper">
+<!-- Панель инструментов Quill -->
+<div id="toolbar">
+<span class="ql-formats">
+<select class="ql-header">
+<option value="1">Заголовок 1</option>
+<option value="2">Заголовок 2</option>
+<option selected>Обычный</option>
+</select>
+</span>
 
-                    <span class="ql-formats">
-                        <button class="ql-bold"></button>
-                        <button class="ql-italic"></button>
-                        <button class="ql-underline"></button>
-                        <button class="ql-strike"></button>
-                    </span>
+<span class="ql-formats">
+<button class="ql-bold"></button>
+<button class="ql-italic"></button>
+<button class="ql-underline"></button>
+<button class="ql-strike"></button>
+</span>
 
-    <!-- Расширенные цвета текста -->
-                    <span class="ql-formats colorPickerWrapper">
-                        <label class="customColorBtn" title="Цвет текста">
-        🎨                  <input type="color" id="textColorPicker" value="#000000">
-                        </label>
-                        <div id="recentTextColors" class="recentColorsBox" title="Ранее использованные цвета текста"></div>
-                    </span>
+<!-- Расширенные цвета текста -->
+<span class="ql-formats colorPickerWrapper">
+<label class="customColorBtn" title="Цвет текста">
+🎨 <input type="color" id="textColorPicker" value="#000000">
+</label>
+<div id="recentTextColors" class="recentColorsBox" title="Ранее использованные цвета текста"></div>
+</span>
 
-    <!-- Расширенные цвета фона -->
-                    <span class="ql-formats colorPickerWrapper">
-                        <label class="customColorBtn" title="Цвет выделения (фон)">
-        🖌️                  <input type="color" id="bgColorPicker" value="#ffffff">
-                        </label>
-                    <div id="recentBgColors" class="recentColorsBox" title="Ранее использованные цвета фона"></div>
-                    </span>
+<!-- Расширенные цвета фона -->
+<span class="ql-formats colorPickerWrapper">
+<label class="customColorBtn" title="Цвет выделения (фон)">
+🖌️ <input type="color" id="bgColorPicker" value="#ffffff">
+</label>
+<div id="recentBgColors" class="recentColorsBox" title="Ранее использованные цвета фона"></div>
+</span>
 
-                    <span class="ql-formats">
-                        <button class="ql-list" value="ordered"></button>
-                        <button class="ql-list" value="bullet"></button>
-                    </span>
+<span class="ql-formats">
+<button class="ql-list" value="ordered"></button>
+<button class="ql-list" value="bullet"></button>
+</span>
 
-                    <span class="ql-formats">
-                        <button class="ql-link"></button>
-                        <button class="ql-clean" title="Очистить форматирование"></button>
-                        </span>
-                </div>
+<!-- ДОБАВЛЕНЫ КНОПКИ ДЛЯ ССЫЛОК, ИЗОБРАЖЕНИЙ И ВИДЕО -->
+<span class="ql-formats">
+<button class="ql-link" title="Вставить ссылку"></button>
+<button class="ql-image" title="Вставить картинку по ссылке"></button>
+<button class="ql-video" title="Вставить видео (YouTube, Rutube и др.)"></button>
+<button class="ql-clean" title="Очистить форматирование"></button>
+</span>
+</div>
 
-                <div id="editor"></div>
-            </div>
+<div id="editor"></div>
+</div>
 
-          <!-- PDF -->
-          <label style="margin-top: 16px; display: block;">
-            Прикрепить PDF (необязательно)
-            <input type="file" name="pdf" accept=".pdf" class="fileInput">
-          </label>
+<!-- PDF -->
+<label style="margin-top: 16px; display: block;">
+Прикрепить PDF (необязательно)
+<input type="file" name="pdf" accept=".pdf" class="fileInput">
+</label>
 
-          <button type="submit" class="taskPrimaryButton" style="margin-top: 20px;">
-            Сохранить теорию
-          </button>
-        </form>
-      </div>
-    </div>
-    {% endif %}
+<button type="submit" class="taskPrimaryButton" style="margin-top: 20px;">
+Сохранить теорию
+</button>
+</form>
+</div>
+</div>
+{% endif %}
 
-    <!-- ================= THEORY ================= -->
-    <section class="tasksList">
-      <div class="tasksListHeader reveal delay-2">
-        <div>
-          <span style="color:#e00560">ТЕОРИЯ</span>
-          <h2>Темы и конспекты</h2>
-        </div>
-        <p>{{ blocks|length }} тем</p>
-      </div>
+<!-- ================= THEORY ================= -->
+<section class="tasksList">
+<div class="tasksListHeader reveal delay-2">
+<div>
+<span style="color:#e00560">ТЕОРИЯ</span>
+<h2>Темы и конспекты</h2>
+</div>
+<p>{{ blocks|length }} тем</p>
+</div>
 
-      {% for block in blocks %}
-      <article class="taskCard reveal" id="block-{{ block['block_id'] }}">
-        <div class="taskCardHeader">
-          <div class="taskTags">
-            <span class="taskTag taskId">#{{ block['block_id'] }}</span>
-            <span class="taskTag">Теория к заданию №{{ block['task_number'] }}</span>
-          </div>
-        </div>
+{% for block in blocks %}
+<article class="taskCard reveal" id="block-{{ block['block_id'] }}">
+<div class="taskCardHeader">
+<div class="taskTags">
+<span class="taskTag taskId">#{{ block['block_id'] }}</span>
+<span class="taskTag">Теория к заданию №{{ block['task_number'] }}</span>
+</div>
+</div>
 
-        <!-- TITLE -->
-        <h2 class="heading h2heading" style="margin-top: 10px; margin-bottom: 12px; font-size: 20px;">
-          {{ block['title'] }}
-        </h2>
+<!-- TITLE -->
+<h2 class="heading h2heading" style="margin-top: 10px; margin-bottom: 12px; font-size: 20px;">
+{{ block['title'] }}
+</h2>
 
-        <!-- TEXT -->
-        <div class="taskText">
-          {{ block['text'] | safe }}
-        </div>
+<!-- TEXT -->
+<div class="taskText">
+{{ block['text'] | safe }}
+</div>
 
-        <!-- PDF -->
-        {% if block['pdf_path'] %}
-        <div style="margin-top: 16px;">
-          <a class="secondaryButton" style="display: inline-flex; align-items: center; gap: 6px; text-decoration: none;" href="{{ url_for('static', filename=block['pdf_path']) }}" target="_blank">
-            📄 Открыть PDF к теме
-          </a>
-        </div>
-        {% endif %}
+<!-- PDF -->
+{% if block['pdf_path'] %}
+<div style="margin-top: 16px;">
+<a class="secondaryButton" style="display: inline-flex; align-items: center; gap: 6px; text-decoration: none;" href="{{ url_for('static', filename=block['pdf_path']) }}" target="_blank">
+📄 Открыть PDF к теме
+</a>
+</div>
+{% endif %}
 
-        <!-- ADMIN BUTTONS -->
-        {% if session.get('role') == 'admin' %}
-        <div class="adminTaskActions" style="margin-top: 20px;">
-          <!-- DELETE -->
-          <form method="POST" action="{{ url_for('theory.delete_theory', theory_id=block['block_id']) }}">
-            <button type="submit" class="dangerButton" onclick="return confirm('Удалить тему?')">
-              Удалить
-            </button>
-          </form>
+<!-- ADMIN BUTTONS -->
+{% if session.get('role') == 'admin' %}
+<div class="adminTaskActions" style="margin-top: 20px;">
+<!-- DELETE -->
+<form method="POST" action="{{ url_for('theory.delete_theory', theory_id=block['block_id']) }}">
+<button type="submit" class="dangerButton" onclick="return confirm('Удалить тему?')">
+Удалить
+</button>
+</form>
 
-          <!-- EDIT -->
-          <button type="button" class="secondaryButton" onclick="editTheory(this)" data-id="{{ block['block_id'] }}" data-title="{{ block['title'] | e }}" data-task="{{ block['task_number'] }}" data-edit-url="{{ url_for('theory.edit_theory', block_id=block['block_id']) }}">
-            Редактировать
-          </button>
-        </div>
-        {% endif %}
-      </article>
-      {% endfor %}
-    </section>
+<!-- EDIT -->
+<button type="button" class="secondaryButton" onclick="editTheory(this)" data-id="{{ block['block_id'] }}" data-title="{{ block['title'] | e }}" data-task="{{ block['task_number'] }}" data-edit-url="{{ url_for('theory.edit_theory', block_id=block['block_id']) }}">
+Редактировать
+</button>
+</div>
+{% endif %}
+</article>
+{% endfor %}
+</section>
 
-    <!-- ================= FOOTER ================= -->
-    <footer class="homeFooter">
-      <div class="footerContainer">
-        <div class="footerBrand">
-          <a href="{{ url_for('main.home') }}" class="footerLogo">
-            sinus<span>.</span>
-          </a>
-          <p class="footerDescription">
-            Платформа для эффективной подготовки к экзаменам по математике.
-          </p>
-          <span class="footerCopyright">
-            © 2026 Sinus. Все права защищены.
-          </span>
-        </div>
+<!-- ================= FOOTER ================= -->
+<footer class="homeFooter">
+<div class="footerContainer">
+<div class="footerBrand">
+<a href="{{ url_for('main.home') }}" class="footerLogo">
+sinus<span>.</span>
+</a>
+<p class="footerDescription">
+Платформа для эффективной подготовки к экзаменам по математике.
+</p>
+<span class="footerCopyright">
+© 2026 Sinus. Все права защищены.
+</span>
+</div>
 
-        <div class="footerNavGrid">
-          <div class="footerColumn">
-            <span class="footerColumnTitle">Проект</span>
-            <a href="https://t.me/karznl" target="_blank" rel="noopener">Телеграм-канал</a>
-            <a href="{{ url_for('main.about') }}">О проекте</a>
-          </div>
+<div class="footerNavGrid">
+<div class="footerColumn">
+<span class="footerColumnTitle">Проект</span>
+<a href="https://t.me/karznl" target="_blank" rel="noopener">Телеграм-канал</a>
+<a href="{{ url_for('main.about') }}">О проекте</a>
+</div>
 
-          <div class="footerColumn">
-            <span class="footerColumnTitle">Помощь</span>
-            <a href="/">FAQ</a>
-            <button type="button" class="footerLinkBtn" onclick="openContacts()">Контакты</button>
-            <a href="/">Поддержка</a>
-          </div>
+<div class="footerColumn">
+<span class="footerColumnTitle">Помощь</span>
+<a href="/">FAQ</a>
+<button type="button" class="footerLinkBtn" onclick="openContacts()">Контакты</button>
+<a href="/">Поддержка</a>
+</div>
 
-          <div class="footerColumn">
-            <span class="footerColumnTitle">Документы</span>
-            <a href="{{ url_for('main.privacypolicy') }}">Конфиденциальность</a>
-            <a href="{{ url_for('main.offer') }}">Публичная оферта</a>
-            <a href="{{ url_for('main.refund') }}">Правила возврата</a>
-          </div>
-        </div>
-      </div>
-    </footer>
+<div class="footerColumn">
+<span class="footerColumnTitle">Документы</span>
+<a href="{{ url_for('main.privacypolicy') }}">Конфиденциальность</a>
+<a href="{{ url_for('main.offer') }}">Публичная оферта</a>
+<a href="{{ url_for('main.refund') }}">Правила возврата</a>
+</div>
+</div>
+</div>
+</footer>
 
-  </main>
+</main>
 
-  <!-- ================= CONTACTS MODAL ================= -->
-  <div id="contacts" class="modal contactsModal" style="display: none;">
-    <button type="button" class="closeModal" onclick="closeContacts()">&times;</button>
+<!-- ================= CONTACTS MODAL ================= -->
+<div id="contacts" class="modal contactsModal" style="display: none;">
+<button type="button" class="closeModal" onclick="closeContacts()">&times;</button>
 
-    <div class="contactsHeader">
-      <span class="contactsEmoji">♡</span>
-      <div>
-        <h2>Связаться с нами</h2>
-        <p>Если нашли ошибку или хотите предложить улучшение</p>
-      </div>
-    </div>
+<div class="contactsHeader">
+<span class="contactsEmoji">♡</span>
+<div>
+<h2>Связаться с нами</h2>
+<p>Если нашли ошибку или хотите предложить улучшение</p>
+</div>
+</div>
 
-    <div class="contactsList">
-      <div class="contactItem">
-        <span>✉</span>
-        <div>
-          <small>Почта</small>
-          <p>anastasiyakreslina@gmail.com</p>
-        </div>
-      </div>
+<div class="contactsList">
+<div class="contactItem">
+<span>✉</span>
+<div>
+<small>Почта</small>
+<p>anastasiyakreslina@gmail.com</p>
+</div>
+</div>
 
-      <div class="contactItem">
-        <span>↗</span>
-        <div>
-          <small>Telegram</small>
-          <p>@krazern</p>
-        </div>
-      </div>
+<div class="contactItem">
+<span>↗</span>
+<div>
+<small>Telegram</small>
+<p>@krazern</p>
+</div>
+</div>
 
-      <div class="contactItem">
-        <span>◷</span>
-        <div>
-          <small>Время ответа</small>
-          <p>обычно 1–2 дня</p>
-        </div>
-      </div>
-    </div>
+<div class="contactItem">
+<span>◷</span>
+<div>
+<small>Время ответа</small>
+<p>обычно 1–2 дня</p>
+</div>
+</div>
+</div>
 
-    <p class="contactsNote">
-      Отвечаю на вопросы о платформе, предложения, сообщения об ошибках и отзывы.
-    </p>
-  </div>
+<p class="contactsNote">
+Отвечаю на вопросы о платформе, предложения, сообщения об ошибках и отзывы.
+</p>
+</div>
 
-  <!-- ================= JS ================= -->
-  <script src="{{ url_for('static', filename='js/theory.js') }}"></script>
-  <script src="{{ url_for('static', filename='js/ui.js') }}"></script>
-  <script src="{{ url_for('static', filename='js/tasks.js') }}"></script>
+<!-- ================= JS ================= -->
+<script src="{{ url_for('static', filename='js/theory.js') }}"></script>
+<script src="{{ url_for('static', filename='js/ui.js') }}"></script>
+<script src="{{ url_for('static', filename='js/tasks.js') }}"></script>
+
+<!-- Скрипт перехвата клика по кнопке картинки для ввода URL -->
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    if (typeof quill !== 'undefined' || (window.quill && window.quill instanceof Quill)) {
+        var editor = window.quill; // Если у вас переменная quill объявлена в static/js/theory.js
+        
+        // Кастомная обработка вставки изображения по URL вместо выбора файла
+        var toolbar = editor.getModule('toolbar');
+        toolbar.addHandler('image', function() {
+            var range = this.quill.getSelection();
+            var value = prompt('Введите URL изображения (https://...):');
+            if (value) {
+                this.quill.insertEmbed(range.index, 'image', value, Quill.sources.USER);
+            }
+        });
+    }
+});
+</script>
 </body>
 </html>

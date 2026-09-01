@@ -890,9 +890,9 @@ from flask import Flask, session
 
 from database import init_db, get_user_by_id
 from rate import get_tariff_info
-from routes.payment import payment_bp
-from routes.main import main_bp
 from routes.auth import auth_bp
+from routes.main import main_bp
+from routes.payment import payment_bp
 from routes.tasks import tasks_bp
 from routes.theory import theory_bp
 
@@ -912,16 +912,19 @@ def create_app() -> Flask:
     init_db()
 
     # ============================================================
-    # КОНТЕКСТНЫЕ ПЕРЕМЕННЫЕ ДЛЯ SHABLONOV JINJA2
+    # КОНТЕКСТНЫЕ ПЕРЕМЕННЫЕ ДЛЯ ШАБЛОНОВ JINJA2
     # ============================================================
     @app.context_processor
     def inject_user_and_tariff():
-        """Автоматически передаёт current_user и tariff_info во все HTML-шаблоны."""
+        """Автоматически передаёт user, current_user и tariff_info во все HTML-шаблоны."""
         user_id = session.get("user_id")
         user = get_user_by_id(user_id) if user_id else None
-        tariff_info = get_tariff_info(user) if user else None
+
+        # get_tariff_info(user) корректно обработает user=None и вернёт дефолтный словарь
+        tariff_info = get_tariff_info(user)
 
         return {
+            "user": user,
             "current_user": user,
             "tariff_info": tariff_info,
         }
