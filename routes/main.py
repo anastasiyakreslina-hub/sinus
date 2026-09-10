@@ -160,3 +160,7 @@ def refund():
 @regs_only
 def error():
     return render_template('error.html')
+
+@main_bp.route('/about_me')
+def about_me():
+    return render_template('about_me.html')

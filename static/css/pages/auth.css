@@ -1,3 +1,7 @@
+/* =========================================================
+LOGIN — БАЗОВЫЙ ЛЭЙАУТ (центрирование карточки на странице)
+========================================================= */
+
 .login {
     display: flex;
     flex-direction: column;
@@ -33,35 +37,37 @@
 
 .toast {
     position: fixed;
-    padding: 10px;
-    border-radius: 15px;
-    width: 40%;
-    height: 40%;
-    z-index: 9999;
-    transform: translate(-50%, -50%);
-    display: flex;
-    justify-content: center;
-    align-items: center;
     top: 50%;
     left: 50%;
-    transition: opacity 0.3s ease;
+    z-index: 9999;
+    display: flex;
     flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 40%;
+    height: 40%;
+    padding: 10px;
+    border-radius: 15px;
+    transform: translate(-50%, -50%);
+    transition: opacity 0.3s ease;
 }
 
-/* ===================================================== AUTH PAGE ===================================================== */
+/* =========================================================
+AUTH PAGE
+========================================================= */
+
 .authPage {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
     background:
-        radial-gradient(
-            circle at 50% 15%,
-            rgba(205, 48, 95, 0.08),
-            transparent 32%
-        ),
+        radial-gradient(circle at 50% 15%, rgba(205, 48, 95, 0.08), transparent 32%),
         var(--background);
-    color: var(--text);}
+    color: var(--text);
+}
+
 /* ---------- Основная область ---------- */
+
 .authWrapper {
     flex: 1;
     display: flex;
@@ -69,229 +75,281 @@
     align-items: center;
     padding: 70px 20px 40px;
 }
-    
+
 /* ---------- Карточка ---------- */
-.login {
+
+.authPage .login {
     position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
     width: min(100%, 430px);
+    height: auto;
     padding: 42px;
-    border: 1px solid rgba(205, 48, 95, 0.10);
+    border: 1px solid rgba(128, 128, 128, 0.12);
     border-radius: 28px;
-    background: var(--lightBox);
-    box-shadow:
-        0 20px 60px rgba(0, 0, 0, 0.06);
-    animation: loginAppear 0.55s ease both;}
-@keyframes loginAppear {
-from {
-    opacity: 0;
-    transform: translateY(14px);
+    background: #ffffff !important;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
+    animation: loginAppear 0.55s ease both;
 }
 
-to {
-    opacity: 1;
-    transform: translateY(0);
-}}
+[data-theme="dark"] .authPage .login {
+    background: #7f123332 !important;
+    border-color: rgba(210, 16, 97, 0.683);
+    box-shadow: 0 20px 60px rgba(42, 13, 13, 0.25);
+}
+
+@keyframes loginAppear {
+    from {
+        opacity: 0;
+        transform: translateY(14px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 /* ---------- Маскот ---------- */
+
 .loginMascot {
     position: absolute;
-    right: 28px;
     top: -52px;
+    right: 28px;
     width: 92px;
     height: 92px;
     display: flex;
     align-items: center;
     justify-content: center;
-
-    border-radius: 50%;
-
-    background: var(--background);
-
     border: 7px solid var(--background);
+    border-radius: 50%;
+    background: var(--background);
+    filter: drop-shadow(0 8px 15px rgba(0, 0, 0, 0.08));
+    animation: mascotFloat 3s ease-in-out infinite;
+}
 
-    filter: drop-shadow(
-        0 8px 15px rgba(0, 0, 0, 0.08)
-    );
+.loginMascot .mascot {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
 
-    animation: mascotFloat 3s ease-in-out infinite;}
-.loginMascot .mascot { width: 100%; height: 100%;
-    object-fit: contain;}
 @keyframes mascotFloat {
-    0%, 100% {
-        transform: translateY(0) rotate(0);
-    }
+    0%, 100% { transform: translateY(0) rotate(0); }
+    50% { transform: translateY(-5px) rotate(2deg); }
+}
 
-    50% {
-        transform: translateY(-5px) rotate(2deg);
-    }}
 /* ---------- Заголовок ---------- */
-.loginHeader { margin-bottom: 30px; }
-.authEyebrow { margin: 0 0 8px;
+
+.loginHeader {
+    margin-bottom: 30px;
+}
+
+.authEyebrow {
+    margin: 0 0 8px;
     font-size: 12px;
     font-weight: 800;
-
     letter-spacing: 0.18em;
+    color: #cd305f;
+}
 
-    color: #cd305f;}
-.loginHeader h2 { margin: 0;
+.loginHeader h2 {
+    margin: 0;
     font-size: clamp(25px, 3vw, 32px);
     line-height: 1.1;
+    letter-spacing: -0.04em;
+}
 
-    letter-spacing: -0.04em;}
-.loginHeader > p:last-child { margin: 12px 0 0;
+.loginHeader > p:last-child {
+    margin: 12px 0 0;
     max-width: 310px;
-
     font-size: 15px;
     line-height: 1.5;
+    opacity: 0.6;
+}
 
-    opacity: 0.6;}
+/* ---------- Вход через Telegram ---------- */
+
+.telegramLoginBlock {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 22px;
+}
+
+/* ---------- Разделитель "или" ---------- */
+
+.authDivider {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 22px;
+    font-size: 12px;
+    opacity: 0.5;
+}
+
+.authDivider::before,
+.authDivider::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: rgba(120, 120, 120, 0.2);
+}
+
+.authDivider span {
+    white-space: nowrap;
+}
+
 /* ---------- Форма ---------- */
-.loginForm { display: flex; flex-direction: column;
-    gap: 17px;}
-.inputLabel { display: flex; flex-direction: column;
+
+.loginForm {
+    display: flex;
+    flex-direction: column;
+    gap: 17px;
+}
+
+.inputLabel {
+    display: flex;
+    flex-direction: column;
     gap: 8px;
-
     font-size: 13px;
-    font-weight: 600;}
-.loginInput { width: 100%;
+    font-weight: 600;
+}
+
+.loginInput {
     box-sizing: border-box;
-
+    width: 100%;
     padding: 15px 16px;
-
     border: 1.5px solid rgba(120, 120, 120, 0.16);
     border-radius: 14px;
-
     background: var(--background);
-
     color: var(--text);
-
     font-family: inherit;
     font-size: 15px;
-
     outline: none;
-
     transition:
         border-color 0.2s ease,
         box-shadow 0.2s ease,
-        transform 0.2s ease;}
-.loginInput::placeholder { opacity: 0.4; }
-.loginInput:focus { border-color: #cd305f;
-    box-shadow:
-        0 0 0 4px rgba(205, 48, 95, 0.09);
-
-    transform: translateY(-1px);}
-/* ---------- Кнопка ---------- */
-.enterButton { width: 100%;
-    margin-top: 6px;
-    padding: 15px 18px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    gap: 10px;
-
-    border: none;
-    border-radius: 14px;
-
-    background: #cd305f;
-    color: white;
-
-    font-family: inherit;
-    font-size: 15px;
-    font-weight: 700;
-
-    cursor: pointer;
-
-    box-shadow:
-        0 8px 22px rgba(205, 48, 95, 0.20);
-
-    transition:
-        transform 0.2s ease,
-        box-shadow 0.2s ease,
-        filter 0.2s ease;}
-.enterButton:hover { transform: translateY(-2px);
-    filter: brightness(1.04);
-
-    box-shadow:
-        0 12px 28px rgba(205, 48, 95, 0.27);}
-.enterButton:active { transform: translateY(0); }
-.buttonArrow { font-size: 20px; line-height: 0;
-    transition:
-        transform 0.25s ease;}
-.enterButton:hover .buttonArrow { transform: translateX(4px); }
-/* ---------- Регистрация ---------- */
-.registerHint { display: flex; justify-content: center; align-items: center; gap: 5px;
-    margin-top: 22px;
-
-    font-size: 13px;
-
-    opacity: 0.6;}
-.registerHint a { color: #cd305f;
-    font-weight: 700;
-
-    text-decoration: none;
-
-    transition: opacity 0.2s ease;}
-.registerHint a:hover { opacity: 0.7; }
-/* ---------- Ошибка ---------- */
-.toast { display: flex; align-items: center; gap: 12px;
-    margin-top: 22px;
-    padding: 12px 14px;
-
-    border-radius: 14px;
-
-    background: rgba(205, 48, 95, 0.08);}
-.toast .mascot { width: 45px; height: 45px;
-    object-fit: contain;}
-.toast .error { margin: 0;}
-
-.authPage .login {
-    background: #ffffff !important;
-
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
-
-    border: 1px solid rgba(128, 128, 128, 0.12);
-
-    box-shadow:
-        0 20px 60px rgba(0, 0, 0, 0.08);
+        transform 0.2s ease;
 }
 
-.authPage .login {
-    background: #ffffff !important;
-
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
-
-    border: 1px solid rgba(128, 128, 128, 0.12);
-
-    box-shadow:
-        0 20px 60px rgba(0, 0, 0, 0.08);
+.loginInput::placeholder {
+    opacity: 0.4;
 }
 
-[data-theme="dark"] .authPage .login {
-    background: #7f123332 !important;
-
-    border-color: rgba(210, 16, 97, 0.683);
-
-    box-shadow:
-        0 20px 60px rgba(42, 13, 13, 0.25);
+.loginInput:focus {
+    border-color: #cd305f;
+    box-shadow: 0 0 0 4px rgba(205, 48, 95, 0.09);
+    transform: translateY(-1px);
 }
+
+/* ---------- Чекбокс согласия ---------- */
 
 .checkboxLabel {
     display: flex;
     align-items: center;
     gap: 8px;
+    margin: 8px 0 16px;
     font-size: 0.9rem;
     cursor: pointer;
-    margin: 8px 0 16px;
 }
 
 .checkboxInput {
     cursor: pointer;
-    accent-color: var(--primary-color, #000); /* Адаптирует цвет галочки под стиль проекта */
+    accent-color: var(--primary-color, #000);
 }
 
 .checkboxLabel a {
     text-decoration: underline;
+}
+
+/* ---------- Кнопка ---------- */
+
+.enterButton {
+    width: 100%;
+    margin-top: 6px;
+    padding: 15px 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    border: none;
+    border-radius: 14px;
+    background: #cd305f;
+    color: white;
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 8px 22px rgba(205, 48, 95, 0.20);
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        filter 0.2s ease;
+}
+
+.enterButton:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.04);
+    box-shadow: 0 12px 28px rgba(205, 48, 95, 0.27);
+}
+
+.enterButton:active {
+    transform: translateY(0);
+}
+
+.buttonArrow {
+    font-size: 20px;
+    line-height: 0;
+    transition: transform 0.25s ease;
+}
+
+.enterButton:hover .buttonArrow {
+    transform: translateX(4px);
+}
+
+/* ---------- Регистрация ---------- */
+
+.registerHint {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    margin-top: 22px;
+    font-size: 13px;
+    opacity: 0.6;
+}
+
+.registerHint a {
+    color: #cd305f;
+    font-weight: 700;
+    text-decoration: none;
+    transition: opacity 0.2s ease;
+}
+
+.registerHint a:hover {
+    opacity: 0.7;
+}
+
+/* ---------- Ошибка ---------- */
+
+.toast {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 22px;
+    padding: 12px 14px;
+    border-radius: 14px;
+    background: rgba(205, 48, 95, 0.08);
+}
+
+.toast .mascot {
+    width: 45px;
+    height: 45px;
+    object-fit: contain;
+}
+
+.toast .error {
+    margin: 0;
 }

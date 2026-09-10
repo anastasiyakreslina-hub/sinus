@@ -62,13 +62,13 @@
             <a href="{{ url_for('tasks.tasks') }}">
                 <span>▦</span> Банк заданий
             </a>
-            <a href="{{ url_for('tasks.tests') }}" class="active">
+            <a href="{{ url_for('variants.tests') }}" class="active">
                 <span>✦</span> Варианты ЕГЭ
             </a>
             <a href="{{ url_for('tasks.mistakes') }}">
                 <span>↻</span> Работа над ошибками
             </a>
-            <a href="{{ url_for('tasks.statistics') }}">
+            <a href="{{ url_for('statistics.statistics') }}">
                 <span>⌁</span> Статистика
             </a>
             <a href="{{ url_for('auth.profile') }}">
@@ -123,7 +123,7 @@
 
                     <div class="variantsGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 15px;">
                         {% for variant in variants %}
-                            <a href="{{ url_for('tasks.view_variant', variant_id=variant['id']) }}" class="taskCard variantCardLink" style="text-decoration: none; display: flex; flex-direction: column; justify-content: space-between;">
+                            <a href="{{ url_for('variants.view_variant', variant_id=variant['id']) }}" class="taskCard variantCardLink" style="text-decoration: none; display: flex; flex-direction: column; justify-content: space-between;">
                                 <div>
                                     <div class="taskCardHeader">
                                         <div class="taskTags">
@@ -176,7 +176,7 @@
                     </div>
                 </div>
 
-                <form method="POST" action="{{ url_for('tasks.add_variant') }}" class="taskModalForm">
+                <form method="POST" action="{{ url_for('variants.add_variant') }}" class="taskModalForm">
                     <label>
                         Название варианта
                         <input type="text" name="name" placeholder="Например: Вариант 1 (Досрочный)" class="taskInput" required>

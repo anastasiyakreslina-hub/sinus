@@ -34,7 +34,7 @@
         <!-- ================= HEADER ================= -->
         <header class="tasksHeader">
             <div>
-                <a href="{{ url_for('tasks.tests') }}" class="lighttext">
+                <a href="{{ url_for('variants.tests') }}" class="lighttext">
                     ← Все варианты
                 </a>
 
@@ -55,9 +55,9 @@
         <!-- ========================================================= -->
         {% if var_tasks %}
             {% if variant %}
-                <form method="POST" action="{{ url_for('tasks.check_saved_variant', variant_id=variant['id']) }}" id="variantForm">
+                <form method="POST" action="{{ url_for('variants.check_saved_variant', variant_id=variant['id']) }}" id="variantForm">
             {% else %}
-                <form method="POST" action="{{ url_for('tasks.check_var') }}" id="variantForm">
+                <form method="POST" action="{{ url_for('variants.check_var') }}" id="variantForm">
             {% endif %}
 
                 <!-- ================= TASKS ================= -->
@@ -112,7 +112,7 @@
         <!-- DELETE VARIANT -->
         <!-- ========================================================= -->
         {% if session.get('role') == 'admin' and variant %}
-            <form method="POST" action="{{ url_for('tasks.delete_variant', variant_id=variant['id']) }}" onsubmit="return confirm('Удалить этот вариант?');" style="margin-top: 30px;">
+            <form method="POST" action="{{ url_for('variants.delete_variant', variant_id=variant['id']) }}" onsubmit="return confirm('Удалить этот вариант?');" style="margin-top: 30px;">
                 <button type="submit" class="buttons lightBox">
                     Удалить вариант
                 </button>

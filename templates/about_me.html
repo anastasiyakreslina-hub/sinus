@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Обо мне — Sinus</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/about.css') }}">
+  <script src="{{ url_for('static', filename='js/theme.js') }}" defer></script>
+</head>
+<body class="aboutPage">
+  <!-- =====================================================
+       BACKGROUND
+  ===================================================== -->
+  <div class="aboutBackground">
+    <div class="gridNoise"></div>
+    <span class="bgMath bgMath1">x² + y²</span>
+    <span class="bgMath bgMath2">∫ f(x)dx</span>
+    <span class="bgMath bgMath3">sin α</span>
+    <span class="bgMath bgMath4">√a²+b²</span>
+  </div>
+
+  <!-- =====================================================
+       CONTACTS MODAL
+  ===================================================== -->
+  <div id="contacts" class="aboutContacts" style="display:none;">
+    <button class="contactsClose" type="button" onclick="closeContacts()">×</button>
+    <div class="contactsModalContent">
+      <span class="contactsMiniLabel">SINUS · CONTACTS</span>
+      <h2>Остались вопросы?</h2>
+      <p>Напиши мне напрямую — отвечаю обычно в течение 1–2 дней.</p>
+      <div class="contactRows">
+        <div class="contactRow">
+          <span>✉</span>
+          <div>
+            <small>Почта</small>
+            <strong>anastasiyakreslina@gmail.com</strong>
+          </div>
+        </div>
+        <div class="contactRow">
+          <span>↗</span>
+          <div>
+            <small>Telegram</small>
+            <strong>@krazern</strong>
+          </div>
+        </div>
+      </div>
+      <div class="contactHint">Вопросы о платформе · предложения · ошибки · отзывы</div>
+    </div>
+  </div>
+
+  <!-- =====================================================
+       HERO
+  ===================================================== -->
+  <section class="aboutHero">
+    <div class="heroTopBar">
+      <a href="{{ url_for('main.home') }}" class="aboutLogo">sinus<span>.</span></a>
+    </div>
+
+    <div class="heroMain heroMainAligned">
+      <!-- 1. ФОТО / ВИЗУАЛ -->
+      <div class="heroVisual heroVisualElevated reveal delay-1">
+        <div class="heroOrb"></div>
+
+        <div class="mathCard mathCardInteractive cardRoot">
+          <span>✎</span>
+          <b>репетитор</b>
+        </div>
+        <div class="mathCard mathCardInteractive cardPi">
+          <span>&lt;/&gt;</span>
+          <b>разработчик</b>
+        </div>
+        <div class="mathCard mathCardInteractive cardSum">
+          <span>∑</span>
+          <b>всё одна</b>
+        </div>
+
+        <div class="heroMascotGlow"></div>
+        <img src="{{ url_for('static', filename='images/founder/founder.png') }}" class="heroMascot" alt="Анастасия — основательница Sinus">
+        
+      </div>
+
+      <!-- 2. ТЕКСТ -->
+      <div class="heroCopy reveal">
+        <div class="heroKicker">
+          <span class="kickerDot"></span>
+          ОБО МНЕ
+        </div>
+        <h1 class="heroTitle">
+          Привет, я Анастасия.<br>
+          <span>Sinus — мой проект.</span>
+        </h1>
+        <p class="heroDescription">
+          Я репетитор по математике и по совместительству — единственный разработчик
+          этой платформы. От идеи до кода, от дизайна до задач в банке — всё здесь
+          сделано одним человеком, который хорошо знает, как на самом деле готовятся
+          к экзамену.
+        </p>
+        <div class="heroActions">
+          <a href="{{ url_for('auth.register') }}" class="heroPrimaryButton">
+            <span>Попробовать Sinus</span>
+            <b>→</b>
+          </a>
+          <a href="#story" class="heroSecondaryButton">
+            Моя история
+            <span>↓</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =====================================================
+       ИСТОРИЯ
+  ===================================================== -->
+  <section class="howSection" id="story">
+    <div class="howHeading reveal">
+      <span class="sectionEyebrow">01 · КАК ВСЁ НАЧАЛОСЬ</span>
+      <h2>
+        От тетради ученика<br>
+        <span>до целой платформы.</span>
+      </h2>
+    </div>
+
+    <div class="process">
+      <div class="processLine"></div>
+      <article class="processStep reveal">
+        <div class="processCircle">01</div>
+        <div>
+          <span>РЕПЕТИТОРСТВО</span>
+          <h3>Годы один на один с учениками</h3>
+          <p>Я вижу, где именно ученики застревают: не в теории, а в том, что негде спокойно
+             потренироваться и понять, где именно ошибка.</p>
+        </div>
+      </article>
+
+      <article class="processStep reveal delay-1">
+        <div class="processCircle">02</div>
+        <div>
+          <span>ИДЕЯ</span>
+          <h3>Не хватало удобного инструмента</h3>
+          <p>Готовые сборники задач не показывали прогресс, не запоминали ошибки
+             и не подстраивались под ученика. Я решила, что сделаю это сама.</p>
+        </div>
+      </article>
+
+      <article class="processStep reveal delay-2">
+        <div class="processCircle">03</div>
+        <div>
+          <span>РАЗРАБОТКА</span>
+          <h3>Учила код так же, как учу математику</h3>
+          <p>Без команды, без готовых шаблонов — шаг за шагом: база задач, проверка
+             ответов, статистика, варианты. Всё, что нужно для реальной подготовки.</p>
+        </div>
+      </article>
+
+      <article class="processStep reveal delay-3">
+        <div class="processCircle processFinal">✓</div>
+        <div>
+          <span>SINUS СЕГОДНЯ</span>
+          <h3>Платформа, которой я сама бы пользовалась</h3>
+          <p>Каждая функция здесь появилась потому, что она была нужна реальному
+             ученику на реальном занятии.</p>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- =====================================================
+       ПОЧЕМУ Я, А НЕ КОМАНДА
+  ===================================================== -->
+  <section class="forWhoModern">
+    <div class="forWhoVisual reveal">
+      <div class="forWhoOrb"></div>
+      <img src="{{ url_for('static', filename='images/founder/founder_working.png') }}" alt="Анастасия за работой над Sinus">
+      <div class="floatingBadge badgeOne">
+        <span>✓</span> сама пишу задачи
+      </div>
+      <div class="floatingBadge badgeTwo">
+        <span>↗</span> сама пишу код
+      </div>
+      <div class="floatingBadge badgeThree">
+        <span>+</span> сама учу
+      </div>
+    </div>
+
+    <div class="forWhoContentModern reveal delay-1">
+      <span class="sectionEyebrow">02 · ПОЧЕМУ ОДИН ЧЕЛОВЕК</span>
+      <h2>
+        Не команда.<br>
+        <span>Просто я — от начала до конца.</span>
+      </h2>
+      <p>
+        Я веду Sinus полностью самостоятельно: преподаю математику, придумываю
+        и решаю задачи для банка, проектирую платформу и сама пишу для неё код.
+        Это значит, что между «ученику это нужно» и «это появилось на сайте»
+        нет ни одного лишнего человека.
+      </p>
+      <div class="forWhoPoints">
+        <div>
+          <span>01</span>
+          <p>Каждая задача проверена мной как репетитором</p>
+        </div>
+        <div>
+          <span>02</span>
+          <p>Каждая функция сделана мной как разработчиком</p>
+        </div>
+        <div>
+          <span>03</span>
+          <p>Обратная связь доходит до меня напрямую, без посредников</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =====================================================
+       ЦИФРЫ
+  ===================================================== -->
+  <section class="heroFeatures reveal delay-2">
+    <article class="featureCard">
+      <div class="featureCardTop">
+        <span class="featureNumber">03</span>
+        <span class="featureArrow">↗</span>
+      </div>
+      <div class="featureIcon">✎</div>
+      <h3>Опыт репетиторства</h3>
+      <p>Я работаю с учениками очно и онлайн, готовя их к экзаменам по математике.
+         Всё, что попадает в банк задач Sinus, сначала проверяется на реальных занятиях.</p>
+      <div class="statsPreview">
+        <div class="statsCircle">
+          <span>1</span>
+          <small>РАЗРАБОТЧИК</small>
+        </div>
+        <div class="statsBars">
+          <div><span style="width:100%"></span></div>
+          <div><span style="width:100%"></span></div>
+          <div><span style="width:100%"></span></div>
+          <div><span style="width:100%"></span></div>
+        </div>
+      </div>
+    </article>
+  </section>
+
+  <!-- =====================================================
+       FINAL CTA
+  ===================================================== -->
+  <section class="finalCta">
+    <div class="ctaNoise"></div>
+    <div class="ctaMath ctaMathOne">x²</div>
+    <div class="ctaMath ctaMathTwo">π</div>
+    <div class="ctaMath ctaMathThree">∫</div>
+
+    <div class="finalCtaContent reveal">
+      <span class="sectionEyebrow">04 · SINUS</span>
+      <h2>
+        Присоединяйся<br>
+        <span>к подготовке с Sinus.</span>
+      </h2>
+      <p>Создай аккаунт — и занимайся так, как я готовила бы тебя лично.</p>
+      <a href="{{ url_for('auth.register') }}" class="finalCtaButton">
+        <span>Создать аккаунт</span>
+        <b>→</b>
+      </a>
+    </div>
+
+    <img src="{{ url_for('static', filename='images/mascot/lyingMascot.png') }}" class="finalMascot" alt="Sinus">
+  </section>
+
+  <!-- =====================================================
+       FOOTER
+  ===================================================== -->
+  <footer class="homeFooter">
+    <div class="footerContainer">
+      <div class="footerBrand">
+        <a href="{{ url_for('main.home') }}" class="footerLogo">sinus<span>.</span></a>
+        <p class="footerDescription">Платформа для эффективной подготовки к экзаменам по математике.</p>
+        <span class="footerCopyright">© 2026 Sinus. Все права защищены.</span>
+      </div>
+
+      <div class="footerNavGrid">
+        <div class="footerColumn">
+          <span class="footerColumnTitle">Проект</span>
+          <a href="https://t.me/karznl" target="_blank" rel="noopener">Телеграм-канал</a>
+          <a href="{{ url_for('main.about') }}">О проекте</a>
+        </div>
+
+        <div class="footerColumn">
+          <span class="footerColumnTitle">Помощь</span>
+          <a href="/">FAQ</a>
+          <button type="button" class="footerLinkBtn" onclick="openContacts()">Контакты</button>
+          <a href="/">Поддержка</a>
+        </div>
+
+        <div class="footerColumn">
+          <span class="footerColumnTitle">Документы</span>
+          <a href="{{ url_for('main.privacypolicy') }}">Конфиденциальность</a>
+          <a href="{{ url_for('main.offer') }}">Публичная оферта</a>
+          <a href="{{ url_for('main.refund') }}">Правила возврата</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="{{ url_for('static', filename='js/about.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/ui.js') }}"></script>
+</body>
+</html>

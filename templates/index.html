@@ -65,7 +65,7 @@
        HEADER
   ===================================================== -->
   <header class="homeHeader">
-    <a href="{{ url_for('main.error') }}" class="homeLogo">
+    <a href="{{ url_for('main.about_me') }}" class="homeLogo">
       sinus<span>.</span>
     </a>
     <nav class="homeNav">
@@ -177,7 +177,7 @@
             <i>→</i>
           </a>
 
-          <a href="{{ url_for('tasks.tests') }}">
+          <a href="{{ url_for('variants.tests') }}">
             <span>✦</span>
             <b>Варианты</b>
             <small>ЕГЭ</small>
@@ -210,13 +210,13 @@
             <h2>Достижения</h2>
           </div>
 
-          <a href="{{ url_for('tasks.statistics') }}" class="statsMore">
+          <a href="{{ url_for('statistics.statistics') }}" class="statsMore">
             подробнее
           </a>
         </div>
 
         <div class="statsGrid">
-          <a href="{{ url_for('tasks.statistics') }}" class="statItem">
+          <a href="{{ url_for('statistics.statistics') }}" class="statItem">
             <strong>{{ streak }}</strong>
             <span>
               {% if streak % 10 == 1 and streak % 100 != 11 %}
@@ -229,17 +229,17 @@
             </span>
           </a>
 
-          <a href="{{ url_for('tasks.statistics') }}" class="statItem">
+          <a href="{{ url_for('statistics.statistics') }}" class="statItem">
             <strong>{{ solved_count }}</strong>
             <span>задач решено</span>
           </a>
 
-          <a href="{{ url_for('tasks.statistics') }}" class="statItem">
+          <a href="{{ url_for('statistics.statistics') }}" class="statItem">
             <strong>{{ correct }}</strong>
             <span>правильных</span>
           </a>
 
-          <a href="{{ url_for('tasks.statistics') }}" class="statItem accentStat">
+          <a href="{{ url_for('statistics.statistics') }}" class="statItem accentStat">
             <strong>{{ percent }}%</strong>
             <span>успех</span>
           </a>

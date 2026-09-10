@@ -895,6 +895,8 @@ from routes.main import main_bp
 from routes.payment import payment_bp
 from routes.tasks import tasks_bp
 from routes.theory import theory_bp
+from routes.variants import variants_bp
+from routes.statistics import statistics_bp
 
 
 def create_app() -> Flask:
@@ -937,6 +939,8 @@ def create_app() -> Flask:
     app.register_blueprint(tasks_bp)
     app.register_blueprint(theory_bp)
     app.register_blueprint(payment_bp)
+    app.register_blueprint(variants_bp)
+    app.register_blueprint(statistics_bp)
 
     return app
 
