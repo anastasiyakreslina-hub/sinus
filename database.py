@@ -155,6 +155,10 @@ def init_db():
             ALTER TABLE variant_tasks
             ADD COLUMN IF NOT EXISTS position INTEGER DEFAULT 0;
         ''')
+        cur.execute('''
+            ALTER TABLE users
+            ADD COLUMN IF NOT EXISTS telegram_id BIGINT UNIQUE;
+        ''')
 
         conn.commit()
     finally:
