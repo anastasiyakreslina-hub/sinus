@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Админ-панель — Sinus</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="{{ url_for('static', filename='js/theme.js') }}" defer></script>
+    <style>
+        /* Отключает CSS-анимации и плавные переходы */
+        *, *::before, *::after {
+            transition: none !important;
+        }
+
+        /* Дополнительные вспомогательные стили для таблицы админки */
+        .adminTable {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        .adminTable th, .adminTable td {
+            padding: 12px 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .adminTable th {
+            font-weight: 600;
+            color: var(--text-muted, #888);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .badgeSuccess {
+            background: rgba(46, 204, 113, 0.15);
+            color: #2ecc71;
+        }
+
+        .badgeMuted {
+            background: rgba(255, 255, 255, 0.1);
+            color: #aaa;
+        }
+
+        .badgeWarning {
+            background: rgba(241, 196, 15, 0.15);
+            color: #f1c40f;
+        }
+    </style>
+</head>
+<body class="tasksPage statisticsPage">
+    <!-- ================= МОДАЛЬНОЕ ОКНО КОНТАКТОВ ================= -->
+    <div id="contacts" class="modal contactsModal" style="display: none;">
+        <button class="closeModal" onclick="closeContacts()">&times;</button>
+        <div class="contactsHeader">
+            <span class="contactsEmoji">♡</span>
+            <div>
+                <h2>Связаться с нами</h2>
+                <p>Если нашли ошибку или хотите предложить улучшение</p>
+            </div>
+        </div>
+        <div class="contactsList">
+            <div class="contactItem">
+                <span>✉</span>
+                <div>
+                    <small>Почта</small>
+                    <p>anastasiyakreslina@gmail.com</p>
+                </div>
+            </div>
+            <div class="contactItem">
+                <span>↗</span>
+                <div>
+                    <small>Telegram</small>
+                    <p>@krazern</p>
+                </div>
+            </div>
+            <div class="contactItem">
+                <span>◷</span>
+                <div>
+                    <small>Время ответа</small>
+                    <p>обычно 1–2 дня</p>
+                </div>
+            </div>
+        </div>
+        <p class="contactsNote">
+            Отвечаю на вопросы о платформе, предложения, сообщения об ошибках и отзывы.
+        </p>
+    </div>
+
+    <!-- ================= SIDEBAR ================= -->
+    <aside class="tasksSidebar" id="sidebar">
+        <a href="{{ url_for('main.home') }}" class="sidebarLogo">
+            sinus<span>.</span>
+        </a>
+        <nav class="listThings">
+            <a href="{{ url_for('main.home') }}">
+                <span>⌂</span> Главная
+            </a>
+            <a href="{{ url_for('tasks.tasks') }}">
+                <span>▦</span> Банк заданий
+            </a>
+            <a href="{{ url_for('variants.tests') }}">
+                <span>✦</span> Варианты ЕГЭ
+            </a>
+            <a href="{{ url_for('tasks.mistakes') }}">
+                <span>↻</span> Работа над ошибками
+            </a>
+            <a href="{{ url_for('statistics.statistics') }}">
+                <span>⌁</span> Статистика
+            </a>
+            <a href="{{ url_for('auth.profile') }}">
+                <span>👤</span> Профиль
+            </a>
+            <a href="{{ url_for('admin.dashboard') }}" class="active">
+                <span>⚡</span> Админ-панель
+            </a>
+        </nav>
+        <div class="sidebarBottom">
+            <a href="{{ url_for('auth.logout') }}" class="logoutLink">
+                <span>↪</span> Выйти
+            </a>
+        </div>
+    </aside>
+
+    <!-- ================= MAIN ================= -->
+    <main class="statisticsMain">
+        <!-- ================= HEADER ================= -->
+        <header class="statisticsHeader">
+            <div>
+                <p class="profileEyebrow">SINUS / ADMIN PANEL</p>
+                <h1>Обзор системы</h1>
+                <p class="profileSubtitle">
+                    Метрики пользователей, активности, подписок и контента платформы.
+                </p>
+            </div>
+        </header>
+
+        <!-- ================= OVERVIEW (ПОЛЬЗОВАТЕЛИ) ================= -->
+        <section class="statisticsOverview">
+            <div class="statisticCard">
+                <span class="statisticIcon">👥</span>
+                <div>
+                    <small>ВСЕГО ЮЗЕРОВ</small>
+                    <strong>{{ total_users }}</strong>
+                    <span>зарегистрировано</span>
+                </div>
+            </div>
+
+            <div class="statisticCard accent">
+                <span class="statisticIcon">⚡</span>
+                <div>
+                    <small>АКТИВНЫЕ (30Д)</small>
+                    <strong>{{ active_users }}</strong>
+                    <span>решают задачи</span>
+                </div>
+            </div>
+
+            <div class="statisticCard accent">
+                <span class="statisticIcon">💎</span>
+                <div>
+                    <small>ПОДПИСКИ</small>
+                    <strong>{{ active_subscriptions }}</strong>
+                    <span>активных PRO</span>
+                </div>
+            </div>
+
+            <div class="statisticCard">
+                <span class="statisticIcon">🆕</span>
+                <div>
+                    <small> НОВЫЕ СЕГОДНЯ</small>
+                    <strong>{{ new_users_today }}</strong>
+                    <span>регистраций</span>
+                </div>
+            </div>
+
+            <div class="statisticCard">
+                <span class="statisticIcon">📚</span>
+                <div>
+                    <small>ЗАДАЧ В БАНКЕ</small>
+                    <strong>{{ total_tasks }}</strong>
+                    <span>заданий</span>
+                </div>
+            </div>
+
+            <div class="statisticCard">
+                <span class="statisticIcon">📝</span>
+                <div>
+                    <small>ВАРИАНТОВ</small>
+                    <strong>{{ total_variants }}</strong>
+                    <span>создано</span>
+                </div>
+            </div>
+
+            <div class="statisticCard">
+                <span class="statisticIcon">✅</span>
+                <div>
+                    <small>ВСЕГО РЕШЕНИЙ</small>
+                    <strong>{{ total_solutions }}</strong>
+                    <span>ответов отправлено</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= CHARTS ================= -->
+        <section class="statisticsGrid">
+            <!-- График регистраций -->
+            <div class="statisticsCard">
+                <div class="statisticsCardHeader">
+                    <div>
+                        <small>ДИНАМИКА</small>
+                        <h2>Новые пользователи</h2>
+                        <p>Регистрации за последние 30 дней</p>
+                    </div>
+                    <span class="statisticsCardIcon">📈</span>
+                </div>
+                <div class="chartWrapper">
+                    <canvas id="registrationsChart"></canvas>
+                </div>
+            </div>
+
+            <!-- График активных решений -->
+            <div class="statisticsCard">
+                <div class="statisticsCardHeader">
+                    <div>
+                        <small>АКТИВНОСТЬ</small>
+                        <h2>Решено задач по дням</h2>
+                        <p>Нагрузка на банк заданий</p>
+                    </div>
+                    <span class="statisticsCardIcon">🔥</span>
+                </div>
+                <div class="chartWrapper">
+                    <canvas id="dailySolutionsChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= ТАБЛИЦА ПОСЛЕДНИХ ПОЛЬЗОВАТЕЛЕЙ ================= -->
+        <section class="variantsSection">
+            <div class="statisticsCardHeader">
+                <div>
+                    <small>ПОЛЬЗОВАТЕЛИ</small>
+                    <h2>Последние регистрации</h2>
+                    <p>Информация о недавно зарегистрированных аккаунтах</p>
+                </div>
+            </div>
+
+            <div class="variantsTableWrapper" style="overflow-x: auto;">
+                <table class="adminTable">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Пользователь</th>
+                            <th>Email</th>
+                            <th>Дата регистрации</th>
+                            <th>Решено задач</th>
+                            <th>Статус подписки</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for user in recent_users %}
+                        <tr>
+                            <td><strong>#{{ user.id }}</strong></td>
+                            <td>{{ user.username }}</td>
+                            <td>{{ user.email }}</td>
+                            <td><small>{{ user.created_at }}</small></td>
+                            <td><strong>{{ user.solved_count }}</strong></td>
+                            <td>
+                                {% if user.has_subscription %}
+                                    <span class="badge badgeSuccess">PRO</span>
+                                {% else %}
+                                    <span class="badge badgeMuted">Basic</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="6" style="text-align: center; color: #888;">Нет данных о пользователях</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <!-- ================= FOOTER ================= -->
+    <footer class="homeFooter">
+        <div class="footerContainer">
+            <div class="footerBrand">
+                <a href="{{ url_for('main.home') if 'main.home' in request.endpoint else '/' }}" class="footerLogo">
+                    sinus<span>.</span>
+                </a>
+                <p class="footerDescription">
+                    Платформа для эффективной подготовки к экзаменам по математике.
+                </p>
+                <span class="footerCopyright">© 2026 Sinus. Все права защищены.</span>
+            </div>
+
+            <div class="footerNavGrid">
+                <div class="footerColumn">
+                    <span class="footerColumnTitle">Проект</span>
+                    <a href="https://t.me/karznl" target="_blank" rel="noopener">Телеграм-канал</a>
+                    <a href="{{ url_for('main.about') if 'main.about' in request.endpoint else '/' }}">О проекте</a>
+                </div>
+
+                <div class="footerColumn">
+                    <span class="footerColumnTitle">Помощь</span>
+                    <a href="/">FAQ</a>
+                    <button type="button" class="footerLinkBtn" onclick="openContacts()">Контакты</button>
+                    <a href="/">Поддержка</a>
+                </div>
+
+                <div class="footerColumn">
+                    <span class="footerColumnTitle">Документы</span>
+                    <a href="{{ url_for('main.privacypolicy') }}">Конфиденциальность</a>
+                    <a href="{{ url_for('main.offer') }}">Публичная оферта</a>
+                    <a href="{{ url_for('main.refund') }}">Правила возврата</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ================= GLOBAL DATA FOR CHARTS ================= -->
+    <script>
+        window.regDates = {{ reg_dates | tojson }};
+        window.regCounts = {{ reg_counts | tojson }};
+        window.solutionsDates = {{ solutions_dates | tojson }};
+        window.solutionsCounts = {{ solutions_counts | tojson }};
+    </script>
+
+    <!-- ================= EXTERNAL SCRIPTS ================= -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="{{ url_for('static', filename='js/ui.js') }}"></script>
+    <script>
+        // Инициализация графиков для админки
+        document.addEventListener('DOMContentLoaded', () => {
+            // График регистраций
+            const regCtx = document.getElementById('registrationsChart')?.getContext('2d');
+            if (regCtx && window.regDates) {
+                new Chart(regCtx, {
+                    type: 'line',
+                    data: {
+                        labels: window.regDates,
+                        datasets: [{
+                            label: 'Регистрации',
+                            data: window.regCounts,
+                            borderColor: '#8e44ad',
+                            backgroundColor: 'rgba(142, 68, 173, 0.1)',
+                            fill: true,
+                            tension: 0.3
+                        }]
+                    },
+                    options: { responsive: true, maintainAspectRatio: false }
+                });
+            }
+
+            // График решений
+            const solCtx = document.getElementById('dailySolutionsChart')?.getContext('2d');
+            if (solCtx && window.solutionsDates) {
+                new Chart(solCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: window.solutionsDates,
+                        datasets: [{
+                            label: 'Решено задач',
+                            data: window.solutionsCounts,
+                            backgroundColor: '#3498db'
+                        }]
+                    },
+                    options: { responsive: true, maintainAspectRatio: false }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

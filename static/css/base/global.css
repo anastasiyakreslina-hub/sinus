@@ -1,9 +1,12 @@
 * {
+    box-sizing: border-box;
     padding: 0;
+    margin: 0;
 }
 
 html, body {
     inset: 0;
+    min-height: 100vh;
     background:
         radial-gradient(
             circle at center,
@@ -16,38 +19,41 @@ html, body {
             var(--bg-main-2),
             var(--bg-main-3)
         );
-    color: white;
-    margin: 0;
     background-color: var(--bg-solid);
+    color: var(--text-color);
+    transition: background-color 0.4s ease, color 0.4s ease;
 }
 
 body {
     font-family: 'MyFont', sans-serif;
+    position: relative;
 }
 
+/* ФОНОВЫЙ УЗОР (Динамический для тем) */
 body::before {
     content: "";
     position: fixed;
     inset: 0;
-    background-image: radial-gradient(var(--grid-dots) 1px, transparent 1px);
-    background-size: 20px 25px;
-    opacity: 0.1;
+    background-image: var(--bg-pattern);
+    background-size: var(--bg-pattern-size);
+    opacity: var(--bg-pattern-opacity);
+    pointer-events: none; /* Защита от блокировки кликов */
+    transition: opacity 0.4s ease;
 }
 
 a {
     text-decoration: none;
-    /* color: white; */
+    color: var(--links-color);
     position: relative;
-    z-index: 9999;
 }
 
 .lighttext {
-    transition: 0.3s;
+    transition: color 0.3s ease, text-shadow 0.3s ease;
 }
 
 .lighttext:hover {
-    color: var(--glow-color);
-    text-shadow: 0 0 20px rgb(205, 10, 108);
+    color: var(--text-accent);
+    text-shadow: 0 0 15px var(--glow-color);
 }
 
 .lightBox {
@@ -62,7 +68,7 @@ a {
     box-shadow: 0 0 20px var(--glow-color);
     opacity: 0;
     transition: opacity 0.3s ease-in-out;
-    pointer-events: none; 
+    pointer-events: none;
     z-index: 1;
 }
 
@@ -89,7 +95,7 @@ img {
 
 .mascot {
     width: 50px;
-    margin-bottom:15px;
+    margin-bottom: 15px;
     animation: mascotFloat 3s ease-in-out infinite;
 }
 

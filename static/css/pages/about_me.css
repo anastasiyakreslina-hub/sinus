@@ -1,0 +1,542 @@
+/* =====================================================
+   GLOBAL & VARIABLES (NEON PINK EDITION)
+===================================================== */
+:root {
+  --accent-purple: #ff007f; /* Ярко-розовый неон */
+  --accent-cyan: #ff2a85;   /* Неоново-малиновый */
+  --accent-blue: #ff66b2;   /* Нежно-розовый неон */
+  --neon-glow: rgba(255, 0, 127, 0.4);
+  --glass-bg: rgba(255, 0, 127, 0.03);
+  --glass-border: rgba(255, 0, 127, 0.15);
+  --glass-hover: rgba(255, 0, 127, 0.08);
+}
+
+body.aboutPage {
+  background-color: #0d060a;
+  color: #f0f0f5;
+  overflow-x: hidden;
+  position: relative;
+  /* font-family убран — шрифт полностью наследуется из твоего основного style.css */
+}
+
+/* Glassmorphism Utility */
+.glassCard {
+  background: var(--glass-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--glass-border);
+  border-radius: 24px;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5), inset 0 0 15px rgba(255, 0, 127, 0.05);
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.glassCard:hover {
+  border-color: rgba(255, 0, 127, 0.4);
+  background: var(--glass-hover);
+  box-shadow: 0 8px 32px 0 rgba(255, 0, 127, 0.2), inset 0 0 20px rgba(255, 0, 127, 0.1);
+}
+
+.gradientText {
+  background: linear-gradient(135deg, #ff66b2, #ff007f, #ff0055);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 12px rgba(255, 0, 127, 0.3));
+}
+
+/* =====================================================
+   BACKGROUND ANIMATED ORBS
+===================================================== */
+.aboutBackground {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.glowOrb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(130px);
+  opacity: 0.4;
+}
+
+.orb1 {
+  width: 500px;
+  height: 500px;
+  background: #ff007f;
+  top: -100px;
+  right: -50px;
+}
+
+.orb2 {
+  width: 600px;
+  height: 600px;
+  background: #ff0055;
+  bottom: -150px;
+  left: -100px;
+}
+
+.bgMath {
+  position: absolute;
+  color: rgba(255, 0, 127, 0.05);
+  font-weight: bold;
+  user-select: none;
+}
+.bgMath1 { top: 15%; left: 10%; font-size: 3rem; }
+.bgMath2 { top: 40%; right: 12%; font-size: 4rem; }
+.bgMath3 { bottom: 25%; left: 15%; font-size: 3.5rem; }
+.bgMath4 { top: 70%; right: 25%; font-size: 2.5rem; }
+
+/* =====================================================
+   HERO SECTION
+===================================================== */
+.aboutHero {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 24px 80px;
+}
+
+.heroTopBar {
+  margin-bottom: 60px;
+}
+
+.aboutLogo {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #fff;
+  text-decoration: none;
+  letter-spacing: -1px;
+}
+.aboutLogo span { 
+  color: #ff007f;
+  text-shadow: 0 0 10px #ff007f;
+}
+
+.heroMainAligned {
+  display: grid;
+  grid-template-columns: 1fr 1.1fr;
+  gap: 60px;
+  align-items: center;
+}
+
+/* Visual Side */
+.heroVisual {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.heroMascotGlow {
+  position: absolute;
+  width: 320px;
+  height: 320px;
+  background: radial-gradient(circle, #ff007f 0%, transparent 70%);
+  filter: blur(60px);
+  opacity: 0.7;
+}
+
+.imageFrame {
+  position: relative;
+  border-radius: 30px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 0, 127, 0.3);
+  box-shadow: 0 0 30px rgba(255, 0, 127, 0.2);
+}
+
+.heroMascot {
+  width: 100%;
+  max-width: 380px;
+  height: auto;
+  display: block;
+  filter: drop-shadow(0 20px 30px rgba(0,0,0,0.7));
+  transition: transform 0.5s ease;
+}
+
+.heroVisual:hover .heroMascot {
+  transform: scale(1.03);
+}
+
+/* Floating Badges */
+.mathCard {
+  position: absolute;
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  z-index: 2;
+  font-size: 0.9rem;
+}
+.cardIcon { font-size: 1.2rem; color: #ff3399; }
+
+.cardRoot { top: 10%; left: -10px; }
+.cardPi { bottom: 15%; right: -10px; }
+.cardSum { top: 50%; left: -30px; }
+
+/* Copy Side */
+.heroKicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.85rem;
+  letter-spacing: 2px;
+  color: #ff3399;
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+.kickerDot {
+  width: 8px;
+  height: 8px;
+  background: #ff007f;
+  border-radius: 50%;
+  box-shadow: 0 0 10px #ff007f;
+}
+
+.heroTitle {
+  font-size: 3.2rem;
+  line-height: 1.15;
+  font-weight: 800;
+  margin-bottom: 24px;
+}
+
+.heroDescription {
+  font-size: 1.15rem;
+  line-height: 1.6;
+  color: #b3a0ac;
+  margin-bottom: 40px;
+}
+
+.heroActions {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.heroPrimaryButton {
+  background: linear-gradient(135deg, #ff007f, #ff3399);
+  color: #fff;
+  padding: 16px 32px;
+  border-radius: 50px;
+  font-weight: 700;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  box-shadow: 0 0 25px rgba(255, 0, 127, 0.5);
+  transition: all 0.3s ease;
+}
+.heroPrimaryButton:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 0 35px rgba(255, 0, 127, 0.8);
+}
+
+.heroSecondaryButton {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  opacity: 0.8;
+  transition: opacity 0.3s ease;
+}
+.heroSecondaryButton:hover { 
+  opacity: 1; 
+  color: #ff66b2;
+}
+
+/* =====================================================
+   PROCESS & STORY SECTION
+===================================================== */
+.howSection {
+  max-width: 1200px;
+  margin: 100px auto;
+  padding: 0 24px;
+}
+
+.sectionEyebrow {
+  letter-spacing: 2px;
+  font-size: 0.85rem;
+  color: #ff007f;
+  font-weight: 700;
+  display: block;
+  margin-bottom: 12px;
+  text-shadow: 0 0 8px rgba(255, 0, 127, 0.3);
+}
+
+.howHeading h2 {
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin-bottom: 48px;
+}
+
+.processGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 24px;
+}
+
+.processCard {
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+}
+
+.stepHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.processCircle {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: rgba(255, 0, 127, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  color: #ff3399;
+  border: 1px solid rgba(255, 0, 127, 0.3);
+  box-shadow: 0 0 10px rgba(255, 0, 127, 0.2);
+}
+
+.stepBadge {
+  font-size: 0.75rem;
+  letter-spacing: 1px;
+  color: #a3708a;
+  font-weight: 700;
+}
+
+.processCard h3 {
+  font-size: 1.25rem;
+  margin-bottom: 12px;
+}
+
+.processCard p {
+  color: #a08c97;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.accentCard {
+  border-color: rgba(255, 0, 127, 0.5);
+  box-shadow: 0 0 25px rgba(255, 0, 127, 0.15);
+}
+
+/* =====================================================
+   FOR WHO MODERN SECTION
+===================================================== */
+.forWhoModern {
+  max-width: 1200px;
+  margin: 120px auto;
+  padding: 0 24px;
+  display: grid;
+  grid-template-columns: 1fr 1.1fr;
+  gap: 60px;
+  align-items: center;
+}
+
+.founderPhotoWrapper {
+  padding: 12px;
+  position: relative;
+  border-radius: 32px;
+}
+.founderPhotoWrapper img {
+  width: 100%;
+  border-radius: 24px;
+  display: block;
+}
+
+.featureList {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 32px;
+}
+
+.featureItem {
+  padding: 20px 24px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.featureNum {
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: #ff007f;
+  text-shadow: 0 0 8px rgba(255, 0, 127, 0.4);
+}
+
+/* Floating badges for Who section */
+.floatingBadge {
+  position: absolute;
+  padding: 10px 18px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+.badgeOne { top: 20px; right: -20px; }
+.badgeTwo { bottom: 40px; left: -20px; }
+.badgeThree { bottom: -10px; right: 20px; }
+
+/* =====================================================
+   STATS & FINAL CTA
+===================================================== */
+.statsSection {
+  max-width: 1200px;
+  margin: 80px auto;
+  padding: 0 24px;
+}
+
+
+
+
+
+.statNumber {
+  display: block;
+  font-size: 3.5rem;
+  font-weight: 900;
+  background: linear-gradient(135deg, #ffffff, #ff66b2);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 8px;
+  filter: drop-shadow(0 0 10px rgba(255, 0, 127, 0.3));
+}
+
+.statLabel {
+  color: #a08c97;
+  font-size: 0.95rem;
+  letter-spacing: 1px;
+}
+
+.finalCta {
+  max-width: 1200px;
+  margin: 100px auto 120px;
+  padding: 80px 40px;
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+  border-color: rgba(255, 0, 127, 0.3);
+}
+
+.ctaGlow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(255, 0, 127, 0.25) 0%, transparent 70%);
+  filter: blur(50px);
+  pointer-events: none;
+}
+
+.ctaContent h2 {
+  font-size: 3rem;
+  font-weight: 800;
+  margin-bottom: 16px;
+}
+
+.ctaContent p {
+  color: #b3a0ac;
+  margin-bottom: 32px;
+  font-size: 1.1rem;
+}
+
+.finalMascot {
+  position: absolute;
+  bottom: -20px;
+  right: 20px;
+  width: 220px;
+  opacity: 0.8;
+  pointer-events: none;
+}
+
+/* =====================================================
+   CONTACTS MODAL
+===================================================== */
+.aboutContacts {
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.contactsOverlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(13, 6, 10, 0.85);
+  backdrop-filter: blur(8px);
+}
+
+.contactsModalContent {
+  position: relative;
+  width: 90%;
+  max-width: 500px;
+  padding: 40px;
+  z-index: 2;
+  border-color: rgba(255, 0, 127, 0.4);
+}
+
+.contactsClose {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 1.8rem;
+  cursor: pointer;
+}
+
+.contactRows {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin: 24px 0;
+}
+
+.contactRow {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px;
+  background: rgba(255, 0, 127, 0.05);
+  border-radius: 12px;
+  text-decoration: none;
+  color: #fff;
+  border: 1px solid rgba(255, 0, 127, 0.2);
+  transition: all 0.3s ease;
+}
+.contactRow:hover {
+  background: rgba(255, 0, 127, 0.15);
+  border-color: rgba(255, 0, 127, 0.5);
+}
+
+.contactIcon {
+  font-size: 1.5rem;
+  color: #ff3399;
+}
+
+/* =====================================================
+   RESPONSIVE DESIGN
+===================================================== */
+@media (max-width: 992px) {
+  .heroMainAligned, .forWhoModern {
+    grid-template-columns: 1fr;
+    gap: 40px;
+    text-align: center;
+  }
+  .heroTitle { font-size: 2.5rem; }
+  .heroActions { justify-content: center; }
+  .finalMascot { display: none; }
+}

@@ -24,6 +24,7 @@
 @import url('pages/stats.css');
 @import url('pages/mistakes.css');
 @import url('pages/tests.css');
+@import url('pages/about_me.css');
 
 /* Адаптивность (подключаем последним) */
 @import url('responsive.css');

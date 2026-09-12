@@ -53,6 +53,12 @@
                 <span>👤</span>
                 Профиль
             </a>
+            {% if session.get('role') == 'admin' %}
+                <a href="{{ url_for('admin.dashboard') }}" class="active">
+                    <span>⚡</span>
+                    Админ-панель
+                </a>
+            {% endif %}
         </nav>
 
         <div class="sidebarBottom">

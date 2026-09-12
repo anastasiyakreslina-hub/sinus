@@ -1,14 +1,17 @@
 /* ==========================================
-   1. ТЁМНАЯ ТЕМА (По умолчанию)
+   1. ТЁМНАЯ ТЕМА (По умолчанию - кружочки)
    ========================================== */
 :root {
-    /* Фоновые цвета сайта */
+    /* Градиентные пятна на фоне */
     --bg-main-1: #4409253c;
     --bg-main-2: #440925;
     --bg-main-3: #0f1117;
     --bg-solid: #000000;
-    --grid-dots:#ffffff;
-    --background-color:#00000051;
+
+    /* Фоновый узор — Точки */
+    --bg-pattern: radial-gradient(#ffffff 1px, transparent 1px);
+    --bg-pattern-size: 20px 25px;
+    --bg-pattern-opacity: 0.1;
 
     /* Карточки, модальные окна, профиль */
     --card-bg: rgba(0, 0, 0, 0.32);
@@ -16,15 +19,16 @@
     --card-shadow: rgba(0, 0, 0, 0.4);
 
     /* Текст и свечение */
+    --text-main: #ffffff;
     --text-color: #ffffff;
     --text-secondary: #9b6881;
     --text-accent: #d70668;
     --text-hover: rgb(215, 173, 195);
     --glow-color: rgb(205, 10, 108);
-    --heading-color: #ffffff42;
+    --heading-color: rgba(255, 255, 255, 0.7);
     --links-color: #ffffff;
 
-    --time-color:#5c394a;
+    --time-color: #5c394a;
 
     /* Кнопки, формы, сайдбар */
     --btn-bg: #75234551;
@@ -33,53 +37,57 @@
     --sidebar-bg: #000000;
     --sidebar-text: #ffffff;
 
-    --task-text: white;
+    --task-text: #ffffff;
 
-    --button-color:#158113;
-    --button-bg:#1581137b;
+    --button-color: #158113;
+    --button-bg: #1581137b;
 
-    --chart-bg:#ff1b7e6b;;
+    --chart-bg: #ff1b7e6b;
 }
 
 /* ==========================================
-   2. СВЕТЛАЯ ТЕМА (При переключении)
+   2. СВЕТЛАЯ ТЕМА (Современная стильная сетка)
    ========================================== */
 [data-theme="light"] {
-    /* Фоновые цвета сайта */
-    --bg-main-1: #ffd6e73c;
-    --bg-main-2: #fcd5e5;
-    --bg-main-3: #f5cff2;
-    --bg-solid: #f5f5f7;
-    --grid-dots: #b00454;
-    --background-color: #fb91c551;
+    /* Нежное матовое свечение */
+    --bg-main-1: rgba(244, 114, 182, 0.12);
+    --bg-main-2: #fdf2f8;
+    --bg-main-3: #fae8ff;
+    --bg-solid: #fafafb;
 
-    /* Карточки, модальные окна, профиль */
+    /* Фоновый узор — Изящная тонкая сетка (Grid Pattern) */
+    --bg-pattern: linear-gradient(to right, rgba(225, 29, 72, 0.05) 1px, transparent 1px),
+                  linear-gradient(to bottom, rgba(225, 29, 72, 0.05) 1px, transparent 1px);
+    --bg-pattern-size: 32px 32px;
+    --bg-pattern-opacity: 1;
+
+    /* Чистые карточки с легким эффектом стекла */
     --card-bg: rgba(255, 255, 255, 0.85);
-    --card-border: rgba(230, 145, 196, 0.807);
-    --card-shadow: rgba(0, 0, 0, 0.08);
+    --card-border: rgba(214, 29, 152, 0.328);
+    --card-shadow: rgba(225, 29, 72, 0.04);
 
-    /* Текст и свечение */
-    --text-color: #cf4395;
-    --text-secondary: #e184b2d7;
-    --text-accent: #cf2172;
-    --text-hover: #df6b9f;
-    --glow-color: rgba(176, 4, 84, 0.4);
-    --heading-color: #ffffff;
-    --links-color:#ffffff;
+    /* Типографика */
+    --text-main: #18181b;
+    --text-color: #18181b;
+    --text-secondary: #71717a;
+    --text-accent: #e11d48;
+    --text-hover: #be123c;
+    --glow-color: rgba(225, 29, 72, 0.2);
+    --heading-color: #09090b;
+    --links-color: #e11d48;
 
-    --time-color:#f8b9d5;
+    --time-color: #94a3b8;
 
-    /* Кнопки, формы, сайдбар */
-    --btn-bg: #fd93c14a;
-    --btn-change-bg: #e691b8;
-    --input-bg: #f3d4e2;
+    /* Кнопки и поля ввода */
+    --btn-bg: rgba(255, 255, 255, 0.9);
+    --btn-change-bg: #ffe4e6;
+    --input-bg: #ffffff;
     --sidebar-bg: #ffffff;
-    --sidebar-text: #d85f85;
+    --sidebar-text: #18181b;
 
+    --task-text: #18181b;
 
-    --task-text:rgb(109, 6, 39);
-
-    --button-color: #5ecd5c;
-    --button-bg:#5ecd5c61;
-    --chart-bg: #fd93c1a4;
+    --button-color: #166534;
+    --button-bg: #dcfce7;
+    --chart-bg: #e053a39b;
 }

@@ -6,6 +6,12 @@
     <title>Статистика — Sinus</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <script src="{{ url_for('static', filename='js/theme.js') }}" defer></script>
+    <style>
+    /* Отключает CSS-анимации и плавные переходы для всех элементов */
+         *, *::before, *::after {
+            transition: none !important;
+        }
+    </style>
 </head>
 <body class="tasksPage statisticsPage">
     <!-- ================= МОДАЛЬНОЕ ОКНО КОНТАКТОВ ================= -->
@@ -70,6 +76,11 @@
             <a href="{{ url_for('auth.profile') }}">
                 <span>👤</span> Профиль
             </a>
+            {% if session.get('role') == 'admin' %}
+                <a href="{{ url_for('admin.dashboard') }}" class="active">
+                    <span>⚡</span> Админ-панель
+                </a>
+            {% endif %}
         </nav>
         <div class="sidebarBottom">
             <a href="{{ url_for('auth.logout') }}" class="logoutLink">

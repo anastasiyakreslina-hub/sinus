@@ -10,42 +10,46 @@
 </head>
 <body class="aboutPage">
   <!-- =====================================================
-       BACKGROUND
+       BACKGROUND & FX
   ===================================================== -->
   <div class="aboutBackground">
+    <div class="glowOrb orb1"></div>
+    <div class="glowOrb orb2"></div>
     <div class="gridNoise"></div>
-    <span class="bgMath bgMath1">x² + y²</span>
+    <span class="bgMath bgMath1">x² + y² = r²</span>
     <span class="bgMath bgMath2">∫ f(x)dx</span>
     <span class="bgMath bgMath3">sin α</span>
-    <span class="bgMath bgMath4">√a²+b²</span>
+    <span class="bgMath bgMath4">√a² + b²</span>
   </div>
 
   <!-- =====================================================
        CONTACTS MODAL
   ===================================================== -->
   <div id="contacts" class="aboutContacts" style="display:none;">
-    <button class="contactsClose" type="button" onclick="closeContacts()">×</button>
-    <div class="contactsModalContent">
+    <div class="contactsOverlay" onclick="closeContacts()"></div>
+    <div class="contactsModalContent glassCard">
+      <button class="contactsClose" type="button" onclick="closeContacts()">×</button>
       <span class="contactsMiniLabel">SINUS · CONTACTS</span>
       <h2>Остались вопросы?</h2>
       <p>Напиши мне напрямую — отвечаю обычно в течение 1–2 дней.</p>
+      
       <div class="contactRows">
-        <div class="contactRow">
-          <span>✉</span>
+        <a href="mailto:anastasiyakreslina@gmail.com" class="contactRow">
+          <span class="contactIcon">✉</span>
           <div>
             <small>Почта</small>
             <strong>anastasiyakreslina@gmail.com</strong>
           </div>
-        </div>
-        <div class="contactRow">
-          <span>↗</span>
+        </a>
+        <a href="https://t.me/krazern" target="_blank" class="contactRow">
+          <span class="contactIcon">↗</span>
           <div>
             <small>Telegram</small>
             <strong>@krazern</strong>
           </div>
-        </div>
+        </a>
       </div>
-      <div class="contactHint">Вопросы о платформе · предложения · ошибки · отзывы</div>
+      <div class="contactHint">Вопросы о платформе · Предложения · Ошибки · Отзывы</div>
     </div>
   </div>
 
@@ -58,29 +62,30 @@
     </div>
 
     <div class="heroMain heroMainAligned">
-      <!-- 1. ФОТО / ВИЗУАЛ -->
+      <!-- ФОТО / ВИЗУАЛ -->
       <div class="heroVisual heroVisualElevated reveal delay-1">
         <div class="heroOrb"></div>
 
-        <div class="mathCard mathCardInteractive cardRoot">
-          <span>✎</span>
+        <div class="mathCard cardRoot glassCard">
+          <span class="cardIcon">✎</span>
           <b>репетитор</b>
         </div>
-        <div class="mathCard mathCardInteractive cardPi">
-          <span>&lt;/&gt;</span>
+        <div class="mathCard cardPi glassCard">
+          <span class="cardIcon">&lt;/&gt;</span>
           <b>разработчик</b>
         </div>
-        <div class="mathCard mathCardInteractive cardSum">
-          <span>∑</span>
-          <b>всё одна</b>
+        <div class="mathCard cardSum glassCard">
+          <span class="cardIcon">∑</span>
+          <b>solo creator</b>
         </div>
 
         <div class="heroMascotGlow"></div>
-        <img src="{{ url_for('static', filename='images/founder/founder.png') }}" class="heroMascot" alt="Анастасия — основательница Sinus">
-        
+        <div class="imageFrame">
+          <img src="{{ url_for('static', filename='images/founder/founder.png') }}" class="heroMascot" alt="Анастасия — основательница Sinus">
+        </div>
       </div>
 
-      <!-- 2. ТЕКСТ -->
+      <!-- ТЕКСТ -->
       <div class="heroCopy reveal">
         <div class="heroKicker">
           <span class="kickerDot"></span>
@@ -88,18 +93,17 @@
         </div>
         <h1 class="heroTitle">
           Привет, я Анастасия.<br>
-          <span>Sinus — мой проект.</span>
+          <span class="gradientText">Sinus — мой проект.</span>
         </h1>
         <p class="heroDescription">
-          Я репетитор по математике и по совместительству — единственный разработчик
-          этой платформы. От идеи до кода, от дизайна до задач в банке — всё здесь
-          сделано одним человеком, который хорошо знает, как на самом деле готовятся
-          к экзамену.
+          Я репетитор по математике и единственный разработчик этой платформы. 
+          От первой строчки кода и дизайна до каждой задачи в банке — всё сделано человеком, 
+          который знает изнутри, как на самом деле готовиться к экзаменам на высокие баллы.
         </p>
         <div class="heroActions">
           <a href="{{ url_for('auth.register') }}" class="heroPrimaryButton">
             <span>Попробовать Sinus</span>
-            <b>→</b>
+            <b class="btnArrow">→</b>
           </a>
           <a href="#story" class="heroSecondaryButton">
             Моя история
@@ -118,152 +122,140 @@
       <span class="sectionEyebrow">01 · КАК ВСЁ НАЧАЛОСЬ</span>
       <h2>
         От тетради ученика<br>
-        <span>до целой платформы.</span>
+        <span class="gradientText">до целой платформы.</span>
       </h2>
     </div>
 
-    <div class="process">
-      <div class="processLine"></div>
-      <article class="processStep reveal">
-        <div class="processCircle">01</div>
-        <div>
-          <span>РЕПЕТИТОРСТВО</span>
-          <h3>Годы один на один с учениками</h3>
-          <p>Я вижу, где именно ученики застревают: не в теории, а в том, что негде спокойно
-             потренироваться и понять, где именно ошибка.</p>
+    <div class="processGrid">
+      <article class="processCard glassCard reveal">
+        <div class="stepHeader">
+          <span class="processCircle">01</span>
+          <span class="stepBadge">ОПЫТ</span>
         </div>
+        <h3>Годы один на один с учениками</h3>
+        <p>Я точно знаю, где застревают ученики: не в сложной теории, а в отсутствии простой регулярной практики и удобного анализа ошибок.</p>
       </article>
 
-      <article class="processStep reveal delay-1">
-        <div class="processCircle">02</div>
-        <div>
-          <span>ИДЕЯ</span>
-          <h3>Не хватало удобного инструмента</h3>
-          <p>Готовые сборники задач не показывали прогресс, не запоминали ошибки
-             и не подстраивались под ученика. Я решила, что сделаю это сама.</p>
+      <article class="processCard glassCard reveal delay-1">
+        <div class="stepHeader">
+          <span class="processCircle">02</span>
+          <span class="stepBadge">ИДЕЯ</span>
         </div>
+        <h3>Недостаток инструментов</h3>
+        <p>Сборники не отслеживали прогресс, а типовые сайты казались устаревшими. Поняла, что идеальный сервис придется написать самой.</p>
       </article>
 
-      <article class="processStep reveal delay-2">
-        <div class="processCircle">03</div>
-        <div>
-          <span>РАЗРАБОТКА</span>
-          <h3>Учила код так же, как учу математику</h3>
-          <p>Без команды, без готовых шаблонов — шаг за шагом: база задач, проверка
-             ответов, статистика, варианты. Всё, что нужно для реальной подготовки.</p>
+      <article class="processCard glassCard reveal delay-2">
+        <div class="stepHeader">
+          <span class="processCircle">03</span>
+          <span class="stepBadge">KOD</span>
         </div>
+        <h3>Разработка с нуля</h3>
+        <p>Без команды и шаблонных движков: создала базу задач, алгоритмы проверки, интерактивную статистику и варианты ЕГЭ.</p>
       </article>
 
-      <article class="processStep reveal delay-3">
-        <div class="processCircle processFinal">✓</div>
-        <div>
-          <span>SINUS СЕГОДНЯ</span>
-          <h3>Платформа, которой я сама бы пользовалась</h3>
-          <p>Каждая функция здесь появилась потому, что она была нужна реальному
-             ученику на реальном занятии.</p>
+      <article class="processCard glassCard accentCard reveal delay-3">
+        <div class="stepHeader">
+          <span class="processCircle processFinal">✓</span>
+          <span class="stepBadge">СЕГОДНЯ</span>
         </div>
+        <h3>Результат для каждого</h3>
+        <p>Каждая кнопка и задача здесь появились из реальной методической необходимости, проверенной на сотнях часов занятий.</p>
       </article>
     </div>
   </section>
 
   <!-- =====================================================
-       ПОЧЕМУ Я, А НЕ КОМАНДА
+       ПОЧЕМУ ОДИН ЧЕЛОВЕК
   ===================================================== -->
   <section class="forWhoModern">
     <div class="forWhoVisual reveal">
       <div class="forWhoOrb"></div>
-      <img src="{{ url_for('static', filename='images/founder/founder_working.png') }}" alt="Анастасия за работой над Sinus">
-      <div class="floatingBadge badgeOne">
-        <span>✓</span> сама пишу задачи
+      <div class="founderPhotoWrapper glassCard">
+        <img src="{{ url_for('static', filename='images/founder/founder_working.png') }}" alt="Анастасия за работой над Sinus">
       </div>
-      <div class="floatingBadge badgeTwo">
-        <span>↗</span> сама пишу код
+      <div class="floatingBadge badgeOne glassCard">
+        <span>✎</span> сама пишу задачи
       </div>
-      <div class="floatingBadge badgeThree">
-        <span>+</span> сама учу
+      <div class="floatingBadge badgeTwo glassCard">
+        <span>⚡</span> сама пишу код
+      </div>
+      <div class="floatingBadge badgeThree glassCard">
+        <span>♡</span> сама учу
       </div>
     </div>
 
     <div class="forWhoContentModern reveal delay-1">
-      <span class="sectionEyebrow">02 · ПОЧЕМУ ОДИН ЧЕЛОВЕК</span>
+      <span class="sectionEyebrow">02 · ПОЧЕМУ SOLO-DEVELOPMENT</span>
       <h2>
-        Не команда.<br>
-        <span>Просто я — от начала до конца.</span>
+        Без корпораций.<br>
+        <span class="gradientText">Полная личная ответственность.</span>
       </h2>
       <p>
-        Я веду Sinus полностью самостоятельно: преподаю математику, придумываю
-        и решаю задачи для банка, проектирую платформу и сама пишу для неё код.
-        Это значит, что между «ученику это нужно» и «это появилось на сайте»
-        нет ни одного лишнего человека.
+        В Sinus нет отделов маркетинга или менеджеров. Между идеей ученика «мне здесь неудобно» 
+        и релизом обновления на сайте проходит пару часов, а не месяцы согласований.
       </p>
-      <div class="forWhoPoints">
-        <div>
-          <span>01</span>
-          <p>Каждая задача проверена мной как репетитором</p>
+      
+      <div class="featureList">
+        <div class="featureItem glassCard">
+          <div class="featureNum">01</div>
+          <p>Каждая задача отбирается и проверяется методистом в моем лице</p>
         </div>
-        <div>
-          <span>02</span>
-          <p>Каждая функция сделана мной как разработчиком</p>
+        <div class="featureItem glassCard">
+          <div class="featureNum">02</div>
+          <p>Архитектура платформы оптимизирована под быструю работу</p>
         </div>
-        <div>
-          <span>03</span>
-          <p>Обратная связь доходит до меня напрямую, без посредников</p>
+        <div class="featureItem glassCard">
+          <div class="featureNum">03</div>
+          <p>Обратная связь читается лично мной, а ошибки правятся моментально</p>
         </div>
       </div>
     </div>
   </section>
 
   <!-- =====================================================
-       ЦИФРЫ
+       ЦИФРЫ И ФАКТЫ
   ===================================================== -->
-  <section class="heroFeatures reveal delay-2">
-    <article class="featureCard">
-      <div class="featureCardTop">
-        <span class="featureNumber">03</span>
-        <span class="featureArrow">↗</span>
+  <section class="statsSection reveal">
+    <div class="statsGrid">
+      <div class="statCard glassCard">
+        <span class="statNumber">1</span>
+        <span class="statLabel">Разработчик и автор</span>
       </div>
-      <div class="featureIcon">✎</div>
-      <h3>Опыт репетиторства</h3>
-      <p>Я работаю с учениками очно и онлайн, готовя их к экзаменам по математике.
-         Всё, что попадает в банк задач Sinus, сначала проверяется на реальных занятиях.</p>
-      <div class="statsPreview">
-        <div class="statsCircle">
-          <span>1</span>
-          <small>РАЗРАБОТЧИК</small>
-        </div>
-        <div class="statsBars">
-          <div><span style="width:100%"></span></div>
-          <div><span style="width:100%"></span></div>
-          <div><span style="width:100%"></span></div>
-          <div><span style="width:100%"></span></div>
-        </div>
+      <div class="statCard glassCard">
+        <span class="statNumber">100%</span>
+        <span class="statLabel">Авторский подход</span>
       </div>
-    </article>
+      <div class="statCard glassCard">
+        <span class="statNumber">24/7</span>
+        <span class="statLabel">Доступ к практике</span>
+      </div>
+    </div>
   </section>
 
   <!-- =====================================================
        FINAL CTA
   ===================================================== -->
-  <section class="finalCta">
-    <div class="ctaNoise"></div>
+  <section class="finalCta glassCard">
+    <div class="ctaGlow"></div>
     <div class="ctaMath ctaMathOne">x²</div>
     <div class="ctaMath ctaMathTwo">π</div>
     <div class="ctaMath ctaMathThree">∫</div>
 
     <div class="finalCtaContent reveal">
-      <span class="sectionEyebrow">04 · SINUS</span>
+      <span class="sectionEyebrow">03 · СТАРТ</span>
       <h2>
-        Присоединяйся<br>
-        <span>к подготовке с Sinus.</span>
+        Готов прокачать<br>
+        <span class="gradientText">свой результат?</span>
       </h2>
-      <p>Создай аккаунт — и занимайся так, как я готовила бы тебя лично.</p>
-      <a href="{{ url_for('auth.register') }}" class="finalCtaButton">
+      <p>Создай аккаунт прямо сейчас — это бесплатно и займет менее минуты.</p>
+      <a href="{{ url_for('auth.register') }}" class="heroPrimaryButton ctaBtn">
         <span>Создать аккаунт</span>
-        <b>→</b>
+        <b class="btnArrow">→</b>
       </a>
     </div>
 
-    <img src="{{ url_for('static', filename='images/mascot/lyingMascot.png') }}" class="finalMascot" alt="Sinus">
+    <img src="{{ url_for('static', filename='images/mascot/lyingMascot.png') }}" class="finalMascot" alt="Sinus Mascot">
   </section>
 
   <!-- =====================================================

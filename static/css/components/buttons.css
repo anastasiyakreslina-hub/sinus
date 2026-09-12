@@ -1,3 +1,4 @@
+/* Кнопки */
 .buttons {
     background-color: var(--btn-bg) !important;
     font-family: 'MyFont', sans-serif;
@@ -18,16 +19,17 @@
 }
 
 .changeButtons {
-    background-color: var(--btn-bg);
+    background-color: var(--btn-change-bg);
     border-radius: 15px;
     color: var(--text-accent);
     padding: 5px;
-    font-family: 'MyFont';
-    border: 2px solid #ffffff42;
+    font-family: 'MyFont', sans-serif;
+    border: 2px solid var(--card-border);
     backdrop-filter: blur(15px);
     -webkit-backdrop-filter: blur(15px);
-    box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+    box-shadow: 0 8px 32px var(--card-shadow);
     margin: 0 auto;
+    cursor: pointer;
 }
 
 .textButton {
@@ -39,25 +41,21 @@
     color: inherit;
     font-size: 10px;
     cursor: pointer;
-
-    /* Выравниваем как обычную ссылку */
     display: inline;
     vertical-align: baseline;
-
-    /* Защита кликабельности без раздувания размеров */
     position: relative;
-    z-index: 10;
     pointer-events: auto;
 }
 
 .enterButton {
-    background-color: var(--button-bg) ;
+    background-color: var(--button-bg);
+    border: 1px solid var(--card-border);
     border-radius: 15px;
     color: var(--button-color);
     position: relative;
-    z-index: 9999;
     width: 30%;
     height: 34px;
+    cursor: pointer;
 }
 
 .phoneButtons {
@@ -69,4 +67,112 @@
 
 .list_item {
     color: var(--text-color);
+}
+
+/* Карточки и Блоки */
+.studentsProfile,
+.rate,
+.secondColumn,
+.thirdColumn,
+.mainProfile,
+.task,
+.noMistakes,
+.filterForm,
+.typeTasks,
+.information,
+.toast,
+.header,
+.modal {
+    background-color: var(--background-color) !important;
+    border-radius: 25px;
+    border: 2px solid var(--card-border) !important;
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    box-shadow: 0 8px 32px var(--card-shadow);
+    color: var(--text-color) !important; /* УБРАН 'white', ТЕПЕРЬ ПРИМЕНЯЕТСЯ ТЕМА */
+    transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+}
+
+.goal {
+    text-align: center;
+    text-shadow: 0 0 20px var(--glow-color);
+    color: var(--text-color);
+}
+
+.heading, 
+.questions {
+    color: var(--text-color);
+}
+
+/* Формы */
+form {
+    position: relative;
+}
+
+input {
+    background-color: var(--input-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 15px;
+    color: var(--text-accent);
+    padding: 8px 12px;
+    outline: none;
+}
+
+input::placeholder {
+    font-family: 'MyFont', sans-serif;
+    color: var(--text-secondary);
+    text-align: center;
+    font-size: 10px;
+}
+
+textarea::placeholder {
+    font-family: 'MyFont', sans-serif;
+    color: var(--text-secondary);
+}
+
+.textareas {
+    white-space: pre-wrap;
+    border-radius: 15px;
+    height: 40%;
+    background-color: var(--input-bg);
+    color: var(--text-color);
+    border: 1px solid var(--card-border);
+    padding: 10px;
+}
+
+/* Шапка сайта */
+.header {
+    margin: 10px auto 0 auto;
+    border-radius: 35px;
+    padding: 20px;
+    width: 92%;
+    display: flex;
+    align-items: center;
+}
+
+.header__list1 {
+    display: flex;
+    list-style: none;
+    color: var(--text-accent);
+}
+
+.header__list2 {
+    display: flex;
+    gap: 50px;
+    list-style: none;
+    margin: auto 0 auto auto;
+}
+
+.main_Thing {
+    width: auto !important;
+    min-width: 240px;
+    padding: 13px 22px !important;
+    border-radius: 14px;
+    transition: 0.25s ease;
+    font-size: 12px;
+    color: var(--text-color);
+}
+
+.main_Thing:hover {
+    transform: translateY(-3px);
 }
