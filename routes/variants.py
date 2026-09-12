@@ -15,6 +15,51 @@ from helpers.task_stats import record_attempt
 variants_bp = Blueprint('variants', __name__)
 
 
+@variants_bp.route('/api/search_tasks')
+@admin_only
+def search_tasks():
+    """Ищет задания для конструктора варианта — по ID, номеру или тексту."""
+    query = request.args.get('q', '').strip()
+
+    conn = get_db()
+    cur = conn.cursor()
+
+    try:
+        if query.isdigit():
+            cur.execute('''
+                SELECT id, number, source, text
+                FROM tasks
+                WHERE id = %s OR number = %s
+                ORDER BY id
+                LIMIT 20
+            ''', (query, query))
+        elif query:
+            cur.execute('''
+                SELECT id, number, source, text
+                FROM tasks
+                WHERE text ILIKE %s OR source ILIKE %s
+                ORDER BY id DESC
+                LIMIT 20
+            ''', (f'%{query}%', f'%{query}%'))
+        else:
+            cur.execute('SELECT id, number, source, text FROM tasks ORDER BY id DESC LIMIT 20')
+
+        tasks = cur.fetchall()
+
+        return jsonify([
+            {
+                'id': t['id'],
+                'number': t['number'],
+                'source': t['source'],
+                'snippet': (t['text'] or '')[:90]
+            }
+            for t in tasks
+        ])
+    finally:
+        cur.close()
+        conn.close()
+
+
 @variants_bp.route('/tests')
 @regs_only
 def tests():
@@ -268,7 +313,7 @@ def generate_var():
     try:
         var_tasks = []
 
-        for number in range(1, 20):
+        for number in range(1, 21):
             cur.execute('SELECT * FROM tasks WHERE number = %s', (number,))
             t_list = cur.fetchall()
 

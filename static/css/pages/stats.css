@@ -306,36 +306,8 @@
     font-size: 10px;
 }
 
-.variantTask .correct {
-    color: #62072d;
-
-    font-weight: 800;
-}
-
-.variantTask .incorrect {
-    opacity: 0.55;
-
-    font-weight: 800;
-}
-
 .variantTask b {
     font-size: 9px;
-}
-
-.answer {
-    display: block;
-
-    margin-top: 3px;
-
-    font-size: 7px;
-
-    opacity: 0.35;
-}
-
-.emptyTask {
-    opacity: 0.2;
-
-    font-size: 10px;
 }
 
 /* ================= SCORE ================= */
@@ -703,3 +675,70 @@
 .variant_table {
     min-width: 1050px;
 }}
+
+/* =========================================================
+ИСТОРИЯ ВАРИАНТОВ — цветные ответы со ссылкой на банк заданий
+========================================================= */
+
+.variantTask {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    text-decoration: none;
+    font-weight: 700;
+    transition: opacity 0.2s ease;
+}
+
+.variantTask:hover {
+    opacity: 0.75;
+    text-decoration: underline;
+}
+
+.variantTask .answerIcon {
+    font-size: 13px;
+    line-height: 1;
+}
+
+.variantTask.correct .answerIcon,
+.variantTask.correct .userAnswerText {
+    color: #1f9d55;
+}
+
+.variantTask.incorrect .answerIcon,
+.variantTask.incorrect .userAnswerText {
+    color: #cd305f;
+}
+
+.correctAnswerHint {
+    display: block;
+    margin-top: 2px;
+    font-size: 11px;
+    opacity: 0.55;
+}
+
+.emptyTask {
+    opacity: 0.3;
+}
+.calendarMonthStats {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 2px;
+}
+.calendarMonthCount {
+    font-size: 11px;
+    font-weight: 700;
+}
+.calendarMonthDifference {
+    font-size: 11px;
+    font-weight: 700;
+}
+.calendarMonthDifference.positive {
+    color: #1f9d55;
+}
+.calendarMonthDifference.negative {
+    color: #cd305f;
+}
+.calendarMonthDifference.neutral {
+    color: var(--text);
+}

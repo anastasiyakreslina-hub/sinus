@@ -51,7 +51,7 @@
 
     <!-- ================= SIDEBAR ================= -->
     <aside class="tasksSidebar" id="sidebar">
-        <a href="{{ url_for('main.error') }}" class="sidebarLogo">
+        <a href="{{ url_for('main.home') }}" class="sidebarLogo">
             sinus<span>.</span>
         </a>
 
@@ -176,7 +176,7 @@
                     </div>
                 </div>
 
-                <form method="POST" action="{{ url_for('variants.add_variant') }}" class="taskModalForm">
+                <form method="POST" action="{{ url_for('variants.add_variant') }}" class="taskModalForm" id="addVariantForm">
                     <label>
                         Название варианта
                         <input type="text" name="name" placeholder="Например: Вариант 1 (Досрочный)" class="taskInput" required>
@@ -188,9 +188,22 @@
                     </label>
 
                     <label>
-                        Список ID заданий
-                        <textarea name="task_ids" class="taskTextarea" placeholder="ID заданий через запятую&#10;Например: 12, 45, 78, 103..." required></textarea>
+                        Найти задания для варианта
+                        <input type="text" id="taskSearchInput" class="taskInput" placeholder="Поиск по номеру, ID или тексту, например: 7 или 125" autocomplete="off">
                     </label>
+
+                    <div id="taskSearchResults" class="taskSearchResults"></div>
+
+                    <div class="selectedTasksBlock">
+                        <p class="selectedTasksTitle">
+                            Добавлено заданий: <span id="selectedCount">0</span>
+                        </p>
+                        <div id="selectedTasksList" class="selectedTasksList">
+                            <p class="filterHint" id="selectedTasksEmpty">Пока ничего не добавлено — найди задания выше.</p>
+                        </div>
+                    </div>
+
+                    <input type="hidden" name="task_ids" id="taskIdsHidden" required>
 
                     <button type="submit" class="taskPrimaryButton" style="margin-top: 10px;">
                         Создать вариант
@@ -201,15 +214,11 @@
     {% endif %}
 
     <!-- ================= FOOTER ================= -->
-    <!-- =====================================================
-     FOOTER
-===================================================== -->
     <footer class="homeFooter">
         <div class="footerContainer">
-        <!-- Левая колонка: Бренд и описание -->
             <div class="footerBrand">
                 <a href="{{ url_for('main.home') if 'main.home' in request.endpoint else '/' }}" class="footerLogo">
-                sinus<span>.</span>
+                    sinus<span>.</span>
                 </a>
                 <p class="footerDescription">
                     Платформа для эффективной подготовки к экзаменам по математике.
@@ -217,7 +226,6 @@
                 <span class="footerCopyright">© 2026 Sinus. Все права защищены.</span>
             </div>
 
-        <!-- Правая часть: Логические группы ссылок -->
             <div class="footerNavGrid">
                 <div class="footerColumn">
                     <span class="footerColumnTitle">Проект</span>
@@ -240,10 +248,13 @@
                 </div>
             </div>
         </div>
-    </footer>   
+    </footer>
 
     <script src="{{ url_for('static', filename='js/ui.js') }}"></script>
     <script src="{{ url_for('static', filename='js/tests.js') }}"></script>
+    {% if session.get('role') == 'admin' %}
+        <script src="{{ url_for('static', filename='js/variant_builder.js') }}"></script>
+    {% endif %}
 </body>
 
 </html>

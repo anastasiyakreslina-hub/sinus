@@ -10,10 +10,20 @@ document.addEventListener('DOMContentLoaded', () => {
     ];
     const dayNames = ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"];
 
+    function taskWord(n) {
+        const mod10 = n % 10;
+        const mod100 = n % 100;
+
+        if (mod10 === 1 && mod100 !== 11) return 'задача';
+        if ([2, 3, 4].includes(mod10) && ![12, 13, 14].includes(mod100)) return 'задачи';
+        return 'задач';
+    }
+
     function renderCalendar() {
         const grid = document.getElementById('calendarGrid');
         const monthYearText = document.getElementById('calendarMonthYear');
-        
+        const monthCountEl = document.getElementById('calendarMonthCount');
+
         if (!grid || !monthYearText) return;
 
         grid.innerHTML = '';
@@ -46,6 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const today = new Date();
         const activityData = window.activityData || {};
+        let monthTotal = 0;
 
         // Дни месяца
         for (let day = 1; day <= daysInMonth; day++) {
@@ -54,6 +65,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
             const count = activityData[dateStr] || 0;
+            monthTotal += count;
 
             if (today.getFullYear() === year && today.getMonth() === month && today.getDate() === day) {
                 cell.classList.add('today');
@@ -72,6 +84,38 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             grid.appendChild(cell);
+        }
+
+        if (monthCountEl) {
+            monthCountEl.textContent = `${monthTotal} ${taskWord(monthTotal)} в этом месяце`;
+        }
+        const differenceElement = document.getElementById('calendarMonthDifference');
+        const previousMonth = new Date(year, month - 1, 1);
+        const prevYear = previousMonth.getFullYear();
+        const prevMonthIndex = previousMonth.getMonth();
+        const prevMonthDays = new Date(prevYear, prevMonthIndex + 1, 0).getDate();
+        
+        let prevMonthTotal = 0;
+        if (window.activityData) {
+            Object.entries(window.activityData).forEach(([dateStr, count]) => {
+                const [y, m] = dateStr.split('-').map(Number);
+                if (y === prevYear && m === prevMonthIndex + 1) {
+                    prevMonthTotal += count;
+                }
+            });
+        }
+        const difference = monthTotal - prevMonthTotal;
+        if (differenceElement) {
+            if (difference > 0) {
+                differenceElement.textContent = `+${difference} ${taskWord(difference)} по сравнению с прошлым месяцем`;
+                differenceElement.style.color = 'green';
+            } else if (difference < 0) {
+                differenceElement.textContent = `${difference} ${taskWord(-difference)} по сравнению с прошлым месяцем`;
+                differenceElement.style.color = 'red';
+            } else {
+                differenceElement.textContent = `Нет изменений по сравнению с прошлым месяцем`;
+                differenceElement.style.color = 'gray';
+            }
         }
     }
 

@@ -1444,3 +1444,105 @@
         padding: 10px 4px;
     }
 }
+/* =========================================================
+КОНСТРУКТОР ВАРИАНТА — поиск и список выбранных заданий
+========================================================= */
+
+.taskSearchResults {
+    max-height: 220px;
+    overflow-y: auto;
+    margin-top: 8px;
+    border: 1px solid rgba(120, 120, 120, 0.16);
+    border-radius: 14px;
+}
+
+.taskSearchResults:empty {
+    display: none;
+}
+
+.taskSearchResultItem,
+.selectedTaskItem {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 12px 14px;
+    border-bottom: 1px solid rgba(120, 120, 120, 0.12);
+}
+
+.taskSearchResultItem:last-child,
+.selectedTaskItem:last-child {
+    border-bottom: none;
+}
+
+.selectedTaskSnippet {
+    margin: 6px 0 0;
+    font-size: 13px;
+    line-height: 1.4;
+    opacity: 0.65;
+    max-width: 420px;
+}
+
+.addTaskBtn {
+    flex-shrink: 0;
+    padding: 8px 14px;
+    border: none;
+    border-radius: 100px;
+    background: #cd305f;
+    color: white;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+.addTaskBtn:hover:not(:disabled) {
+    transform: translateY(-1px);
+    filter: brightness(1.05);
+}
+
+.addTaskBtn:disabled {
+    background: rgba(120, 120, 120, 0.25);
+    cursor: default;
+}
+
+.removeTaskBtn {
+    flex-shrink: 0;
+    width: 28px;
+    height: 28px;
+    display: grid;
+    place-items: center;
+    border: none;
+    border-radius: 50%;
+    background: rgba(205, 48, 95, 0.1);
+    color: #cd305f;
+    font-size: 16px;
+    line-height: 1;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.removeTaskBtn:hover {
+    background: rgba(205, 48, 95, 0.2);
+}
+
+.selectedTasksBlock {
+    margin-top: 6px;
+}
+
+.selectedTasksTitle {
+    margin: 0 0 8px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.selectedTasksList {
+    max-height: 240px;
+    overflow-y: auto;
+    border: 1px solid rgba(120, 120, 120, 0.16);
+    border-radius: 14px;
+}
+
+.selectedTasksList:has(.selectedTaskItem) #selectedTasksEmpty {
+    display: none;
+}

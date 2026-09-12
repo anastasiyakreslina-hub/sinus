@@ -3,7 +3,9 @@
    ========================================================= */
 
 .calendarSection {
-    /* Добавлен верхний и увеличен нижний отступ, чтобы блок не лип к соседним */
+    position: relative;
+    overflow: hidden;
+
     margin-top: 24px;
     margin-bottom: 24px;
 
@@ -17,12 +19,49 @@
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.035);
 }
 
+/* Плавающие декоративные символы на фоне — не мешают контенту (z-index ниже) */
+.calendarSection::before,
+.calendarSection::after {
+    content: "";
+    position: absolute;
+    z-index: 0;
+    pointer-events: none;
+    font-family: Georgia, serif;
+    color: #62072d;
+}
+
+.calendarSection::before {
+    content: "✦";
+    top: -18px;
+    right: 24px;
+    font-size: 78px;
+    opacity: 0.06;
+    animation: calendarFloat 9s ease-in-out infinite;
+}
+
+.calendarSection::after {
+    content: "∑";
+    bottom: -28px;
+    left: 38%;
+    font-size: 96px;
+    opacity: 0.05;
+    animation: calendarFloat 11s ease-in-out infinite reverse;
+}
+
+@keyframes calendarFloat {
+    0%, 100% { transform: translateY(0) rotate(-4deg); }
+    50% { transform: translateY(-14px) rotate(4deg); }
+}
+
 .calendarHeader {
+    position: relative;
+    z-index: 1;
+
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
     gap: 15px;
-    margin-bottom: 20px;
+    margin-bottom: 16px;
 }
 
 .calendarHeader small {
@@ -36,31 +75,60 @@
 
 .calendarHeader h2 {
     margin: 0;
-    font-size: 19px;
+    font-size: 17px;
     letter-spacing: -0.03em;
 }
 
 .calendarNav {
+    position: relative;
+    z-index: 1;
+
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 6px;
+}
+
+.calendarHeaderRight {
+    position: relative;
+    z-index: 1;
+
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.calendarMonthCount {
+    padding: 6px 12px;
+    border-radius: 100px;
+
+    background: rgba(136, 13, 77, 0.08);
+    color: #62072d;
+
+    font-size: 11px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+[data-theme="dark"] .calendarMonthCount {
+    background: rgba(255, 255, 255, 0.08);
+    color: #ffffff;
 }
 
 .calendarNavBtn {
     position: relative;
     z-index: 9999;
-    width: 34px;
-    height: 34px;
+    width: 30px;
+    height: 30px;
     display: flex;
     align-items: center;
     justify-content: center;
 
-    border-radius: 10px;
+    border-radius: 9px;
     border: 1px solid rgba(136, 13, 77, 0.15);
     background: rgba(136, 13, 77, 0.08);
 
     color: #62072d;
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 700;
     cursor: pointer;
 
@@ -73,9 +141,13 @@
 }
 
 .calendarGrid {
+    position: relative;
+    z-index: 1;
+
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     gap: 6px;
+    max-width: 420px;
     text-align: center;
 }
 
@@ -95,7 +167,7 @@
     align-items: center;
     justify-content: center;
 
-    border-radius: 10px;
+    border-radius: 9px;
     background: var(--background);
     color: var(--text);
 
@@ -130,11 +202,15 @@
 }
 
 .calendarCell .taskBadge {
-    margin-top: 2px;
-    font-size: 8px;
+    margin-top: 1px;
+    font-size: 7px;
     font-weight: 700;
     color: #62072d;
     opacity: 0.85;
+}
+
+[data-theme="dark"] .calendarCell .taskBadge {
+    color: #ffffff;
 }
 
 /* ================= DARK THEME CALENDAR ================= */
@@ -178,30 +254,45 @@
     border-color: #ffffff;
 }
 
-[data-theme="dark"] .calendarCell .taskBadge {
-    color: #ffffff;
-}
-
 /* ================= MOBILE CALENDAR ================= */
 
 @media (max-width: 520px) {
+    .calendarHeader {
+        flex-wrap: wrap;
+    }
+
+    .calendarHeaderRight {
+        gap: 8px;
+    }
+
+    .calendarMonthCount {
+        font-size: 10px;
+        padding: 5px 10px;
+    }
+
     .calendarSection {
-        padding: 18px;
-        border-radius: 17px;
+        padding: 16px;
+        border-radius: 16px;
         margin-top: 18px;
         margin-bottom: 18px;
     }
 
+    .calendarSection::before,
+    .calendarSection::after {
+        opacity: 0.03;
+    }
+
     .calendarGrid {
+        max-width: 320px;
         gap: 4px;
     }
 
     .calendarCell {
-        font-size: 10px;
+        font-size: 9px;
         border-radius: 7px;
     }
 
     .calendarCell .taskBadge {
-        font-size: 7px;
+        font-size: 6px;
     }
 }

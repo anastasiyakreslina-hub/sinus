@@ -142,15 +142,53 @@ def statistics():
                     'year': row['year'],
                     'score': row['score'],
                     'created_at': row['created_at'],
-                    'tasks': []
+                    'tasks': {}
                 }
-            history[var_id]['tasks'].append(row)
+            history[var_id]['tasks'][row['task_number']] = {
+                'task_id': row['task_id'],
+                'answer': row['user_answer'],
+                'correct_answer': row['correct_answer'],
+                'correct': row['correct']
+            }
 
         scores = [variant['score'] for variant in history.values()]
         avg_variant_score = round(sum(scores) / len(scores), 1) if scores else 0
 
-        # Переводим среднюю точность в примерный первичный балл из 32, затем в тестовый
-        estimated_primary = round((percent / 100) * 32)
+        # =========================================================
+        # ПРОГНОЗ БАЛЛА ЕГЭ
+        # =========================================================
+        # Общий percent (correct/solved) считается по ВСЕМ попыткам,
+        # включая повторные — на экзамене так не бывает, поэтому для
+        # прогноза он не годится. Вместо этого берём два более честных
+        # сигнала и смешиваем их:
+        #
+        # 1) точность с первой попытки по банку заданий — ближе всего
+        #    к тому, как ученик решит задачу в первый и единственный раз;
+        # 2) средний балл по уже пройденным полным вариантам — самый
+        #    достоверный сигнал, поскольку это симуляция настоящего
+        #    экзамена целиком. Чем больше вариантов пройдено, тем
+        #    больше вес отдаём именно ему.
+
+        if first_attempts_percents:
+            task_bank_accuracy = sum(first_attempts_percents) / len(first_attempts_percents) / 100
+        else:
+            task_bank_accuracy = 0
+
+        num_variants = len(scores)
+
+        if num_variants:
+            variant_accuracy = avg_variant_score / 20
+            # Вес вариантов растёт с их количеством и не превышает 70% —
+            # банк заданий всегда учитывается хотя бы немного.
+            variant_weight = min(num_variants / 5, 0.7)
+            blended_accuracy = (
+                task_bank_accuracy * (1 - variant_weight)
+                + variant_accuracy * variant_weight
+            )
+        else:
+            blended_accuracy = task_bank_accuracy
+
+        estimated_primary = max(0, min(32, round(blended_accuracy * 32)))
         predicted_score = CONVERT_TABLE.get(estimated_primary, 0)
 
         return render_template(

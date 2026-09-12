@@ -48,7 +48,7 @@
 
     <!-- ================= SIDEBAR ================= -->
     <aside class="tasksSidebar" id="sidebar">
-        <a href="{{ url_for('main.error') }}" class="sidebarLogo">
+        <a href="{{ url_for('main.home') }}" class="sidebarLogo">
             sinus<span>.</span>
         </a>
         <nav class="listThings">
@@ -205,9 +205,15 @@
                     <small>АКТИВНОСТЬ</small>
                     <h2 id="calendarMonthYear">Календарь решений</h2>
                 </div>
-                <div class="calendarNav">
-                    <button class="calendarNavBtn" id="prevMonthBtn">&lt;</button>
-                    <button class="calendarNavBtn" id="nextMonthBtn">&gt;</button>
+                <div class="calendarHeaderRight">
+                    <div class="calendarMonthStats">
+                        <span class="calendarMonthCount" id="calendarMonthCount">0 задач в этом месяце</span>
+                        <span class="calendarMonthDifference" id="calendarMonthDifference"></span>
+                    </div>
+                    <div class="calendarNav">
+                        <button class="calendarNavBtn" id="prevMonthBtn">&lt;</button>
+                        <button class="calendarNavBtn" id="nextMonthBtn">&gt;</button>
+                    </div>
                 </div>
             </div>
             <div class="calendarGrid" id="calendarGrid"></div>
@@ -219,7 +225,7 @@
                 <div>
                     <small>ИСТОРИЯ</small>
                     <h2>Варианты</h2>
-                    <p>Результаты пройденных вариантов ЕГЭ</p>
+                    <p>Результаты пройденных вариантов ЕГЭ. Нажми на ответ, чтобы открыть задание в банке.</p>
                 </div>
             </div>
 
@@ -247,15 +253,14 @@
                                     {% for i in range(1,21) %}
                                         <td>
                                             {% if i in variant.tasks %}
-                                                <a href="tasks?task_id={{ variant.tasks[i].task_id }}" class="variantTask">
-                                                    {% if variant.tasks[i].correct %}
-                                                        <span class="correct">✓</span>
-                                                    {% else %}
-                                                        <span class="incorrect">×</span>
-                                                    {% endif %}
-                                                    <b>{{ variant.tasks[i].answer }}</b>
+                                                {% set t = variant.tasks[i] %}
+                                                <a href="{{ url_for('tasks.tasks', task_id=t.task_id) }}"
+                                                   class="variantTask {{ 'correct' if t.correct else 'incorrect' }}"
+                                                   title="Открыть задание №{{ i }} в банке заданий">
+                                                    <span class="answerIcon">{{ '✓' if t.correct else '×' }}</span>
+                                                    <b class="userAnswerText">{{ t.answer }}</b>
                                                 </a>
-                                                <small class="answer">{{ variant.tasks[i].correct_answer }}</small>
+                                                <small class="correctAnswerHint">{{ t.correct_answer }}</small>
                                             {% else %}
                                                 <span class="emptyTask">—</span>
                                             {% endif %}
@@ -310,7 +315,7 @@
                 </div>
             </div>
         </div>
-    </footer>   
+    </footer>
 
     <!-- ================= GLOBAL DATA ================= -->
     <script>
