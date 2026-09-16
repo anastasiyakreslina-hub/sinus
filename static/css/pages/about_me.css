@@ -1,7 +1,15 @@
 /* =====================================================
-   GLOBAL & VARIABLES (NEON PINK EDITION)
+   SINUS · ОБО МНЕ (NEON PINK EDITION)
+   Все селекторы скоуплены под .aboutMePage, чтобы не
+   пересекаться с классами страницы .aboutProjectPage
+   (about.html) — раньше обе страницы использовали
+   одинаковый body class "aboutPage" и почти идентичные
+   имена внутренних классов (heroVisual, mathCard,
+   floatingBadge и т.д.), а этот файл вообще не был
+   проскоуплен ни под каким классом.
 ===================================================== */
-:root {
+
+.aboutMePage {
   --accent-purple: #ff007f; /* Ярко-розовый неон */
   --accent-cyan: #ff2a85;   /* Неоново-малиновый */
   --accent-blue: #ff66b2;   /* Нежно-розовый неон */
@@ -9,18 +17,15 @@
   --glass-bg: rgba(255, 0, 127, 0.03);
   --glass-border: rgba(255, 0, 127, 0.15);
   --glass-hover: rgba(255, 0, 127, 0.08);
-}
 
-body.aboutPage {
   background-color: #0d060a;
   color: #f0f0f5;
   overflow-x: hidden;
   position: relative;
-  /* font-family убран — шрифт полностью наследуется из твоего основного style.css */
 }
 
 /* Glassmorphism Utility */
-.glassCard {
+.aboutMePage .glassCard {
   background: var(--glass-bg);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
@@ -30,13 +35,13 @@ body.aboutPage {
   transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
-.glassCard:hover {
+.aboutMePage .glassCard:hover {
   border-color: rgba(255, 0, 127, 0.4);
   background: var(--glass-hover);
   box-shadow: 0 8px 32px 0 rgba(255, 0, 127, 0.2), inset 0 0 20px rgba(255, 0, 127, 0.1);
 }
 
-.gradientText {
+.aboutMePage .gradientText {
   background: linear-gradient(135deg, #ff66b2, #ff007f, #ff0055);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -46,7 +51,7 @@ body.aboutPage {
 /* =====================================================
    BACKGROUND ANIMATED ORBS
 ===================================================== */
-.aboutBackground {
+.aboutMePage .aboutBackground {
   position: fixed;
   top: 0;
   left: 0;
@@ -57,14 +62,14 @@ body.aboutPage {
   pointer-events: none;
 }
 
-.glowOrb {
+.aboutMePage .glowOrb {
   position: absolute;
   border-radius: 50%;
   filter: blur(130px);
   opacity: 0.4;
 }
 
-.orb1 {
+.aboutMePage .orb1 {
   width: 500px;
   height: 500px;
   background: #ff007f;
@@ -72,7 +77,7 @@ body.aboutPage {
   right: -50px;
 }
 
-.orb2 {
+.aboutMePage .orb2 {
   width: 600px;
   height: 600px;
   background: #ff0055;
@@ -80,43 +85,43 @@ body.aboutPage {
   left: -100px;
 }
 
-.bgMath {
+.aboutMePage .bgMath {
   position: absolute;
   color: rgba(255, 0, 127, 0.05);
   font-weight: bold;
   user-select: none;
 }
-.bgMath1 { top: 15%; left: 10%; font-size: 3rem; }
-.bgMath2 { top: 40%; right: 12%; font-size: 4rem; }
-.bgMath3 { bottom: 25%; left: 15%; font-size: 3.5rem; }
-.bgMath4 { top: 70%; right: 25%; font-size: 2.5rem; }
+.aboutMePage .bgMath1 { top: 15%; left: 10%; font-size: 3rem; }
+.aboutMePage .bgMath2 { top: 40%; right: 12%; font-size: 4rem; }
+.aboutMePage .bgMath3 { bottom: 25%; left: 15%; font-size: 3.5rem; }
+.aboutMePage .bgMath4 { top: 70%; right: 25%; font-size: 2.5rem; }
 
 /* =====================================================
    HERO SECTION
 ===================================================== */
-.aboutHero {
+.aboutMePage .aboutHero {
   max-width: 1200px;
   margin: 0 auto;
   padding: 40px 24px 80px;
 }
 
-.heroTopBar {
+.aboutMePage .heroTopBar {
   margin-bottom: 60px;
 }
 
-.aboutLogo {
+.aboutMePage .aboutLogo {
   font-size: 2rem;
   font-weight: 800;
   color: #fff;
   text-decoration: none;
   letter-spacing: -1px;
 }
-.aboutLogo span { 
+.aboutMePage .aboutLogo span { 
   color: #ff007f;
   text-shadow: 0 0 10px #ff007f;
 }
 
-.heroMainAligned {
+.aboutMePage .heroMainAligned {
   display: grid;
   grid-template-columns: 1fr 1.1fr;
   gap: 60px;
@@ -124,14 +129,18 @@ body.aboutPage {
 }
 
 /* Visual Side */
-.heroVisual {
+.aboutMePage .heroVisual {
   position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
+  /* Даёт «плавающим» карточкам предсказуемую систему координат
+     и не даёт им вылезать шире собственного блока на мобильных. */
+  max-width: 100%;
+  padding: 0 clamp(20px, 6vw, 40px);
 }
 
-.heroMascotGlow {
+.aboutMePage .heroMascotGlow {
   position: absolute;
   width: 320px;
   height: 320px;
@@ -140,7 +149,7 @@ body.aboutPage {
   opacity: 0.7;
 }
 
-.imageFrame {
+.aboutMePage .imageFrame {
   position: relative;
   border-radius: 30px;
   overflow: hidden;
@@ -148,7 +157,7 @@ body.aboutPage {
   box-shadow: 0 0 30px rgba(255, 0, 127, 0.2);
 }
 
-.heroMascot {
+.aboutMePage .heroMascot {
   width: 100%;
   max-width: 380px;
   height: auto;
@@ -157,12 +166,19 @@ body.aboutPage {
   transition: transform 0.5s ease;
 }
 
-.heroVisual:hover .heroMascot {
+.aboutMePage .heroVisual:hover .heroMascot {
   transform: scale(1.03);
 }
 
-/* Floating Badges */
-.mathCard {
+/* =====================================================
+   ПЛАВАЮЩИЕ ЭЛЕМЕНТЫ (mathCard + floatingBadge)
+===================================================== */
+@keyframes aboutMeFloatBob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.aboutMePage .mathCard {
   position: absolute;
   padding: 12px 20px;
   display: flex;
@@ -170,15 +186,29 @@ body.aboutPage {
   gap: 10px;
   z-index: 2;
   font-size: 0.9rem;
+  animation: aboutMeFloatBob 4.5s ease-in-out infinite;
+  pointer-events: none;
 }
-.cardIcon { font-size: 1.2rem; color: #ff3399; }
+.aboutMePage .cardIcon { font-size: 1.2rem; color: #ff3399; }
 
-.cardRoot { top: 10%; left: -10px; }
-.cardPi { bottom: 15%; right: -10px; }
-.cardSum { top: 50%; left: -30px; }
+.aboutMePage .cardRoot {
+  top: 10%;
+  left: clamp(-10px, -2vw, 0px);
+  animation-delay: 0s;
+}
+.aboutMePage .cardPi {
+  bottom: 15%;
+  right: clamp(-10px, -2vw, 0px);
+  animation-delay: 1.2s;
+}
+.aboutMePage .cardSum {
+  top: 50%;
+  left: clamp(-20px, -4vw, 0px);
+  animation-delay: 2.4s;
+}
 
 /* Copy Side */
-.heroKicker {
+.aboutMePage .heroKicker {
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -188,7 +218,7 @@ body.aboutPage {
   font-weight: 700;
   margin-bottom: 16px;
 }
-.kickerDot {
+.aboutMePage .kickerDot {
   width: 8px;
   height: 8px;
   background: #ff007f;
@@ -196,27 +226,27 @@ body.aboutPage {
   box-shadow: 0 0 10px #ff007f;
 }
 
-.heroTitle {
+.aboutMePage .heroTitle {
   font-size: 3.2rem;
   line-height: 1.15;
   font-weight: 800;
   margin-bottom: 24px;
 }
 
-.heroDescription {
+.aboutMePage .heroDescription {
   font-size: 1.15rem;
   line-height: 1.6;
   color: #b3a0ac;
   margin-bottom: 40px;
 }
 
-.heroActions {
+.aboutMePage .heroActions {
   display: flex;
   gap: 20px;
   align-items: center;
 }
 
-.heroPrimaryButton {
+.aboutMePage .heroPrimaryButton {
   background: linear-gradient(135deg, #ff007f, #ff3399);
   color: #fff;
   padding: 16px 32px;
@@ -229,12 +259,12 @@ body.aboutPage {
   box-shadow: 0 0 25px rgba(255, 0, 127, 0.5);
   transition: all 0.3s ease;
 }
-.heroPrimaryButton:hover {
+.aboutMePage .heroPrimaryButton:hover {
   transform: translateY(-3px);
   box-shadow: 0 0 35px rgba(255, 0, 127, 0.8);
 }
 
-.heroSecondaryButton {
+.aboutMePage .heroSecondaryButton {
   color: #fff;
   text-decoration: none;
   font-weight: 600;
@@ -244,7 +274,7 @@ body.aboutPage {
   opacity: 0.8;
   transition: opacity 0.3s ease;
 }
-.heroSecondaryButton:hover { 
+.aboutMePage .heroSecondaryButton:hover { 
   opacity: 1; 
   color: #ff66b2;
 }
@@ -252,13 +282,13 @@ body.aboutPage {
 /* =====================================================
    PROCESS & STORY SECTION
 ===================================================== */
-.howSection {
+.aboutMePage .howSection {
   max-width: 1200px;
   margin: 100px auto;
   padding: 0 24px;
 }
 
-.sectionEyebrow {
+.aboutMePage .sectionEyebrow {
   letter-spacing: 2px;
   font-size: 0.85rem;
   color: #ff007f;
@@ -268,32 +298,32 @@ body.aboutPage {
   text-shadow: 0 0 8px rgba(255, 0, 127, 0.3);
 }
 
-.howHeading h2 {
+.aboutMePage .howHeading h2 {
   font-size: 2.5rem;
   font-weight: 800;
   margin-bottom: 48px;
 }
 
-.processGrid {
+.aboutMePage .processGrid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 24px;
 }
 
-.processCard {
+.aboutMePage .processCard {
   padding: 32px;
   display: flex;
   flex-direction: column;
 }
 
-.stepHeader {
+.aboutMePage .stepHeader {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 24px;
 }
 
-.processCircle {
+.aboutMePage .processCircle {
   width: 42px;
   height: 42px;
   border-radius: 50%;
@@ -307,25 +337,25 @@ body.aboutPage {
   box-shadow: 0 0 10px rgba(255, 0, 127, 0.2);
 }
 
-.stepBadge {
+.aboutMePage .stepBadge {
   font-size: 0.75rem;
   letter-spacing: 1px;
   color: #a3708a;
   font-weight: 700;
 }
 
-.processCard h3 {
+.aboutMePage .processCard h3 {
   font-size: 1.25rem;
   margin-bottom: 12px;
 }
 
-.processCard p {
+.aboutMePage .processCard p {
   color: #a08c97;
   font-size: 0.95rem;
   line-height: 1.5;
 }
 
-.accentCard {
+.aboutMePage .accentCard {
   border-color: rgba(255, 0, 127, 0.5);
   box-shadow: 0 0 25px rgba(255, 0, 127, 0.15);
 }
@@ -333,7 +363,7 @@ body.aboutPage {
 /* =====================================================
    FOR WHO MODERN SECTION
 ===================================================== */
-.forWhoModern {
+.aboutMePage .forWhoModern {
   max-width: 1200px;
   margin: 120px auto;
   padding: 0 24px;
@@ -343,32 +373,39 @@ body.aboutPage {
   align-items: center;
 }
 
-.founderPhotoWrapper {
+.aboutMePage .forWhoVisual {
+  position: relative;
+  /* Аналогично heroVisual: даём место под floatingBadge,
+     не позволяя им упереться в край экрана. */
+  padding: 0 clamp(16px, 5vw, 32px);
+}
+
+.aboutMePage .founderPhotoWrapper {
   padding: 12px;
   position: relative;
   border-radius: 32px;
 }
-.founderPhotoWrapper img {
+.aboutMePage .founderPhotoWrapper img {
   width: 100%;
   border-radius: 24px;
   display: block;
 }
 
-.featureList {
+.aboutMePage .featureList {
   display: flex;
   flex-direction: column;
   gap: 16px;
   margin-top: 32px;
 }
 
-.featureItem {
+.aboutMePage .featureItem {
   padding: 20px 24px;
   display: flex;
   align-items: center;
   gap: 20px;
 }
 
-.featureNum {
+.aboutMePage .featureNum {
   font-size: 1.2rem;
   font-weight: 800;
   color: #ff007f;
@@ -376,30 +413,41 @@ body.aboutPage {
 }
 
 /* Floating badges for Who section */
-.floatingBadge {
+.aboutMePage .floatingBadge {
   position: absolute;
   padding: 10px 18px;
   font-size: 0.85rem;
   font-weight: 600;
+  z-index: 2;
+  animation: aboutMeFloatBob 5s ease-in-out infinite;
+  pointer-events: none;
 }
-.badgeOne { top: 20px; right: -20px; }
-.badgeTwo { bottom: 40px; left: -20px; }
-.badgeThree { bottom: -10px; right: 20px; }
+.aboutMePage .badgeOne {
+  top: 20px;
+  right: clamp(-20px, -3vw, 0px);
+  animation-delay: 0.4s;
+}
+.aboutMePage .badgeTwo {
+  bottom: 40px;
+  left: clamp(-20px, -3vw, 0px);
+  animation-delay: 1.6s;
+}
+.aboutMePage .badgeThree {
+  bottom: -10px;
+  right: clamp(10px, 2vw, 20px);
+  animation-delay: 2.8s;
+}
 
 /* =====================================================
    STATS & FINAL CTA
 ===================================================== */
-.statsSection {
+.aboutMePage .statsSection {
   max-width: 1200px;
   margin: 80px auto;
   padding: 0 24px;
 }
 
-
-
-
-
-.statNumber {
+.aboutMePage .statNumber {
   display: block;
   font-size: 3.5rem;
   font-weight: 900;
@@ -410,13 +458,13 @@ body.aboutPage {
   filter: drop-shadow(0 0 10px rgba(255, 0, 127, 0.3));
 }
 
-.statLabel {
+.aboutMePage .statLabel {
   color: #a08c97;
   font-size: 0.95rem;
   letter-spacing: 1px;
 }
 
-.finalCta {
+.aboutMePage .finalCta {
   max-width: 1200px;
   margin: 100px auto 120px;
   padding: 80px 40px;
@@ -426,7 +474,7 @@ body.aboutPage {
   border-color: rgba(255, 0, 127, 0.3);
 }
 
-.ctaGlow {
+.aboutMePage .ctaGlow {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -438,19 +486,19 @@ body.aboutPage {
   pointer-events: none;
 }
 
-.ctaContent h2 {
+.aboutMePage .ctaContent h2 {
   font-size: 3rem;
   font-weight: 800;
   margin-bottom: 16px;
 }
 
-.ctaContent p {
+.aboutMePage .ctaContent p {
   color: #b3a0ac;
   margin-bottom: 32px;
   font-size: 1.1rem;
 }
 
-.finalMascot {
+.aboutMePage .finalMascot {
   position: absolute;
   bottom: -20px;
   right: 20px;
@@ -462,7 +510,7 @@ body.aboutPage {
 /* =====================================================
    CONTACTS MODAL
 ===================================================== */
-.aboutContacts {
+.aboutMePage .aboutContacts {
   position: fixed;
   inset: 0;
   z-index: 999;
@@ -471,14 +519,14 @@ body.aboutPage {
   justify-content: center;
 }
 
-.contactsOverlay {
+.aboutMePage .contactsOverlay {
   position: absolute;
   inset: 0;
   background: rgba(13, 6, 10, 0.85);
   backdrop-filter: blur(8px);
 }
 
-.contactsModalContent {
+.aboutMePage .contactsModalContent {
   position: relative;
   width: 90%;
   max-width: 500px;
@@ -487,7 +535,7 @@ body.aboutPage {
   border-color: rgba(255, 0, 127, 0.4);
 }
 
-.contactsClose {
+.aboutMePage .contactsClose {
   position: absolute;
   top: 20px;
   right: 20px;
@@ -498,14 +546,14 @@ body.aboutPage {
   cursor: pointer;
 }
 
-.contactRows {
+.aboutMePage .contactRows {
   display: flex;
   flex-direction: column;
   gap: 16px;
   margin: 24px 0;
 }
 
-.contactRow {
+.aboutMePage .contactRow {
   display: flex;
   align-items: center;
   gap: 16px;
@@ -517,12 +565,12 @@ body.aboutPage {
   border: 1px solid rgba(255, 0, 127, 0.2);
   transition: all 0.3s ease;
 }
-.contactRow:hover {
+.aboutMePage .contactRow:hover {
   background: rgba(255, 0, 127, 0.15);
   border-color: rgba(255, 0, 127, 0.5);
 }
 
-.contactIcon {
+.aboutMePage .contactIcon {
   font-size: 1.5rem;
   color: #ff3399;
 }
@@ -531,12 +579,26 @@ body.aboutPage {
    RESPONSIVE DESIGN
 ===================================================== */
 @media (max-width: 992px) {
-  .heroMainAligned, .forWhoModern {
+  .aboutMePage .heroMainAligned, .aboutMePage .forWhoModern {
     grid-template-columns: 1fr;
     gap: 40px;
     text-align: center;
   }
-  .heroTitle { font-size: 2.5rem; }
-  .heroActions { justify-content: center; }
-  .finalMascot { display: none; }
+  .aboutMePage .heroTitle { font-size: 2.5rem; }
+  .aboutMePage .heroActions { justify-content: center; }
+  .aboutMePage .finalMascot { display: none; }
+}
+
+@media (max-width: 560px) {
+  .aboutMePage .mathCard,
+  .aboutMePage .floatingBadge {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .aboutMePage .mathCard,
+  .aboutMePage .floatingBadge {
+    animation: none;
+  }
 }

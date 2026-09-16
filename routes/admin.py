@@ -1,5 +1,5 @@
 from functools import wraps
-from flask import Blueprint, render_template, session, redirect
+from flask import Blueprint, render_template, session, redirect, url_for
 from database import get_db
 from datetime import datetime
 
@@ -115,6 +115,14 @@ def dashboard():
         solutions_dates = [s['date'] for s in sol_data]
         solutions_counts = [s['count'] for s in sol_data]
 
+        # 6. Получение обращений в поддержку
+        cur.execute('''
+            SELECT t.*, u.username
+            FROM support_tickets t 
+            JOIN users u ON t.user_id = u.id 
+            ORDER BY t.created_at DESC
+        ''')
+        support_tickets = cur.fetchall()
     finally:
         cur.close()
         conn.close()
@@ -132,5 +140,42 @@ def dashboard():
         reg_dates=reg_dates,
         reg_counts=reg_counts,
         solutions_dates=solutions_dates,
-        solutions_counts=solutions_counts
+        solutions_counts=solutions_counts,
+        support_tickets=support_tickets  # Передаем под именем, которое ждет шаблон
     )
+
+
+# Маршрут для закрытия тикета поддержки
+@admin_bp.route('/ticket/close/<int:ticket_id>', methods=['POST'])
+@admin_only
+def close_ticket(ticket_id):
+    conn = get_db()
+    cur = conn.cursor()
+    try:
+        cur.execute(
+            "UPDATE support_tickets SET status = 'closed' WHERE id = %s;",
+            (ticket_id,)
+        )
+        conn.commit()
+    finally:
+        cur.close()
+        conn.close()
+    
+    return redirect(url_for('admin.dashboard'))
+
+@admin_bp.route('/ticket/delete/<int:ticket_id>', methods=['POST'])
+@admin_only
+def delete_ticket(ticket_id):
+    conn = get_db()
+    cur = conn.cursor()
+    try:
+        cur.execute(
+            "DELETE FROM support_tickets WHERE id = %s;",
+            (ticket_id,)
+        )
+        conn.commit()
+    finally:
+        cur.close()
+        conn.close()
+    
+    return redirect(url_for('admin.dashboard'))

@@ -6,14 +6,61 @@
   <title>Sinus — главная</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
   <script src="{{ url_for('static', filename='js/theme.js') }}" defer></script>
+  <style>
+    /* Полноэкранный темный фон и строгий центр для ВСЕХ модалок */
+    .modal {
+      position: fixed !important;
+      top: 0 !important;
+      left: 0 !important;
+      width: 100vw !important;
+      height: 100vh !important;
+      background: rgba(0, 0, 0, 0.65) !important;
+      z-index: 9999 !important;
+      display: none !important;
+      align-items: center !important;
+      justify-content: center !important;
+      padding: 20px !important;
+      box-sizing: border-box !important;
+    }
+
+    /* Когда активна — включаем flex, чтобы сработало центрирование */
+    .modal.active {
+      display: flex !important;
+    }
+
+    /* Внутреннее окошко для контактов и поддержки (такое же как у Pro) */
+    .modalContentBox {
+      background: var(--card-bg, #1e1e24) !important;
+      border: 1px solid rgba(255, 255, 255, 0.1) !important;
+      border-radius: 20px !important;
+      padding: 30px !important;
+      width: 100% !important;
+      max-width: 440px !important;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5) !important;
+      position: relative !important;
+      box-sizing: border-box !important;
+      max-height: 90vh !important;
+      overflow-y: auto !important;
+    }
+  </style>
 </head>
 <body>
+  {% if error %}
+    <div class="toast" id="toast">
+      <img
+        src="{{url_for('static', filename='images/mascot/errorMascot.png')}}"
+        class="mascot"
+        alt=""
+        >
+      <p class="error">{{ error }}</p>
+    </div>
+  {% endif %}
 
   <!-- =====================================================
        PRO MODAL
   ===================================================== -->
   {% if not tariff_info or not tariff_info.is_pro %}
-    <div id="proModal" class="proModal" onclick="closeProModal(event)">
+    <div id="proModal" class="proModal modal" onclick="closeProModal(event)">
       <div class="proModalContent">
         <button type="button" class="proModalClose" onclick="closeProModal()">&times;</button>
         <span class="proModalBadge">Тариф Pro</span>
@@ -23,11 +70,11 @@
         <div class="proFeatures">
           <div class="proFeature">
             <span class="proFeatureIcon">✓</span>
-            <span>Полный банк задач</span>
+            <span>Приоритетная поддержка</span>
           </div>
           <div class="proFeature">
             <span class="proFeatureIcon">✓</span>
-            <span>Все варианты ЕГЭ и ОГЭ</span>
+            <span>Генератор вариантов</span>
           </div>
           <div class="proFeature">
             <span class="proFeatureIcon">✓</span>
@@ -60,6 +107,76 @@
       </div>
     </div>
   {% endif %}
+
+  <!-- =====================================================
+       МОДАЛЬНОЕ ОКНО КОНТАКТОВ
+  ===================================================== -->
+  <div id="contacts" class="modal contactsModal" onclick="closeContactsOutside(event)">
+      <div class="modalContentBox">
+          <button class="closeModal" onclick="closeContacts()">&times;</button>
+          <div class="contactsHeader">
+              <span class="contactsEmoji">♡</span>
+              <div>
+                  <h2>Связаться с нами</h2>
+                  <p>Если нашли ошибку или хотите предложить улучшение</p>
+              </div>
+          </div>
+          <div class="contactsList">
+              <div class="contactItem">
+                  <span>✉</span>
+                  <div>
+                      <small>Почта</small>
+                      <p>anastasiyakreslina@gmail.com</p>
+                  </div>
+              </div>
+              <div class="contactItem">
+                  <span>↗</span>
+                  <div>
+                      <small>Telegram</small>
+                      <p>@krazern</p>
+                  </div>
+              </div>
+              <div class="contactItem">
+                  <span>◷</span>
+                  <div>
+                      <small>Время ответа</small>
+                      <p>обычно 1–2 дня</p>
+                  </div>
+              </div>
+          </div>
+          <p class="contactsNote">
+              Отвечаю на вопросы о платформе, предложения, сообщения об ошибках и отзывы.
+          </p>
+      </div>
+  </div>
+
+  <!-- =====================================================
+       МОДАЛЬНОЕ ОКНО ПОДДЕРЖКИ
+  ===================================================== -->
+  <div id="supportModal" class="modal contactsModal" onclick="closeSupportOutside(event)">
+    <div class="modalContentBox">
+      <button class="closeModal" onclick="closeSupportModal()">&times;</button>
+      <div class="contactsHeader">
+        <span class="contactsEmoji">💬</span>
+        <div>
+          <h2>Написать в поддержку</h2>
+          <p>Опишите ваш вопрос или проблему, и мы ответим в ближайшее время</p>
+        </div>
+      </div>
+
+      <!-- Добавлен id="supportForm" для JS-перехвата -->
+      <form id="supportForm" action="{{ url_for('main.send_support') }}" method="POST" class="settingsForm" style="margin-top: 20px;">
+        <label class="settingsLabel" style="display: flex; flex-direction: column; gap: 8px;">
+          Ваше сообщение
+          <textarea name="message" class="profileInput" rows="4" placeholder="Расскажите, что случилось..." required style="resize: vertical; padding: 12px; font-family: inherit;"></textarea>
+        </label>
+
+        <button type="submit" class="profilePrimaryButton" style="width: 100%; margin-top: 15px;">
+          Отправить обращение
+        </button>
+      </form>
+    </div>
+  </div>
 
   <!-- =====================================================
        HEADER
@@ -276,7 +393,7 @@
           <span class="footerColumnTitle">Помощь</span>
           <a href="/">FAQ</a>
           <button type="button" class="footerLinkBtn" onclick="openContacts()">Контакты</button>
-          <a href="/">Поддержка</a>
+          <button type="button" class="footerLinkBtn" onclick="openSupportModal()">Поддержка</button>
         </div>
 
         <div class="footerColumn">
@@ -293,6 +410,7 @@
        JS
   ===================================================== -->
   <script>
+    // Управление модальным окном Pro
     function openProModal() {
       const modal = document.getElementById("proModal");
       if (!modal) return;
@@ -308,9 +426,95 @@
       document.body.classList.remove("modalOpen");
     }
 
+    // Управление модальным окном Контактов
+    function openContacts() {
+      const modal = document.getElementById("contacts");
+      if (!modal) return;
+      modal.classList.add("active");
+      document.body.classList.add("modalOpen");
+    }
+
+    function closeContacts() {
+      const modal = document.getElementById("contacts");
+      if (!modal) return;
+      modal.classList.remove("active");
+      document.body.classList.remove("modalOpen");
+    }
+
+    function closeContactsOutside(event) {
+      if (event.target === event.currentTarget) {
+        closeContacts();
+      }
+    }
+
+    // Управление модальным окном Поддержки
+    function openSupportModal() {
+      const modal = document.getElementById("supportModal");
+      if (!modal) return;
+      modal.classList.add("active");
+      document.body.classList.add("modalOpen");
+    }
+
+    function closeSupportModal() {
+      const modal = document.getElementById("supportModal");
+      if (!modal) return;
+      modal.classList.remove("active");
+      document.body.classList.remove("modalOpen");
+    }
+
+    function closeSupportOutside(event) {
+      if (event.target === event.currentTarget) {
+        closeSupportModal();
+      }
+    }
+
+    // Закрытие всех модалок по клавише Escape
     document.addEventListener("keydown", function(event) {
       if (event.key === "Escape") {
         closeProModal();
+        closeContacts();
+        closeSupportModal();
+      }
+    });
+
+    // AJAX-отправка формы поддержки без перезагрузки страницы
+    document.addEventListener('DOMContentLoaded', () => {
+      const supportForm = document.getElementById('supportForm');
+      
+      if (supportForm) {
+        supportForm.addEventListener('submit', async function(e) {
+          e.preventDefault(); // Останавливаем стандартный переход страницы
+
+          const formData = new FormData(this);
+          const submitBtn = this.querySelector('button[type="submit"]');
+          const originalText = submitBtn.textContent;
+          
+          submitBtn.disabled = true;
+          submitBtn.textContent = 'Отправка...';
+
+          try {
+            const response = await fetch(this.action, {
+              method: 'POST',
+              body: formData
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+              alert(data.message);       // Показываем уведомление об успехе
+              this.reset();              // Очищаем форму
+              closeSupportModal();       // Закрываем модальное окно поддержки
+            } else {
+              alert(data.error || 'Произошла ошибка при отправке.');
+            }
+          } catch (err) {
+            console.error('Ошибка:', err);
+            alert('Не удалось отправить сообщение. Проверьте соединение.');
+          } finally {
+            submitBtn.disabled = false;
+            submitBtn.textContent = originalText;
+          }
+        });
       }
     });
   </script>

@@ -89,6 +89,34 @@
         </form>
     </div>
 
+    <!-- ==================== УДАЛЕНИЕ АККАУНТА ==================== -->
+    <div id="deleteModal" class="modal settingsModal" style="display: none;">
+        <button class="closeModal" onclick="closeDeleteModal()">&times;</button>
+        <div class="settingsHeader">
+            <span class="settingsIcon" style="color: #e00560;">⚠️</span>
+            <div>
+                <h2>Удаление аккаунта</h2>
+                <p>Это действие необратимо. Все данные будут удалены.</p>
+            </div>
+        </div>
+
+        <form method="POST" action="/delete_account" class="settingsForm" onsubmit="return validateDeleteForm(event)">
+            <label class="settingsLabel">
+                Введите фразу: <b>хочу удалить аккаунт</b>
+                <input type="text" id="deleteConfirmText" class="profileInput" placeholder="хочу удалить аккаунт" required>
+            </label>
+
+            <label class="settingsLabel">
+                Введите текущий пароль
+                <input type="password" name="password" id="deletePassword" class="profileInput" placeholder="Пароль" required>
+            </label>
+
+            <button type="submit" class="profilePrimaryButton" style="background-color: #e00560; color: white;">
+                Удалить аккаунт навсегда
+            </button>
+        </form>
+    </div>
+
     <!-- ==================== УВЕДОМЛЕНИЯ ==================== -->
     {% with messages = get_flashed_messages() %}
         {% for message in messages %}
@@ -111,6 +139,9 @@
             </a>
             <a href="{{ url_for('tasks.tasks') }}">
                 <span>▦</span> Банк заданий
+            </a>
+            <a href="{{url_for('theory.theory')}}">
+                <span>📖</span> Теория
             </a>
             <a href="{{ url_for('variants.tests') }}">
                 <span>✦</span> Варианты ЕГЭ
@@ -236,6 +267,19 @@
                     <button type="submit" class="profileSmallButton lightBox">Загрузить</button>
                 </form>
             </div>
+
+            <!-- Удаление аккаунта -->
+            <div class="profileSettingCard" style="border-color: rgba(224, 5, 96, 0.2);">
+                <div class="settingText">
+                    <span class="settingIcon">⚠️</span>
+                    <div>
+                        <h3>Удаление аккаунта</h3>
+                        <p>Безвозвратно удалить аккаунт и все данные</p>
+                    </div>
+                </div>
+
+                <button onclick="openDeleteModal()" class="profileSmallButton lightBox" style=" border-color: rgba(224, 5, 96, 0.3);">Удалить</button>
+            </div>
         </section>
     </main>
 
@@ -281,6 +325,27 @@
     </footer>   
 
     <script src="{{ url_for('static', filename='js/ui.js') }}"></script>
+    <script>
+        // Функции для управления модальным окном удаления
+        function openDeleteModal() {
+            document.getElementById('deleteModal').style.display = 'grid';
+        }
+        function closeDeleteModal() {
+            document.getElementById('deleteModal').style.display = 'none';
+        }
+
+        // Проверка введенной фразы перед отправкой формы
+        function validateDeleteForm(event) {
+            const inputField = document.getElementById('deleteConfirmText').value.trim();
+            // Сравнение в нижнем регистре для удобства
+            if (inputField.toLowerCase() !== 'хочу удалить аккаунт') {
+                alert('Неверная фраза подтверждения. Аккаунт не удален.');
+                event.preventDefault();
+                return false;
+            }
+            return true;
+        }
+    </script>
 </body>
 
 </html>

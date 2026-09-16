@@ -1,8 +1,12 @@
 /* =========================================================
 SINUS · ABOUT PAGE (CENTERED MASCOT ON TOP)
+Все селекторы скоуплены под .aboutProjectPage, чтобы не
+пересекаться с классами страницы .aboutMePage (about_me.html) —
+у обеих страниц раньше был одинаковый body class "aboutPage"
+и почти идентичные имена внутренних классов.
 ========================================================= */
 
-.aboutPage {
+.aboutProjectPage {
   --accent: #e00560;
   --accent-soft: rgba(224, 5, 96, .12);
   --ink: #111111;
@@ -12,13 +16,23 @@ SINUS · ABOUT PAGE (CENTERED MASCOT ON TOP)
   --dur-base: .5s;
   --dur-slow: .8s;
 
+  position: relative;
+  width: 100%;
   overflow-x: hidden;
   background: var(--background, #fafafa);
   scroll-behavior: smooth;
+  color: var(--ink);
+  box-sizing: border-box;
 }
 
-.aboutPage a,
-.aboutPage button {
+.aboutProjectPage *, 
+.aboutProjectPage *::before, 
+.aboutProjectPage *::after {
+  box-sizing: border-box;
+}
+
+.aboutProjectPage a,
+.aboutProjectPage button {
   transition: transform var(--dur-fast) var(--ease),
               box-shadow var(--dur-fast) var(--ease),
               background var(--dur-fast) var(--ease-soft),
@@ -26,7 +40,7 @@ SINUS · ABOUT PAGE (CENTERED MASCOT ON TOP)
               color var(--dur-fast) var(--ease-soft);
 }
 
-.aboutPage :focus-visible {
+.aboutProjectPage :focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 3px;
   border-radius: 4px;
@@ -35,39 +49,39 @@ SINUS · ABOUT PAGE (CENTERED MASCOT ON TOP)
 /* =========================================================
 BACKGROUND
 ========================================================= */
-.aboutBackground {
+.aboutProjectPage .aboutBackground {
   position: fixed;
   inset: 0;
   pointer-events: none;
-  z-index: -1;
+  z-index: 0;
   overflow: hidden;
 }
 
-.gridNoise {
+.aboutProjectPage .gridNoise {
   position: absolute;
   inset: 0;
-  background-image:
+  background-image: 
     linear-gradient(rgba(0,0,0,.025) 1px, transparent 1px),
     linear-gradient(90deg, rgba(0,0,0,.025) 1px, transparent 1px);
   background-size: 70px 70px;
   mask-image: linear-gradient(to bottom, black, transparent 80%);
 }
 
-.bgMath {
+.aboutProjectPage .bgMath {
   position: absolute;
   font-family: Georgia, serif;
   font-size: 100px;
   opacity: .035;
-  animation: backgroundFloat 16s var(--ease-soft) infinite;
+  animation: aboutProjectBackgroundFloat 16s var(--ease-soft) infinite;
   will-change: transform;
 }
 
-.bgMath1 { top: 10%; left: 4%; }
-.bgMath2 { top: 36%; right: 4%; animation-delay: -4s; }
-.bgMath3 { top: 65%; left: 5%; animation-delay: -8s; }
-.bgMath4 { bottom: 8%; right: 7%; animation-delay: -11s; }
+.aboutProjectPage .bgMath1 { top: 10%; left: 4%; }
+.aboutProjectPage .bgMath2 { top: 36%; right: 4%; animation-delay: -4s; }
+.aboutProjectPage .bgMath3 { top: 65%; left: 5%; animation-delay: -8s; }
+.aboutProjectPage .bgMath4 { bottom: 8%; right: 7%; animation-delay: -11s; }
 
-@keyframes backgroundFloat {
+@keyframes aboutProjectBackgroundFloat {
   0%, 100% { transform: translateY(0) rotate(-4deg); }
   50% { transform: translateY(-25px) rotate(4deg); }
 }
@@ -75,16 +89,17 @@ BACKGROUND
 /* =========================================================
 HERO LAYOUT & TOP BAR
 ========================================================= */
-.aboutHero {
+.aboutProjectPage .aboutHero {
   position: relative;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   padding: 25px clamp(25px, 6vw, 100px) 0;
   overflow: hidden;
+  z-index: 1;
 }
 
-.heroTopBar {
+.aboutProjectPage .heroTopBar {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -92,7 +107,7 @@ HERO LAYOUT & TOP BAR
   z-index: 10;
 }
 
-.aboutLogo {
+.aboutProjectPage .aboutLogo {
   font-size: 30px;
   font-weight: 800;
   color: inherit;
@@ -100,25 +115,26 @@ HERO LAYOUT & TOP BAR
   letter-spacing: -2px;
 }
 
-.aboutLogo span {
+.aboutProjectPage .aboutLogo span {
   color: var(--accent);
 }
 
-.aboutThemeButton {
+.aboutProjectPage .aboutThemeButton {
   border: 1px solid rgba(0,0,0,.1);
   background: rgba(255,255,255,.45);
   backdrop-filter: blur(15px);
   padding: 10px 15px;
   border-radius: 100px;
   cursor: pointer;
+  color: inherit;
 }
 
-.aboutThemeButton:hover {
+.aboutProjectPage .aboutThemeButton:hover {
   transform: translateY(-2px);
   box-shadow: 0 10px 24px rgba(0,0,0,.08);
 }
 
-.aboutThemeButton:active {
+.aboutProjectPage .aboutThemeButton:active {
   transform: translateY(0);
   transition-duration: .1s;
 }
@@ -126,7 +142,7 @@ HERO LAYOUT & TOP BAR
 /* =========================================================
 HERO MAIN (MASCOT TOP & CENTERED CONTENT)
 ========================================================= */
-.heroMain {
+.aboutProjectPage .heroMain {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -137,11 +153,11 @@ HERO MAIN (MASCOT TOP & CENTERED CONTENT)
   margin: 20px auto 0;
 }
 
-.heroVisualElevated {
+.aboutProjectPage .heroVisualElevated {
   transform: translateY(0);
 }
 
-.heroVisual {
+.aboutProjectPage .heroVisual {
   position: relative;
   flex: 0 0 auto;
   width: 100%;
@@ -154,22 +170,22 @@ HERO MAIN (MASCOT TOP & CENTERED CONTENT)
   z-index: 2;
 }
 
-.heroMascotGlow {
+.aboutProjectPage .heroMascotGlow {
   position: absolute;
   width: 340px;
   height: 340px;
   border-radius: 50%;
   background: var(--accent-soft);
   filter: blur(50px);
-  animation: glowPulse 6s var(--ease-soft) infinite;
+  animation: aboutProjectGlowPulse 6s var(--ease-soft) infinite;
 }
 
-@keyframes glowPulse {
+@keyframes aboutProjectGlowPulse {
   0%, 100% { opacity: .8; transform: scale(1); }
   50% { opacity: 1; transform: scale(1.06); }
 }
 
-.heroMascot {
+.aboutProjectPage .heroMascot {
   position: relative;
   z-index: 3;
   width: 100%;
@@ -178,11 +194,11 @@ HERO MAIN (MASCOT TOP & CENTERED CONTENT)
   display: block;
   object-fit: contain;
   filter: drop-shadow(0 25px 30px rgba(0, 0, 0, 0.14));
-  animation: mascotFloat 6s var(--ease-soft) infinite;
+  animation: aboutProjectMascotFloat 6s var(--ease-soft) infinite;
   will-change: transform;
 }
 
-@keyframes mascotFloat {
+@keyframes aboutProjectMascotFloat {
   0%, 100% { transform: translateY(0) rotate(-1deg); }
   50% { transform: translateY(-16px) rotate(1deg); }
 }
@@ -190,7 +206,7 @@ HERO MAIN (MASCOT TOP & CENTERED CONTENT)
 /* =========================================================
 INTERACTIVE FLOATING MATH CARDS
 ========================================================= */
-.mathCard {
+.aboutProjectPage .mathCard {
   position: absolute;
   z-index: 5;
   display: flex;
@@ -206,59 +222,60 @@ INTERACTIVE FLOATING MATH CARDS
   cursor: pointer;
   will-change: transform;
   white-space: nowrap;
+  color: var(--ink);
 }
 
-.mathCard span {
+.aboutProjectPage .mathCard span {
   font-size: 22px;
   color: var(--accent);
   transition: transform .35s var(--ease);
 }
 
-.mathCardInteractive:hover span {
+.aboutProjectPage .mathCardInteractive:hover span {
   transform: scale(1.1);
 }
 
-.mathCardInteractive {
+.aboutProjectPage .mathCardInteractive {
   transition: transform .35s var(--ease), box-shadow .35s var(--ease-soft), border-color .35s var(--ease-soft);
 }
 
-.cardRoot {
+.aboutProjectPage .cardRoot {
   top: 10%;
   left: 2%;
-  animation: cardFloatOne 7s var(--ease-soft) infinite;
+  animation: aboutProjectCardFloatOne 7s var(--ease-soft) infinite;
 }
 
-.cardPi {
+.aboutProjectPage .cardPi {
   top: 15%;
   right: 2%;
-  animation: cardFloatTwo 8s var(--ease-soft) infinite;
+  animation: aboutProjectCardFloatTwo 8s var(--ease-soft) infinite;
   animation-delay: -2s;
 }
 
-.cardSum {
+.aboutProjectPage .cardSum {
   bottom: 8%;
   left: 12%;
-  animation: cardFloatThree 9s var(--ease-soft) infinite;
+  animation: aboutProjectCardFloatThree 9s var(--ease-soft) infinite;
   animation-delay: -4s;
 }
 
-.mathCardInteractive:hover {
+.aboutProjectPage .mathCardInteractive:hover {
   transform: translateY(-6px) !important;
   box-shadow: 0 20px 40px rgba(0,0,0,.1);
   border-color: rgba(224, 5, 96, .3);
 }
 
-@keyframes cardFloatOne {
+@keyframes aboutProjectCardFloatOne {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-12px); }
 }
 
-@keyframes cardFloatTwo {
+@keyframes aboutProjectCardFloatTwo {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-16px); }
 }
 
-@keyframes cardFloatThree {
+@keyframes aboutProjectCardFloatThree {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-10px); }
 }
@@ -266,7 +283,7 @@ INTERACTIVE FLOATING MATH CARDS
 /* =========================================================
 HERO TEXT & COPY
 ========================================================= */
-.heroCopy {
+.aboutProjectPage .heroCopy {
   position: relative;
   z-index: 4;
   padding: 10px 0 60px;
@@ -275,8 +292,8 @@ HERO TEXT & COPY
   align-items: center;
 }
 
-.heroKicker,
-.sectionEyebrow {
+.aboutProjectPage .heroKicker,
+.aboutProjectPage .sectionEyebrow {
   display: inline-flex;
   align-items: center;
   gap: 9px;
@@ -284,25 +301,26 @@ HERO TEXT & COPY
   font-weight: 800;
   letter-spacing: .16em;
   color: var(--accent);
+  text-transform: uppercase;
 }
 
-.kickerDot {
+.aboutProjectPage .kickerDot {
   width: 7px;
   height: 7px;
   border-radius: 50%;
   background: var(--accent);
-  box-shadow:
+  box-shadow: 
     0 0 0 5px rgba(224,5,96,.08),
     0 0 20px rgba(224,5,96,.3);
-  animation: pulseDot 2.4s var(--ease-soft) infinite;
+  animation: aboutProjectPulseDot 2.4s var(--ease-soft) infinite;
 }
 
-@keyframes pulseDot {
+@keyframes aboutProjectPulseDot {
   0%, 100% { transform: scale(1); }
   50% { transform: scale(1.3); }
 }
 
-.heroTitle {
+.aboutProjectPage .heroTitle {
   margin: 15px 0 20px;
   font-size: clamp(50px, 7vw, 110px);
   line-height: .9;
@@ -310,11 +328,11 @@ HERO TEXT & COPY
   font-weight: 800;
 }
 
-.heroTitle span {
+.aboutProjectPage .heroTitle span {
   color: var(--accent);
 }
 
-.heroDescription {
+.aboutProjectPage .heroDescription {
   max-width: 620px;
   font-size: 18px;
   line-height: 1.65;
@@ -325,7 +343,7 @@ HERO TEXT & COPY
 /* =========================================================
 HERO BUTTONS
 ========================================================= */
-.heroActions {
+.aboutProjectPage .heroActions {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -333,8 +351,8 @@ HERO BUTTONS
   flex-wrap: wrap;
 }
 
-.heroPrimaryButton,
-.heroSecondaryButton {
+.aboutProjectPage .heroPrimaryButton,
+.aboutProjectPage .heroSecondaryButton {
   display: inline-flex;
   align-items: center;
   justify-content: space-between;
@@ -342,7 +360,7 @@ HERO BUTTONS
   border-radius: 100px;
 }
 
-.heroPrimaryButton {
+.aboutProjectPage .heroPrimaryButton {
   gap: 25px;
   padding: 14px 18px 14px 24px;
   color: white;
@@ -350,7 +368,7 @@ HERO BUTTONS
   font-weight: 700;
 }
 
-.heroPrimaryButton b {
+.aboutProjectPage .heroPrimaryButton b {
   display: grid;
   place-items: center;
   width: 34px;
@@ -361,22 +379,22 @@ HERO BUTTONS
   transition: transform var(--dur-fast) var(--ease);
 }
 
-.heroPrimaryButton:hover {
+.aboutProjectPage .heroPrimaryButton:hover {
   transform: translateY(-4px);
   box-shadow: 0 16px 32px rgba(0,0,0,.14);
 }
 
-.heroPrimaryButton:hover b {
+.aboutProjectPage .heroPrimaryButton:hover b {
   transform: translateX(3px);
 }
 
-.heroPrimaryButton:active,
-.heroSecondaryButton:active {
+.aboutProjectPage .heroPrimaryButton:active,
+.aboutProjectPage .heroSecondaryButton:active {
   transform: translateY(-1px);
   transition-duration: .1s;
 }
 
-.heroSecondaryButton {
+.aboutProjectPage .heroSecondaryButton {
   gap: 15px;
   padding: 15px 24px;
   border: 1px solid rgba(0,0,0,.12);
@@ -385,24 +403,24 @@ HERO BUTTONS
   backdrop-filter: blur(10px);
 }
 
-.heroSecondaryButton:hover {
+.aboutProjectPage .heroSecondaryButton:hover {
   transform: translateY(-3px);
   border-color: rgba(0,0,0,.2);
 }
 
-.heroSecondaryButton span {
+.aboutProjectPage .heroSecondaryButton span {
   display: inline-block;
   transition: transform var(--dur-fast) var(--ease);
 }
 
-.heroSecondaryButton:hover span {
+.aboutProjectPage .heroSecondaryButton:hover span {
   transform: translateY(3px);
 }
 
 /* =========================================================
 CIRCLE TEXT
 ========================================================= */
-.heroCircleText {
+.aboutProjectPage .heroCircleText {
   position: absolute;
   width: 135px;
   height: 135px;
@@ -412,23 +430,23 @@ CIRCLE TEXT
   place-items: center;
   border-radius: 50%;
   border: 1px solid rgba(0,0,0,.1);
-  animation: spinSlow 22s linear infinite;
+  animation: aboutProjectSpinSlow 22s linear infinite;
 }
 
-.heroCircleText span {
+.aboutProjectPage .heroCircleText span {
   font-size: 9px;
   letter-spacing: .25em;
   font-weight: 800;
 }
 
-@keyframes spinSlow {
+@keyframes aboutProjectSpinSlow {
   to { transform: rotate(360deg); }
 }
 
 /* =========================================================
 TICKER
 ========================================================= */
-.mathTicker {
+.aboutProjectPage .mathTicker {
   width: calc(100% + 200px);
   margin-left: -100px;
   overflow: hidden;
@@ -439,33 +457,34 @@ TICKER
   background: rgba(255,255,255,.3);
 }
 
-.tickerTrack {
+.aboutProjectPage .tickerTrack {
   display: flex;
   width: max-content;
   gap: 35px;
   align-items: center;
-  animation: tickerMove 34s linear infinite;
+  animation: aboutProjectTickerMove 34s linear infinite;
 }
 
-.tickerTrack span {
+.aboutProjectPage .tickerTrack span {
   font-family: Georgia, serif;
   font-size: 25px;
   white-space: nowrap;
   opacity: .55;
 }
 
-.tickerTrack i {
+.aboutProjectPage .tickerTrack i {
   color: var(--accent);
+  font-style: normal;
 }
 
-@keyframes tickerMove {
+@keyframes aboutProjectTickerMove {
   to { transform: translateX(-50%); }
 }
 
 /* =========================================================
 INTRO & FEATURES
 ========================================================= */
-.aboutIntro {
+.aboutProjectPage .aboutIntro {
   max-width: 1150px;
   margin: 150px auto;
   padding: 0 30px;
@@ -474,45 +493,45 @@ INTRO & FEATURES
   gap: 50px;
 }
 
-.introNumber {
+.aboutProjectPage .introNumber {
   font-size: 14px;
   color: var(--accent);
   font-weight: 800;
 }
 
-.introText h2,
-.featuresHeader h2,
-.howHeading h2,
-.forWhoContentModern h2,
-.finalCtaContent h2 {
+.aboutProjectPage .introText h2,
+.aboutProjectPage .featuresHeader h2,
+.aboutProjectPage .howHeading h2,
+.aboutProjectPage .forWhoContentModern h2,
+.aboutProjectPage .finalCtaContent h2 {
   font-size: clamp(45px, 6vw, 85px);
   line-height: .95;
   letter-spacing: -.055em;
   margin: 20px 0;
 }
 
-.introText h2 span,
-.featuresHeader h2 span,
-.howHeading h2 span,
-.forWhoContentModern h2 span,
-.finalCtaContent h2 span {
+.aboutProjectPage .introText h2 span,
+.aboutProjectPage .featuresHeader h2 span,
+.aboutProjectPage .howHeading h2 span,
+.aboutProjectPage .forWhoContentModern h2 span,
+.aboutProjectPage .finalCtaContent h2 span {
   color: var(--accent);
 }
 
-.introText p {
+.aboutProjectPage .introText p {
   max-width: 650px;
   font-size: 18px;
   line-height: 1.7;
   opacity: .65;
 }
 
-.featuresModern {
+.aboutProjectPage .featuresModern {
   max-width: 1250px;
   margin: 0 auto 170px;
   padding: 0 30px;
 }
 
-.featuresHeader {
+.aboutProjectPage .featuresHeader {
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
@@ -520,26 +539,26 @@ INTRO & FEATURES
   gap: 50px;
 }
 
-.featuresHeader > p {
+.aboutProjectPage .featuresHeader > p {
   max-width: 350px;
   opacity: .55;
   line-height: 1.6;
 }
 
-.heroFeatures {
+.aboutProjectPage .heroFeatures {
   display: flex;
   justify-content: center;
   margin-top: 40px;
   width: 100%;
 }
 
-.featureGrid {
+.aboutProjectPage .featureGrid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 18px;
 }
 
-.featureCard {
+.aboutProjectPage .featureCard {
   position: relative;
   min-height: 390px;
   padding: 30px;
@@ -551,20 +570,20 @@ INTRO & FEATURES
   transition: transform .5s var(--ease), box-shadow .5s var(--ease), border-color .5s var(--ease-soft);
 }
 
-.featureCard:hover {
+.aboutProjectPage .featureCard:hover {
   transform: translateY(-8px);
   box-shadow: 0 26px 60px rgba(0,0,0,.09);
   border-color: rgba(224,5,96,.2);
 }
 
-.featureCardTop {
+.aboutProjectPage .featureCardTop {
   display: flex;
   justify-content: space-between;
   font-size: 12px;
   opacity: .5;
 }
 
-.featureIcon {
+.aboutProjectPage .featureIcon {
   margin-top: 35px;
   font-family: Georgia, serif;
   font-size: 65px;
@@ -572,13 +591,13 @@ INTRO & FEATURES
   line-height: 1;
 }
 
-.featureCard h3 {
+.aboutProjectPage .featureCard h3 {
   font-size: 30px;
   letter-spacing: -.04em;
   margin: 15px 0 10px;
 }
 
-.featureCard p {
+.aboutProjectPage .featureCard p {
   max-width: 440px;
   line-height: 1.6;
   opacity: .6;
@@ -587,14 +606,14 @@ INTRO & FEATURES
 /* =========================================================
 STATS PREVIEW
 ========================================================= */
-.statsPreview {
+.aboutProjectPage .statsPreview {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 60px;
 }
 
-.statsCircle {
+.aboutProjectPage .statsCircle {
   width: 170px;
   height: 170px;
   display: flex;
@@ -608,34 +627,34 @@ STATS PREVIEW
   transition: transform .6s var(--ease);
 }
 
-.statsCircle span {
+.aboutProjectPage .statsCircle span {
   font-size: 35px;
   font-weight: 800;
   transform: rotate(25deg);
 }
 
-.statsCircle small {
+.aboutProjectPage .statsCircle small {
   font-size: 9px;
   letter-spacing: .12em;
   opacity: .5;
   transform: rotate(25deg);
 }
 
-.statsBars {
+.aboutProjectPage .statsBars {
   width: 180px;
   display: flex;
   flex-direction: column;
   gap: 12px;
 }
 
-.statsBars div {
+.aboutProjectPage .statsBars div {
   height: 7px;
   background: rgba(0,0,0,.07);
   border-radius: 10px;
   overflow: hidden;
 }
 
-.statsBars span {
+.aboutProjectPage .statsBars span {
   display: block;
   height: 100%;
   border-radius: inherit;
@@ -646,24 +665,24 @@ STATS PREVIEW
 /* =========================================================
 HOW IT WORKS
 ========================================================= */
-.howSection {
+.aboutProjectPage .howSection {
   max-width: 1100px;
   margin: 0 auto 180px;
   padding: 0 30px;
 }
 
-.howHeading {
+.aboutProjectPage .howHeading {
   margin-bottom: 80px;
 }
 
-.process {
+.aboutProjectPage .process {
   position: relative;
   display: flex;
   flex-direction: column;
   gap: 55px;
 }
 
-.processLine {
+.aboutProjectPage .processLine {
   position: absolute;
   left: 29px;
   top: 35px;
@@ -672,7 +691,7 @@ HOW IT WORKS
   background: linear-gradient(to bottom, var(--accent), rgba(224,5,96,.05));
 }
 
-.processStep {
+.aboutProjectPage .processStep {
   position: relative;
   display: grid;
   grid-template-columns: 60px 1fr;
@@ -680,7 +699,7 @@ HOW IT WORKS
   align-items: start;
 }
 
-.processCircle {
+.aboutProjectPage .processCircle {
   position: relative;
   z-index: 2;
   width: 60px;
@@ -696,31 +715,32 @@ HOW IT WORKS
   transition: transform .4s var(--ease), box-shadow .4s var(--ease);
 }
 
-.processStep:hover .processCircle {
+.aboutProjectPage .processStep:hover .processCircle {
   transform: scale(1.08);
   box-shadow: 0 0 0 8px rgba(224,5,96,.06);
 }
 
-.processFinal {
+.aboutProjectPage .processFinal {
   background: var(--accent);
   color: white;
   border: none;
   box-shadow: 0 0 0 10px rgba(224,5,96,.08);
 }
 
-.processStep span {
+.aboutProjectPage .processStep span {
   font-size: 9px;
   letter-spacing: .15em;
   color: var(--accent);
   font-weight: 800;
+  display: inline-block;
 }
 
-.processStep h3 {
+.aboutProjectPage .processStep h3 {
   font-size: 30px;
   margin: 8px 0;
 }
 
-.processStep p {
+.aboutProjectPage .processStep p {
   max-width: 500px;
   line-height: 1.6;
   opacity: .6;
@@ -729,7 +749,7 @@ HOW IT WORKS
 /* =========================================================
 FOR WHO SECTION
 ========================================================= */
-.forWhoModern {
+.aboutProjectPage .forWhoModern {
   max-width: 1250px;
   margin: 0 auto 180px;
   padding: 0 30px;
@@ -739,31 +759,31 @@ FOR WHO SECTION
   align-items: center;
 }
 
-.forWhoVisual {
+.aboutProjectPage .forWhoVisual {
   position: relative;
   min-height: 550px;
   display: grid;
   place-items: center;
 }
 
-.forWhoOrb {
+.aboutProjectPage .forWhoOrb {
   position: absolute;
   width: 400px;
   height: 400px;
   border-radius: 50%;
   background: radial-gradient(circle, rgba(224,5,96,.17), transparent 68%);
-  animation: glowPulse 7s var(--ease-soft) infinite;
+  animation: aboutProjectGlowPulse 7s var(--ease-soft) infinite;
 }
 
-.forWhoVisual img {
+.aboutProjectPage .forWhoVisual img {
   position: relative;
   z-index: 2;
   width: 330px;
   filter: drop-shadow(0 30px 30px rgba(0,0,0,.14));
-  animation: mascotFloat 6s var(--ease-soft) infinite;
+  animation: aboutProjectMascotFloat 6s var(--ease-soft) infinite;
 }
 
-.floatingBadge {
+.aboutProjectPage .floatingBadge {
   position: absolute;
   z-index: 5;
   display: flex;
@@ -775,38 +795,39 @@ FOR WHO SECTION
   backdrop-filter: blur(15px);
   box-shadow: 0 14px 34px rgba(0,0,0,.07);
   font-size: 12px;
-  animation: cardFloat 6s var(--ease-soft) infinite;
+  animation: aboutProjectCardFloat 6s var(--ease-soft) infinite;
+  color: var(--ink);
 }
 
-.floatingBadge span {
+.aboutProjectPage .floatingBadge span {
   color: var(--accent);
   font-weight: 800;
 }
 
-.badgeOne { top: 17%; left: 3%; }
-.badgeTwo { top: 40%; right: 0; animation-delay: -2.5s; }
-.badgeThree { bottom: 15%; left: 8%; animation-delay: -4.5s; }
+.aboutProjectPage .badgeOne { top: 17%; left: 3%; }
+.aboutProjectPage .badgeTwo { top: 40%; right: 0; animation-delay: -2.5s; }
+.aboutProjectPage .badgeThree { bottom: 15%; left: 8%; animation-delay: -4.5s; }
 
-@keyframes cardFloat {
+@keyframes aboutProjectCardFloat {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-10px); }
 }
 
-.forWhoContentModern > p {
+.aboutProjectPage .forWhoContentModern > p {
   max-width: 600px;
   line-height: 1.7;
   opacity: .6;
   font-size: 17px;
 }
 
-.forWhoPoints {
+.aboutProjectPage .forWhoPoints {
   margin-top: 35px;
   display: flex;
   flex-direction: column;
   gap: 12px;
 }
 
-.forWhoPoints > div {
+.aboutProjectPage .forWhoPoints > div {
   display: flex;
   align-items: center;
   gap: 18px;
@@ -815,18 +836,18 @@ FOR WHO SECTION
   transition: padding-left .35s var(--ease), border-color .35s var(--ease-soft);
 }
 
-.forWhoPoints > div:hover {
+.aboutProjectPage .forWhoPoints > div:hover {
   padding-left: 8px;
   border-color: rgba(224,5,96,.3);
 }
 
-.forWhoPoints span {
+.aboutProjectPage .forWhoPoints span {
   font-size: 11px;
   color: var(--accent);
   font-weight: 800;
 }
 
-.forWhoPoints p {
+.aboutProjectPage .forWhoPoints p {
   margin: 0;
   font-size: 14px;
 }
@@ -834,7 +855,7 @@ FOR WHO SECTION
 /* =========================================================
 FINAL CTA
 ========================================================= */
-.finalCta {
+.aboutProjectPage .finalCta {
   position: relative;
   max-width: 1400px;
   min-height: 650px;
@@ -848,7 +869,7 @@ FINAL CTA
   color: white;
 }
 
-.finalCta::before {
+.aboutProjectPage .finalCta::before {
   content: "";
   position: absolute;
   width: 600px;
@@ -858,34 +879,36 @@ FINAL CTA
   border-radius: 50%;
   background: radial-gradient(circle, rgba(224,5,96,.45), transparent 68%);
   filter: blur(15px);
-  animation: glowPulse 8s var(--ease-soft) infinite;
+  animation: aboutProjectGlowPulse 8s var(--ease-soft) infinite;
 }
 
-.ctaNoise {
+.aboutProjectPage .ctaNoise {
   position: absolute;
   inset: 0;
   opacity: .04;
   background-image: radial-gradient(white 1px, transparent 1px);
   background-size: 5px 5px;
+  pointer-events: none;
 }
 
-.finalCtaContent {
+.aboutProjectPage .finalCtaContent {
   position: relative;
   z-index: 4;
 }
 
-.finalCtaContent h2 {
+.aboutProjectPage .finalCtaContent h2 {
   max-width: 800px;
   margin-top: 25px;
+  color: white;
 }
 
-.finalCtaContent p {
+.aboutProjectPage .finalCtaContent p {
   opacity: .6;
   font-size: 17px;
   margin: 25px 0 35px;
 }
 
-.finalCtaButton {
+.aboutProjectPage .finalCtaButton {
   display: inline-flex;
   align-items: center;
   gap: 30px;
@@ -897,7 +920,7 @@ FINAL CTA
   font-weight: 700;
 }
 
-.finalCtaButton b {
+.aboutProjectPage .finalCtaButton b {
   display: grid;
   place-items: center;
   width: 45px;
@@ -907,33 +930,34 @@ FINAL CTA
   background: var(--accent);
   font-size: 22px;
   transition: transform var(--dur-fast) var(--ease);
+  font-style: normal;
 }
 
-.finalCtaButton:hover {
+.aboutProjectPage .finalCtaButton:hover {
   transform: translateY(-5px);
   box-shadow: 0 22px 48px rgba(0,0,0,.28);
 }
 
-.finalCtaButton:hover b {
+.aboutProjectPage .finalCtaButton:hover b {
   transform: rotate(45deg);
 }
 
-.finalCtaButton:active {
+.aboutProjectPage .finalCtaButton:active {
   transform: translateY(-1px);
   transition-duration: .1s;
 }
 
-.finalMascot {
+.aboutProjectPage .finalMascot {
   position: absolute;
   z-index: 3;
   width: 430px;
   right: 7%;
   bottom: -30px;
   filter: drop-shadow(0 25px 30px rgba(0,0,0,.35));
-  animation: mascotFloat 6s var(--ease-soft) infinite;
+  animation: aboutProjectMascotFloat 6s var(--ease-soft) infinite;
 }
 
-.ctaMath {
+.aboutProjectPage .ctaMath {
   position: absolute;
   z-index: 2;
   font-family: Georgia, serif;
@@ -942,14 +966,14 @@ FINAL CTA
   font-size: 120px;
 }
 
-.ctaMathOne { top: 8%; right: 38%; }
-.ctaMathTwo { bottom: 10%; right: 42%; }
-.ctaMathThree { top: 30%; left: 45%; }
+.aboutProjectPage .ctaMathOne { top: 8%; right: 38%; }
+.aboutProjectPage .ctaMathTwo { bottom: 10%; right: 42%; }
+.aboutProjectPage .ctaMathThree { top: 30%; left: 45%; }
 
 /* =========================================================
 CONTACT MODAL
 ========================================================= */
-.aboutContacts {
+.aboutProjectPage .aboutContacts {
   position: fixed;
   inset: 0;
   z-index: 1000;
@@ -958,73 +982,75 @@ CONTACT MODAL
   background: rgba(0,0,0,.45);
   backdrop-filter: blur(15px);
   padding: 20px;
-  animation: fadeIn .35s var(--ease-soft);
+  animation: aboutProjectFadeIn .35s var(--ease-soft);
 }
 
-@keyframes fadeIn {
+@keyframes aboutProjectFadeIn {
   from { opacity: 0; }
   to { opacity: 1; }
 }
 
-.contactsModalContent {
+.aboutProjectPage .contactsModalContent {
   position: relative;
   width: min(520px, 100%);
   padding: 45px;
   border-radius: 30px;
   background: var(--background, #fafafa);
   box-shadow: 0 40px 90px rgba(0,0,0,.22);
-  animation: modalRise .4s var(--ease);
+  animation: aboutProjectModalRise .4s var(--ease);
+  color: var(--ink);
 }
 
-@keyframes modalRise {
+@keyframes aboutProjectModalRise {
   from { opacity: 0; transform: translateY(18px) scale(.98); }
   to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
-.contactsMiniLabel {
+.aboutProjectPage .contactsMiniLabel {
   font-size: 10px;
   color: var(--accent);
   font-weight: 800;
   letter-spacing: .15em;
+  text-transform: uppercase;
 }
 
-.contactsModalContent h2 {
+.aboutProjectPage .contactsModalContent h2 {
   font-size: 40px;
   letter-spacing: -.05em;
   margin: 15px 0 10px;
 }
 
-.contactsModalContent > p {
+.aboutProjectPage .contactsModalContent > p {
   opacity: .6;
   line-height: 1.6;
 }
 
-.contactsClose {
+.aboutProjectPage .contactsClose {
   position: absolute;
   top: 25px;
   right: 30px;
   z-index: 5;
   border: 0;
   background: transparent;
-  color: white;
+  color: inherit;
   font-size: 35px;
   cursor: pointer;
   transition: transform var(--dur-fast) var(--ease), opacity var(--dur-fast) var(--ease-soft);
 }
 
-.contactsClose:hover {
+.aboutProjectPage .contactsClose:hover {
   transform: rotate(90deg);
   opacity: .7;
 }
 
-.contactRows {
+.aboutProjectPage .contactRows {
   margin-top: 30px;
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
 
-.contactRow {
+.aboutProjectPage .contactRow {
   display: flex;
   align-items: center;
   gap: 15px;
@@ -1032,14 +1058,16 @@ CONTACT MODAL
   border-radius: 15px;
   background: rgba(0,0,0,.035);
   transition: background var(--dur-fast) var(--ease-soft), transform var(--dur-fast) var(--ease);
+  text-decoration: none;
+  color: inherit;
 }
 
-.contactRow:hover {
+.aboutProjectPage .contactRow:hover {
   background: rgba(0,0,0,.055);
   transform: translateX(4px);
 }
 
-.contactRow > span {
+.aboutProjectPage .contactRow > span {
   width: 40px;
   height: 40px;
   display: grid;
@@ -1049,19 +1077,19 @@ CONTACT MODAL
   color: var(--accent);
 }
 
-.contactRow small {
+.aboutProjectPage .contactRow small {
   display: block;
   font-size: 10px;
   opacity: .5;
 }
 
-.contactRow strong {
+.aboutProjectPage .contactRow strong {
   display: block;
   margin-top: 3px;
   font-size: 14px;
 }
 
-.contactHint {
+.aboutProjectPage .contactHint {
   margin-top: 20px;
   padding: 15px;
   border-radius: 14px;
@@ -1074,69 +1102,72 @@ CONTACT MODAL
 /* =========================================================
 REVEAL ANIMATIONS
 ========================================================= */
-.reveal {
+.aboutProjectPage .reveal {
   opacity: 0;
   transform: translateY(28px);
   transition: opacity var(--dur-slow) var(--ease), transform var(--dur-slow) var(--ease);
   will-change: transform, opacity;
 }
 
-.reveal.active {
+.aboutProjectPage .reveal.active {
   opacity: 1;
   transform: translateY(0);
 }
 
-.delay-1 { transition-delay: .1s; }
-.delay-2 { transition-delay: .2s; }
-.delay-3 { transition-delay: .3s; }
+.aboutProjectPage .delay-1 { transition-delay: .1s; }
+.aboutProjectPage .delay-2 { transition-delay: .2s; }
+.aboutProjectPage .delay-3 { transition-delay: .3s; }
 
 /* =========================================================
-DARK THEME
+DARK THEME (Scoped to .aboutProjectPage)
 ========================================================= */
-.dark-theme .aboutPage,
-[data-theme="dark"] .aboutPage {
+.aboutProjectPage.dark-theme,
+[data-theme="dark"] .aboutProjectPage {
   background: #101010;
   color: #f5f5f5;
 }
 
-.dark-theme .aboutThemeButton,
-[data-theme="dark"] .aboutThemeButton {
+.aboutProjectPage.dark-theme .aboutThemeButton,
+[data-theme="dark"] .aboutProjectPage .aboutThemeButton {
   background: rgba(30,30,30,.65);
   border-color: rgba(255,255,255,.1);
   color: white;
 }
 
-.dark-theme .featureCard,
-[data-theme="dark"] .featureCard {
+.aboutProjectPage.dark-theme .featureCard,
+[data-theme="dark"] .aboutProjectPage .featureCard {
   background: linear-gradient(135deg, rgba(35,35,35,.8), rgba(25,25,25,.6));
   border-color: rgba(255,255,255,.08);
+  color: #f5f5f5;
 }
 
-.dark-theme .mathCard,
-[data-theme="dark"] .mathCard,
-.dark-theme .floatingBadge,
-[data-theme="dark"] .floatingBadge {
+.aboutProjectPage.dark-theme .mathCard,
+[data-theme="dark"] .aboutProjectPage .mathCard,
+.aboutProjectPage.dark-theme .floatingBadge,
+[data-theme="dark"] .aboutProjectPage .floatingBadge {
   background: rgba(30,30,30,.8);
   border-color: rgba(255,255,255,.08);
+  color: #f5f5f5;
 }
 
-.dark-theme .processCircle,
-[data-theme="dark"] .processCircle {
+.aboutProjectPage.dark-theme .processCircle,
+[data-theme="dark"] .aboutProjectPage .processCircle {
   background: #101010;
 }
 
-.dark-theme .aboutContacts .contactsModalContent,
-[data-theme="dark"] .aboutContacts .contactsModalContent {
+.aboutProjectPage.dark-theme .aboutContacts .contactsModalContent,
+[data-theme="dark"] .aboutProjectPage .aboutContacts .contactsModalContent {
   background: #181818;
+  color: #f5f5f5;
 }
 
-.dark-theme .contactRow,
-[data-theme="dark"] .contactRow {
+.aboutProjectPage.dark-theme .contactRow,
+[data-theme="dark"] .aboutProjectPage .contactRow {
   background: rgba(255,255,255,.04);
 }
 
-.dark-theme .contactRow:hover,
-[data-theme="dark"] .contactRow:hover {
+.aboutProjectPage.dark-theme .contactRow:hover,
+[data-theme="dark"] .aboutProjectPage .contactRow:hover {
   background: rgba(255,255,255,.07);
 }
 
@@ -1144,14 +1175,14 @@ DARK THEME
 REDUCED MOTION
 ========================================================= */
 @media (prefers-reduced-motion: reduce) {
-  .aboutPage * {
+  .aboutProjectPage * {
     animation-duration: .01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: .01ms !important;
     scroll-behavior: auto !important;
   }
 
-  .reveal {
+  .aboutProjectPage .reveal {
     opacity: 1;
     transform: none;
   }
@@ -1161,149 +1192,197 @@ REDUCED MOTION
 RESPONSIVE (TABLET & MOBILE)
 ========================================================= */
 @media (max-width: 992px) {
-  .heroVisual {
+  .aboutProjectPage .heroVisual {
     max-width: 380px;
     height: 280px;
   }
 
-  .heroMascot {
+  .aboutProjectPage .heroMascot {
     max-width: 200px;
   }
 
-  .featureGrid {
+  .aboutProjectPage .featureGrid {
     grid-template-columns: 1fr;
   }
 
-  .forWhoModern {
+  .aboutProjectPage .forWhoModern {
     grid-template-columns: 1fr;
     gap: 30px;
   }
 
-  .finalMascot {
+  .aboutProjectPage .finalMascot {
     width: 280px;
     opacity: .45;
     right: -40px;
   }
 }
 
-@media (max-width: 600px) {
-  .aboutHero {
-    padding: 20px 18px 0;
+@media (max-width: 768px) {
+  .aboutProjectPage {
+    overflow-x: hidden !important;
+    width: 100%;
   }
 
-  .heroTitle {
-    font-size: 52px;
+  .aboutProjectPage .aboutHero {
+    min-height: auto;
+    padding: 20px 16px 40px;
   }
 
-  .heroDescription {
+  .aboutProjectPage .heroTitle {
+    font-size: clamp(38px, 11vw, 54px) !important;
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    word-break: break-word;
+  }
+
+  .aboutProjectPage .heroDescription {
+    font-size: 16px;
+    line-height: 1.5;
+    padding: 0 5px;
+  }
+
+  .aboutProjectPage .heroVisual {
+    height: 260px;
+    max-width: 100%;
+  }
+
+  .aboutProjectPage .heroMascot {
+    max-width: 160px !important;
+  }
+
+  .aboutProjectPage .heroMascotGlow {
+    width: 220px;
+    height: 220px;
+  }
+
+  .aboutProjectPage .mathCard {
+    padding: 6px 10px;
+    font-size: 11px;
+    border-radius: 10px;
+  }
+
+  .aboutProjectPage .mathCard span {
     font-size: 16px;
   }
 
-  .heroVisual {
-    max-width: 300px;
-    height: 240px;
+  .aboutProjectPage .cardRoot { top: 5%; left: 0; }
+  .aboutProjectPage .cardPi { top: 10%; right: 0; }
+  .aboutProjectPage .cardSum { bottom: 5%; left: 5%; }
+
+  .aboutProjectPage .heroActions {
+    flex-direction: column;
+    width: 100%;
+    gap: 12px;
   }
 
-  .heroMascot {
-    max-width: 170px;
+  .aboutProjectPage .heroPrimaryButton,
+  .aboutProjectPage .heroSecondaryButton {
+    width: 100%;
+    justify-content: center;
   }
 
-  .heroMascotGlow {
-    width: 240px;
-    height: 240px;
+  .aboutProjectPage .aboutIntro {
+    margin: 60px auto;
+    padding: 0 16px;
+    grid-template-columns: 1fr;
+    gap: 10px;
   }
 
-  .mathCard {
-    transform: scale(.8);
+  .aboutProjectPage .introText h2,
+  .aboutProjectPage .featuresHeader h2,
+  .aboutProjectPage .howHeading h2,
+  .aboutProjectPage .forWhoContentModern h2,
+  .aboutProjectPage .finalCtaContent h2 {
+    font-size: clamp(32px, 9vw, 44px) !important;
   }
 
-  .cardRoot { left: -15px; top: 5%; }
-  .cardPi { right: -15px; top: 10%; }
-  .cardSum { left: -5px; bottom: 0; }
-
-  .heroCircleText {
-    display: none;
+  .aboutProjectPage .featuresModern {
+    padding: 0 16px;
+    margin-bottom: 80px;
   }
 
-  .mathTicker {
-    width: calc(100% + 36px);
-    margin-left: -18px;
-  }
-
-  .aboutIntro {
-    margin: 80px auto;
+  .aboutProjectPage .featureGrid {
     grid-template-columns: 1fr;
     gap: 15px;
   }
 
-  .featuresHeader {
-    flex-direction: column;
-    align-items: flex-start;
+  .aboutProjectPage .featureCard {
+    min-height: auto;
+    padding: 24px 20px;
   }
 
-  .statsPreview {
-    gap: 20px;
-    flex-direction: column;
+  .aboutProjectPage .howSection {
+    padding: 0 16px;
+    margin-bottom: 100px;
   }
 
-  .statsCircle {
-    width: 130px;
-    height: 130px;
+  .aboutProjectPage .processStep {
+    grid-template-columns: 45px 1fr;
+    gap: 15px;
   }
 
-  .statsBars {
-    width: 100%;
+  .aboutProjectPage .processCircle {
+    width: 45px;
+    height: 45px;
+    font-size: 11px;
   }
 
-  .processStep {
-    grid-template-columns: 50px 1fr;
-    gap: 20px;
+  .aboutProjectPage .processLine {
+    left: 22px;
   }
 
-  .processCircle {
-    width: 50px;
-    height: 50px;
+  .aboutProjectPage .processStep h3 {
+    font-size: 22px;
   }
 
-  .processLine {
-    left: 24px;
+  .aboutProjectPage .forWhoModern {
+    grid-template-columns: 1fr;
+    padding: 0 16px;
+    gap: 40px;
+    margin-bottom: 100px;
   }
 
-  .forWhoVisual {
-    min-height: 400px;
+  .aboutProjectPage .forWhoVisual {
+    min-height: 320px;
   }
 
-  .forWhoVisual img {
-    width: 250px;
+  .aboutProjectPage .forWhoVisual img {
+    width: 220px;
   }
 
-  .forWhoOrb {
-    width: 300px;
-    height: 300px;
-  }
-
-  .floatingBadge {
-    transform: scale(.85);
-  }
-
-  .finalCta {
-    border-radius: 30px;
-    min-height: 570px;
-    margin: 0 15px 60px;
-    padding: 40px 30px;
-  }
-
-  .finalCtaContent h2 {
-    font-size: 45px;
-  }
-
-  .finalMascot {
+  .aboutProjectPage .forWhoOrb {
     width: 260px;
-    right: -50px;
-    bottom: -10px;
+    height: 260px;
   }
 
-  .contactsModalContent {
-    padding: 30px 22px;
+  .aboutProjectPage .finalCta {
+    border-radius: 25px;
+    margin: 0 16px 60px;
+    padding: 35px 20px;
+    min-height: auto;
+  }
+
+  .aboutProjectPage .finalMascot {
+    display: none;
+  }
+
+  .aboutProjectPage .finalCtaButton {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .aboutProjectPage .aboutContacts {
+    padding: 10px;
+  }
+
+  .aboutProjectPage .contactsModalContent {
+    padding: 25px 18px;
+    border-radius: 20px;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+
+  .aboutProjectPage .contactsModalContent h2 {
+    font-size: 28px;
   }
 }

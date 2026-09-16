@@ -6,11 +6,16 @@ from datetime import date, datetime, timedelta
 
 
 def get_first_attempt_stats(cur):
-    """Процент правильных решений с первой попытки по каждой задаче."""
+    """Процент правильных решений с первой попытки по каждой задаче.
+
+    И числитель, и знаменатель считаются только по строкам
+    с attempt_number = 1 — повторные попытки (пересдачи) в статистику
+    сложности не попадают вообще.
+    """
     cur.execute('''
         SELECT
             task_id,
-            COUNT(*) AS total,
+            COUNT(CASE WHEN attempt_number = 1 THEN 1 END) AS total_first_attempts,
             SUM(CASE WHEN attempt_number = 1 AND correct = 1 THEN 1 ELSE 0 END) AS correct_first_attempts
         FROM task_attempts
         GROUP BY task_id
@@ -18,9 +23,9 @@ def get_first_attempt_stats(cur):
 
     stats = {}
     for r in cur.fetchall():
-        total = r['total'] or 0
-        first = r['correct_first_attempts'] or 0
-        stats[r['task_id']] = round((first / total * 100) if total else 0, 2)
+        total = r['total_first_attempts'] or 0
+        correct_first = r['correct_first_attempts'] or 0
+        stats[r['task_id']] = round((correct_first / total * 100) if total else 0, 2)
 
     return stats
 

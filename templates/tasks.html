@@ -13,6 +13,41 @@
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
   <script defer src="{{ url_for('static', filename='js/theme.js') }}"></script>
+
+  <style>
+    .filtersGrid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      align-items: end;
+    }
+    .filterSubmitBlock {
+      display: flex;
+      align-items: flex-end;
+    }
+    .filterSubmitBlock .taskButton {
+      width: 105%;
+    }
+    .difficultyTag {
+      font-size: 12px;
+      font-weight: 600;
+      padding: 2px 10px;
+      border-radius: 999px;
+      white-space: nowrap;
+    }
+    .difficultyTag.easy {
+      background: #22c55e22;
+      color: #16a34a;
+    }
+    .difficultyTag.medium {
+      background: #f59e0b22;
+      color: #b45309;
+    }
+    .difficultyTag.hard {
+      background: #ef444422;
+      color: #dc2626;
+    }
+  </style>
 </head>
 
 <body class="tasksPage">
@@ -32,6 +67,9 @@
 
       <a href="{{ url_for('tasks.tasks') }}" class="active">
         <span>▦</span> Банк заданий
+      </a>
+      <a href="{{url_for('theory.theory')}}">
+        <span>📖</span> Теория
       </a>
 
       <a href="{{ url_for('variants.tests') }}">
@@ -95,31 +133,50 @@
         <span class="filterIcon">⌕</span>
       </div>
 
-      <div class="filtersGrid">
+      <!-- Единая форма: все фильтры применяются одновременно -->
+      <form method="GET" action="{{ url_for('tasks.tasks') }}" class="filtersGrid">
+
         <!-- НОМЕР -->
-        <form method="GET" action="{{ url_for('tasks.tasks') }}" class="filterBlock">
+        <div class="filterBlock">
           <label>Номер задания</label>
           <div class="filterRow">
             <select name="number" class="taskInput">
               <option value="">Все задания</option>
               {% for i in range(1, 21) %}
-                <option value="{{ i }}">№{{ i }}</option>
+                <option value="{{ i }}" {% if request.args.get('number') == i|string %}selected{% endif %}>№{{ i }}</option>
               {% endfor %}
             </select>
-            <button type="submit" class="taskButton">Применить</button>
           </div>
-        </form>
+        </div>
 
         <!-- ID -->
-        <form method="GET" action="{{ url_for('tasks.tasks') }}" class="filterBlock">
+        <div class="filterBlock">
           <label>Поиск по ID</label>
           <p class="filterHint">ID указан в верхней части каждого задания</p>
           <div class="filterRow">
-            <input type="number" name="task_id" class="taskInput" placeholder="Например, 125">
-            <button type="submit" class="taskButton">Найти</button>
+            <input type="number" name="task_id" class="taskInput" placeholder="Например, 125" value="{{ request.args.get('task_id', '') }}">
           </div>
-        </form>
-      </div>
+        </div>
+
+        <!-- СЛОЖНОСТЬ -->
+        <div class="filterBlock">
+          <label>Сложность</label>
+          <p class="filterHint">По проценту решивших с первой попытки</p>
+          <div class="filterRow">
+            <select name="difficulty" class="taskInput">
+              <option value="" {% if not request.args.get('difficulty') %}selected{% endif %}>Любая сложность</option>
+              <option value="easy" {% if request.args.get('difficulty') == 'easy' %}selected{% endif %}>Лёгкие</option>
+              <option value="medium" {% if request.args.get('difficulty') == 'medium' %}selected{% endif %}>Средние</option>
+              <option value="hard" {% if request.args.get('difficulty') == 'hard' %}selected{% endif %}>Сложные</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- КНОПКА -->
+        <div class="filterBlock filterSubmitBlock">
+          <button type="submit" class="taskButton">Применить фильтр</button>
+        </div>
+      </form>
 
       {% if session['role'] == 'admin' %}
         <button onclick="openTaskAdding()" class="adminAddButton">
@@ -203,11 +260,24 @@
               <span class="taskTag taskId">#{{ task['id'] }}</span>
               <span class="taskTag">№{{ task['number'] }}</span>
               <span class="taskTag">#{{ task['source'] }}</span>
+
+              {% set pct = stats.get(task['id']) %}
+              {% if pct is not none %}
+                {% if pct >= 70 %}
+                  <span class="difficultyTag easy">Лёгкое</span>
+                {% elif pct >= 40 %}
+                  <span class="difficultyTag medium">Среднее</span>
+                {% else %}
+                  <span class="difficultyTag hard">Сложное</span>
+                {% endif %}
+              {% endif %}
             </div>
 
             <span class="firstTry">
               С первой попытки:
-              <strong style="color:#e00560">{{ stats[task['id']] }}%</strong>
+              <strong style="color:#e00560">
+                {% if pct is not none %}{{ pct }}%{% else %}нет данных{% endif %}
+              </strong>
             </span>
           </div>
 

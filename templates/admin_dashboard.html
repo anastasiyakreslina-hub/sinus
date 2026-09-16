@@ -53,6 +53,74 @@
             background: rgba(241, 196, 15, 0.15);
             color: #f1c40f;
         }
+
+        /* Стили для карточек обращений в поддержку */
+        .supportTicketsList {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin-top: 16px;
+        }
+
+        .supportTicketCard {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 20px;
+        }
+
+        .ticketInfo {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            flex: 1;
+        }
+
+        .ticketHeaderMeta {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 0.85rem;
+            color: var(--text-muted, #888);
+        }
+
+        .ticketUser {
+            font-weight: 600;
+            color: inherit;
+        }
+
+        .ticketMessage {
+            font-size: 1rem;
+            line-height: 1.5;
+            word-break: break-word;
+        }
+
+        .ticketActions {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 10px;
+        }
+
+        .ticketActionButton {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: inherit;
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background 0.2s;
+        }
+
+        .ticketActionButton:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
     </style>
 </head>
 <body class="tasksPage statisticsPage">
@@ -105,6 +173,9 @@
             </a>
             <a href="{{ url_for('tasks.tasks') }}">
                 <span>▦</span> Банк заданий
+            </a>
+            <a href="{{ url_for('theory.theory') }}">
+                <span>📖</span> Теория
             </a>
             <a href="{{ url_for('variants.tests') }}">
                 <span>✦</span> Варианты ЕГЭ
@@ -286,6 +357,53 @@
                         {% endfor %}
                     </tbody>
                 </table>
+            </div>
+        </section>
+
+        <!-- ================= ОБРАЩЕНИЯ В ПОДДЕРЖКУ ================= -->
+        <section class="variantsSection" style="margin-top: 30px;">
+            <div class="statisticsCardHeader">
+                <div>
+                    <small>ПОМОЩЬ И ОТЗЫВЫ</small>
+                    <h2>Обращения в поддержку</h2>
+                    <p>Сообщения от пользователей платформы</p>
+                </div>
+            </div>
+
+            <div class="supportTicketsList">
+                {% for ticket in support_tickets %}
+                <div class="supportTicketCard">
+                    <div class="ticketInfo">
+                        <div class="ticketHeaderMeta">
+                            <span class="ticketUser">👤 {{ ticket.username }} (ID: {{ ticket.user_id }})</span>
+                            <span>•</span>
+                            <small>{{ ticket.created_at }}</small>
+                        </div>
+                        <p class="ticketMessage">{{ ticket.message }}</p>
+                    </div>
+                    <div class="ticketActions">
+                        {% if ticket.status == 'open' %}
+                            <span class="badge badgeWarning">Открыто</span>
+                            <form action="{{ url_for('admin.close_ticket', ticket_id=ticket.id) }}" method="POST">
+                                <button type="submit" class="ticketActionButton">Закрыть</button>
+                            </form>
+                        {% else %}
+                            <span class="badge badgeSuccess">Решено</span>
+                        {% endif %}
+
+                        <!-- Кнопка удаления обращения -->
+                        <form action="{{ url_for('admin.delete_ticket', ticket_id=ticket.id) }}" method="POST" onsubmit="return confirm('Удалить это обращение навсегда?');">
+                            <button type="submit" class="ticketActionButton" style="background: rgba(231, 76, 60, 0.15); border-color: rgba(231, 76, 60, 0.3); color: #e74c3c;">
+                                Удалить
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                {% else %}
+                <div style="text-align: center; color: #888; padding: 20px; background: rgba(255, 255, 255, 0.02); border-radius: 12px;">
+                    Нет новых обращений в поддержку
+                </div>
+                {% endfor %}
             </div>
         </section>
     </main>

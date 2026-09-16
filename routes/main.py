@@ -1,7 +1,5 @@
-# Главная, "О нас", политика конфиденциальности
-
 from datetime import date, datetime, timedelta
-from flask import Blueprint, render_template, redirect, session
+from flask import Blueprint, render_template, request, redirect, url_for, flash, session, jsonify
 
 from database import get_db
 from decorators import regs_only
@@ -10,6 +8,34 @@ from utils import all_count, correct_count
 
 main_bp = Blueprint('main', __name__)
 
+@main_bp.route('/send_support', methods=['POST'])
+@regs_only
+def send_support():
+    if 'user_id' not in session:
+        return jsonify({'success': False, 'error': 'Пожалуйста, войдите в систему.'}), 401
+        
+    message = request.form.get('message')
+    if not message or not message.strip():
+        return jsonify({'success': False, 'error': 'Сообщение не может быть пустым.'}), 400
+        
+    user_id = session['user_id']
+    
+    # Сохранение в базу данных через ваш стандартный метод get_db()
+    conn = get_db()
+    cur = conn.cursor()
+    try:
+        cur.execute(
+            'INSERT INTO support_tickets (user_id, message, status) VALUES (%s, %s, %s)',
+            (user_id, message.strip(), 'open')
+        )
+        conn.commit()
+        return jsonify({'success': True, 'message': 'Ваше обращение успешно отправлено в поддержку!'})
+    except Exception as e:
+        conn.rollback()
+        return jsonify({'success': False, 'error': 'Произошла ошибка при отправке. Попробуйте позже.'}), 500
+    finally:
+        cur.close()
+        conn.close()
 
 def calculate_user_streak(user_id, conn):
     """

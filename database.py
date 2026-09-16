@@ -17,7 +17,7 @@ def get_db():
     Автоматически переключается между Render (DATABASE_URL) и локальной БД.
     """
     db_url = os.environ.get('DATABASE_URL')
-    
+
     if db_url:
         # Render иногда передает URL с 'postgres://', исправляем на 'postgresql://' для psycopg2
         if db_url.startswith('postgres://'):
@@ -26,7 +26,7 @@ def get_db():
     else:
         # Подключение к локальной базе данных
         conn = psycopg2.connect(**DB_CONFIG, cursor_factory=RealDictCursor)
-        
+
     return conn
 
 
@@ -136,6 +136,15 @@ def init_db():
                 END
             );
         ''')
+        cur.execute('''
+            CREATE TABLE IF NOT EXISTS support_tickets (
+                id SERIAL PRIMARY KEY,
+                user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+                message TEXT NOT NULL,
+                status VARCHAR(50) DEFAULT 'open',
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            );
+        ''');
 
         # 7. Задачи внутри вариантов
         cur.execute('''
@@ -148,6 +157,17 @@ def init_db():
                 user_answer TEXT,
                 correct_answer TEXT,
                 correct INTEGER
+            );
+        ''')
+
+        # 8. Прогресс прохождения теории пользователем
+        cur.execute('''
+            CREATE TABLE IF NOT EXISTS theory_progress (
+                id SERIAL PRIMARY KEY,
+                user_id INTEGER NOT NULL,
+                block_id INTEGER NOT NULL REFERENCES theory_table(block_id) ON DELETE CASCADE,
+                is_completed BOOLEAN NOT NULL DEFAULT FALSE,
+                UNIQUE (user_id, block_id)
             );
         ''')
 

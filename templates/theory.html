@@ -19,6 +19,57 @@
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
     <script defer src="{{ url_for('static', filename='js/theme.js') }}"></script>
+
+    <style>
+        /* ===== Отметка прохождения темы ===== */
+        .taskCardHeader {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .completeToggle {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 14px;
+            cursor: pointer;
+            user-select: none;
+            margin-left: auto;
+            white-space: nowrap;
+        }
+        .completeToggle input[type="checkbox"] {
+            width: 17px;
+            height: 17px;
+            cursor: pointer;
+            accent-color: #e00560;
+        }
+
+        .taskCard.completedCard {
+            border: 1px solid #22c55e55;
+            background: linear-gradient(0deg, rgba(34,197,94,0.06), rgba(34,197,94,0.06));
+        }
+        .taskCard.completedCard .taskId {
+            background: #22c55e22;
+        }
+
+        /* ===== Общая форма фильтров ===== */
+        .filtersGrid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            align-items: end;
+        }
+        .filterSubmitBlock {
+            display: flex;
+            align-items: flex-end;
+        }
+        .filterSubmitBlock .taskButton {
+            width: 100%;
+        }
+    </style>
 </head>
 <body class="tasksPage">
 
@@ -36,6 +87,9 @@
             <a href="{{ url_for('tasks.tasks') }}">
                 <span>▦</span>
                 Банк заданий
+            </a>
+            <a href="{{ url_for('theory.theory') }}" class="active">
+                <span>📖</span> Теория
             </a>
             <a href="{{ url_for('variants.tests') }}">
                 <span>✦</span>
@@ -98,9 +152,11 @@
                 <span class="filterIcon">⌕</span>
             </div>
 
-            <div class="filtersGrid">
+            <!-- Единая форма: все фильтры применяются одновременно -->
+            <form method="GET" action="{{ url_for('theory.theory') }}" class="filtersGrid">
+
                 <!-- НОМЕР ЗАДАНИЯ -->
-                <form method="GET" action="{{ url_for('theory.theory') }}" class="filterBlock">
+                <div class="filterBlock">
                     <label>Номер задания</label>
                     <div class="filterRow">
                         <select name="task_number" class="taskInput">
@@ -109,20 +165,46 @@
                                 <option value="{{ i }}" {% if request.args.get('task_number') == i|string %}selected{% endif %}>№{{ i }}</option>
                             {% endfor %}
                         </select>
-                        <button type="submit" class="taskButton">Применить</button>
                     </div>
-                </form>
+                </div>
 
                 <!-- ID ТЕМЫ -->
-                <form method="GET" action="{{ url_for('theory.theory') }}" class="filterBlock">
+                <div class="filterBlock">
                     <label>Поиск по ID темы</label>
                     <p class="filterHint">ID указан в верхней части каждой темы</p>
                     <div class="filterRow">
                         <input type="number" name="block_id" class="taskInput" placeholder="Например, 12" value="{{ request.args.get('block_id', '') }}">
-                        <button type="submit" class="taskButton">Найти</button>
                     </div>
-                </form>
-            </div>
+                </div>
+
+                <!-- ПОРЯДОК ВЫВОДА -->
+                <div class="filterBlock">
+                    <label>Порядок вывода</label>
+                    <div class="filterRow">
+                        <select name="sort" class="taskInput">
+                            <option value="new" {% if request.args.get('sort', 'new') == 'new' %}selected{% endif %}>Сначала новые</option>
+                            <option value="old" {% if request.args.get('sort') == 'old' %}selected{% endif %}>Сначала старые</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- СТАТУС ПРОХОЖДЕНИЯ -->
+                <div class="filterBlock">
+                    <label>Статус прохождения</label>
+                    <div class="filterRow">
+                        <select name="status" class="taskInput">
+                            <option value="" {% if not request.args.get('status') %}selected{% endif %}>Все темы</option>
+                            <option value="done" {% if request.args.get('status') == 'done' %}selected{% endif %}>Пройденные</option>
+                            <option value="undone" {% if request.args.get('status') == 'undone' %}selected{% endif %}>Непройденные</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- КНОПКА -->
+                <div class="filterBlock filterSubmitBlock">
+                    <button type="submit" class="taskButton">Применить фильтры</button>
+                </div>
+            </form>
 
             {% if session.get('role') == 'admin' %}
                 <button type="button" onclick="openTheoryAdding()" class="adminAddButton">
@@ -244,12 +326,24 @@
             </div>
 
             {% for block in blocks %}
-                <article class="taskCard reveal" id="block-{{ block['block_id'] }}">
+                <article class="taskCard reveal {% if block['is_completed'] %}completedCard{% endif %}" id="block-{{ block['block_id'] }}">
                     <div class="taskCardHeader">
                         <div class="taskTags">
                             <span class="taskTag taskId">#{{ block['block_id'] }}</span>
                             <span class="taskTag">Теория к заданию №{{ block['task_number'] }}</span>
                         </div>
+
+                        <!-- ОТМЕТКА "ПРОЙДЕНО" -->
+                        <label class="completeToggle">
+                            <input
+                                type="checkbox"
+                                class="completeCheckbox"
+                                data-toggle-url="{{ url_for('theory.toggle_complete', block_id=block['block_id']) }}"
+                                onchange="toggleTheoryCompleted(this)"
+                                {% if block['is_completed'] %}checked{% endif %}
+                            >
+                            <span>Пройдено</span>
+                        </label>
                     </div>
 
                     <!-- TITLE -->
@@ -399,6 +493,38 @@
                 });
             }
         });
+    </script>
+
+    <!-- Отметка "Пройдено" через AJAX -->
+    <script>
+        function toggleTheoryCompleted(checkbox) {
+            const url = checkbox.dataset.toggleUrl;
+            const card = checkbox.closest('.taskCard');
+            const isCompleted = checkbox.checked;
+
+            checkbox.disabled = true;
+
+            fetch(url, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ completed: isCompleted })
+            })
+            .then(function (res) {
+                if (!res.ok) throw new Error('Ошибка сохранения статуса');
+                return res.json();
+            })
+            .then(function () {
+                card.classList.toggle('completedCard', isCompleted);
+            })
+            .catch(function (err) {
+                console.error(err);
+                checkbox.checked = !isCompleted; // откатываем состояние при ошибке
+                alert('Не удалось сохранить статус прохождения. Попробуйте ещё раз.');
+            })
+            .finally(function () {
+                checkbox.disabled = false;
+            });
+        }
     </script>
 </body>
 </html>

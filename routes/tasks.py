@@ -16,12 +16,22 @@ from helpers.task_stats import get_first_attempt_stats, record_attempt
 tasks_bp = Blueprint('tasks', __name__)
 
 
+# Границы сложности по проценту решивших с первой попытки.
+# Задачи без единой попытки (pct is None) ни в одну категорию не попадают.
+DIFFICULTY_RANGES = {
+    'easy':   lambda pct: pct >= 70,
+    'medium': lambda pct: 40 <= pct < 70,
+    'hard':   lambda pct: pct < 40,
+}
+
+
 @tasks_bp.route('/tasks')
 @regs_only
 def tasks():
     user_id = session.get('user_id')
     number = request.args.get('number')
     task_id = request.args.get('task_id')
+    difficulty = request.args.get('difficulty')
 
     conn = get_db()
     cur = conn.cursor()
@@ -48,6 +58,13 @@ def tasks():
         cur.execute(query, options)
         tasks_list = cur.fetchall()
         stats = get_first_attempt_stats(cur)
+
+        if difficulty in DIFFICULTY_RANGES:
+            check = DIFFICULTY_RANGES[difficulty]
+            tasks_list = [
+                task for task in tasks_list
+                if stats.get(task['id']) is not None and check(stats[task['id']])
+            ]
 
         return render_template('tasks.html', tasks=tasks_list, stats=stats)
     finally:
