@@ -7,6 +7,8 @@
     <title>Профиль — Sinus</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <script src="{{ url_for('static', filename='js/theme.js') }}" defer></script>
+    <!-- Google Identity Services — для привязки Google в блоке "Подключённые аккаунты" -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
 
 <body class="tasksPage profilePage">
@@ -68,7 +70,7 @@
 
             <label class="settingsLabel">
                 Текущий пароль
-                <input type="password" name="old_password" class="profileInput" required>
+                <input type="password" name="old_password" class="profileInput" {% if user['has_password'] %}required{% endif %}>
             </label>
 
             <div class="settingsDivider"></div>
@@ -247,6 +249,76 @@
 
                 <button onclick="openSettings()" class="profileSmallButton lightBox">Изменить</button>
             </div>
+
+            <!-- ==================== ПОДКЛЮЧЁННЫЕ АККАУНТЫ ==================== -->
+            <div class="profileSettingCard">
+                <div class="settingText">
+                    <span class="settingIcon">✈️</span>
+                    <div>
+                        <h3>Telegram</h3>
+                        <p>
+                            {% if user['telegram_id'] %}
+                                Привязан — можно входить через Telegram
+                            {% else %}
+                                Привяжи Telegram для быстрого входа
+                            {% endif %}
+                        </p>
+                    </div>
+                </div>
+
+                {% if user['telegram_id'] %}
+                    <form method="POST" action="{{ url_for('auth.unlink_telegram') }}" onsubmit="return confirm('Отвязать Telegram от аккаунта?')">
+                        <button type="submit" class="profileSmallButton lightBox" style="border-color: rgba(224, 5, 96, 0.3);">Отвязать</button>
+                    </form>
+                {% else %}
+                    <div class="telegramLinkWidget">
+                        <script async src="https://telegram.org/js/telegram-widget.js?22"
+                                data-telegram-login="SinusAuthBot"
+                                data-size="medium"
+                                data-radius="10"
+                                data-auth-url="{{ url_for('auth.link_telegram', _external=True) }}"
+                                data-request-access="write">
+                        </script>
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="profileSettingCard">
+                <div class="settingText">
+                    <span class="settingIcon">G</span>
+                    <div>
+                        <h3>Google</h3>
+                        <p>
+                            {% if user['google_id'] %}
+                                Привязан — можно входить через Google
+                            {% else %}
+                                Привяжи Google для быстрого входа
+                            {% endif %}
+                        </p>
+                    </div>
+                </div>
+
+                {% if user['google_id'] %}
+                    <form method="POST" action="{{ url_for('auth.unlink_google') }}" onsubmit="return confirm('Отвязать Google от аккаунта?')">
+                        <button type="submit" class="profileSmallButton lightBox" style="border-color: rgba(224, 5, 96, 0.3);">Отвязать</button>
+                    </form>
+                {% else %}
+                    <div id="g_id_onload"
+                         data-client_id="{{ google_client_id }}"
+                         data-login_uri="{{ url_for('auth.link_google', _external=True) }}"
+                         data-auto_prompt="false">
+                    </div>
+                    <div class="g_id_signin"
+                         data-type="standard"
+                         data-shape="rectangular"
+                         data-theme="outline"
+                         data-text="continue_with"
+                         data-size="medium"
+                         data-logo_alignment="left">
+                    </div>
+                {% endif %}
+            </div>
+            <!-- =============================================================== -->
 
             <!-- Фото -->
             <div class="profileSettingCard">

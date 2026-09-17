@@ -1,4 +1,5 @@
-# Регистрация, логин (в т.ч. через Telegram), профиль, logout
+# Регистрация, логин (в т.ч. через Telegram и Google), привязка/отвязка
+# соцсетей, профиль, logout
 
 import hashlib
 import hmac
@@ -9,6 +10,8 @@ from datetime import datetime
 from flask import Blueprint, render_template, request, redirect, session, flash
 from werkzeug.security import generate_password_hash, check_password_hash
 from PIL import Image
+from google.oauth2 import id_token as google_id_token
+from google.auth.transport import requests as google_requests
 
 from database import get_db
 from decorators import regs_only
@@ -21,6 +24,9 @@ TELEGRAM_BOT_TOKEN = os.environ.get('TELEGRAM_BOT_TOKEN')
 
 # Сколько секунд считать данные виджета свежими (защита от повторного использования старой ссылки).
 TELEGRAM_AUTH_MAX_AGE = 86400
+
+# Client ID из Google Cloud Console (OAuth client ID, тип Web application).
+GOOGLE_CLIENT_ID = os.environ.get('GOOGLE_CLIENT_ID')
 
 
 # ============================================================
@@ -54,8 +60,8 @@ def _verify_telegram_auth(data):
     return True
 
 
-def _unique_telegram_username(cur, base):
-    """Подбирает свободный логин, отталкиваясь от Telegram username / имени / id."""
+def _unique_username(cur, base):
+    """Подбирает свободный логин, отталкиваясь от Telegram/Google username, имени или id."""
     username = base
     suffix = 1
 
@@ -65,6 +71,13 @@ def _unique_telegram_username(cur, base):
             return username
         suffix += 1
         username = f'{base}{suffix}'
+
+
+def _log_user_in(user):
+    """Кладёт данные пользователя в сессию — одинаково для всех способов входа."""
+    session['user'] = user['username']
+    session['role'] = user['role']
+    session['user_id'] = user['id']
 
 
 # ============================================================
@@ -87,14 +100,14 @@ def register():
             cur.close()
             conn.close()
             error = 'Упс! Этот логин уже занят'
-            return render_template('register.html', error=error)
+            return render_template('register.html', error=error, google_client_id=GOOGLE_CLIENT_ID)
 
         role = 'admin' if username == 'myr' else 'user'
         reg_date = datetime.now().strftime('%d.%m.%Y')
         password_hash = generate_password_hash(password, method='pbkdf2:sha256')
 
         cur.execute(
-            'INSERT INTO users(username, password, role, reg_date) VALUES (%s, %s, %s, %s)',
+            'INSERT INTO users(username, password, role, reg_date, has_password) VALUES (%s, %s, %s, %s, TRUE)',
             (username, password_hash, role, reg_date)
         )
         conn.commit()
@@ -102,7 +115,7 @@ def register():
         conn.close()
         return redirect('/login')
 
-    return render_template('register.html')
+    return render_template('register.html', google_client_id=GOOGLE_CLIENT_ID)
 
 
 # ============================================================
@@ -146,9 +159,7 @@ def login():
             conn.close()
             return render_template('login.html', error=error)
 
-        session['user'] = user['username']
-        session['role'] = user['role']
-        session['user_id'] = user['id']
+        _log_user_in(user)
 
         cur.close()
         conn.close()
@@ -184,17 +195,18 @@ def login_telegram():
         if not user:
             base_username = (data.get('username') or data.get('first_name') or f'tg_{telegram_id}').strip()
             base_username = base_username.replace(' ', '_') or f'tg_{telegram_id}'
-            username = _unique_telegram_username(cur, base_username)
+            username = _unique_username(cur, base_username)
 
             reg_date = datetime.now().strftime('%d.%m.%Y')
             # Пароль для входа через Telegram не используется, но поле NOT NULL —
-            # сохраняем неиспользуемый hash случайного значения.
+            # сохраняем неиспользуемый hash случайного значения. has_password=FALSE,
+            # чтобы позже нельзя было отвязать Telegram без другого способа входа.
             unusable_password = generate_password_hash(os.urandom(32).hex(), method='pbkdf2:sha256')
 
             cur.execute(
                 '''
-                INSERT INTO users(username, password, role, reg_date, telegram_id)
-                VALUES (%s, %s, %s, %s, %s)
+                INSERT INTO users(username, password, role, reg_date, telegram_id, has_password)
+                VALUES (%s, %s, %s, %s, %s, FALSE)
                 RETURNING *
                 ''',
                 (username, unusable_password, 'user', reg_date, telegram_id)
@@ -202,11 +214,222 @@ def login_telegram():
             user = cur.fetchone()
             conn.commit()
 
-        session['user'] = user['username']
-        session['role'] = user['role']
-        session['user_id'] = user['id']
+        _log_user_in(user)
 
         return redirect('/')
+    finally:
+        cur.close()
+        conn.close()
+
+
+# ============================================================
+# ЛОГИН ЧЕРЕЗ GOOGLE
+# ============================================================
+# Кнопка Google Identity Services после успешного входа сама
+# отправляет POST-запрос с полем "credential" (ID-токен) прямо
+# на этот адрес — см. data-login_uri в register.html.
+
+@auth_bp.route('/login/google', methods=['POST'])
+def login_google():
+    token = request.form.get('credential')
+
+    if not token or not GOOGLE_CLIENT_ID:
+        flash('Не удалось подтвердить вход через Google. Попробуйте ещё раз.')
+        return redirect('/login')
+
+    try:
+        idinfo = google_id_token.verify_oauth2_token(
+            token, google_requests.Request(), GOOGLE_CLIENT_ID
+        )
+    except ValueError:
+        flash('Не удалось подтвердить вход через Google. Попробуйте ещё раз.')
+        return redirect('/login')
+
+    google_id = idinfo['sub']
+    email = idinfo.get('email')
+
+    conn = get_db()
+    cur = conn.cursor()
+
+    try:
+        cur.execute('SELECT * FROM users WHERE google_id = %s', (google_id,))
+        user = cur.fetchone()
+
+        if not user and email:
+            # Если аккаунт с таким email уже был создан другим способом
+            # (логин/пароль или Telegram) — просто привязываем к нему Google,
+            # а не плодим дубликат пользователя.
+            cur.execute('SELECT * FROM users WHERE email = %s', (email,))
+            user = cur.fetchone()
+            if user:
+                cur.execute('UPDATE users SET google_id = %s WHERE id = %s', (google_id, user['id']))
+                conn.commit()
+                cur.execute('SELECT * FROM users WHERE id = %s', (user['id'],))
+                user = cur.fetchone()
+
+        if not user:
+            base_username = (idinfo.get('name') or (email.split('@')[0] if email else None) or f'google_{google_id}')
+            base_username = base_username.strip().replace(' ', '_') or f'google_{google_id}'
+            username = _unique_username(cur, base_username)
+
+            reg_date = datetime.now().strftime('%d.%m.%Y')
+            # Пароль для входа через Google не используется, но поле NOT NULL —
+            # сохраняем неиспользуемый hash случайного значения (как и для Telegram).
+            unusable_password = generate_password_hash(os.urandom(32).hex(), method='pbkdf2:sha256')
+
+            cur.execute(
+                '''
+                INSERT INTO users(username, password, role, reg_date, google_id, email, has_password)
+                VALUES (%s, %s, %s, %s, %s, %s, FALSE)
+                RETURNING *
+                ''',
+                (username, unusable_password, 'user', reg_date, google_id, email)
+            )
+            user = cur.fetchone()
+            conn.commit()
+
+        _log_user_in(user)
+
+        return redirect('/')
+    finally:
+        cur.close()
+        conn.close()
+
+
+# ============================================================
+# ПРИВЯЗКА TELEGRAM (из профиля, для уже вошедшего пользователя)
+# ============================================================
+# Тот же виджет, что и на регистрации, но с другим data-auth-url —
+# он не создаёт новую сессию, а привязывает telegram_id к текущему
+# session['user_id'].
+
+@auth_bp.route('/link/telegram')
+@regs_only
+def link_telegram():
+    data = request.args.to_dict()
+
+    if not _verify_telegram_auth(data):
+        flash('Не удалось подтвердить Telegram. Попробуйте ещё раз.')
+        return redirect('/profile')
+
+    telegram_id = data['id']
+
+    conn = get_db()
+    cur = conn.cursor()
+
+    try:
+        cur.execute('SELECT id FROM users WHERE telegram_id = %s', (telegram_id,))
+        existing = cur.fetchone()
+
+        if existing and existing['id'] != session['user_id']:
+            flash('Этот Telegram-аккаунт уже привязан к другому пользователю.')
+            return redirect('/profile')
+
+        cur.execute('UPDATE users SET telegram_id = %s WHERE id = %s', (telegram_id, session['user_id']))
+        conn.commit()
+        flash('Telegram успешно привязан к аккаунту.')
+        return redirect('/profile')
+    finally:
+        cur.close()
+        conn.close()
+
+
+# ============================================================
+# ОТВЯЗКА TELEGRAM
+# ============================================================
+
+@auth_bp.route('/unlink/telegram', methods=['POST'])
+@regs_only
+def unlink_telegram():
+    conn = get_db()
+    cur = conn.cursor()
+
+    try:
+        cur.execute('SELECT has_password, google_id FROM users WHERE id = %s', (session['user_id'],))
+        user = cur.fetchone()
+
+        if not user['has_password'] and not user['google_id']:
+            flash('Нельзя отвязать Telegram — это единственный способ входа. Сначала задайте пароль в настройках или привяжите Google.')
+            return redirect('/profile')
+
+        cur.execute('UPDATE users SET telegram_id = NULL WHERE id = %s', (session['user_id'],))
+        conn.commit()
+        flash('Telegram отвязан от аккаунта.')
+        return redirect('/profile')
+    finally:
+        cur.close()
+        conn.close()
+
+
+# ============================================================
+# ПРИВЯЗКА GOOGLE (из профиля, для уже вошедшего пользователя)
+# ============================================================
+
+@auth_bp.route('/link/google', methods=['POST'])
+@regs_only
+def link_google():
+    token = request.form.get('credential')
+
+    if not token or not GOOGLE_CLIENT_ID:
+        flash('Не удалось подтвердить Google. Попробуйте ещё раз.')
+        return redirect('/profile')
+
+    try:
+        idinfo = google_id_token.verify_oauth2_token(
+            token, google_requests.Request(), GOOGLE_CLIENT_ID
+        )
+    except ValueError:
+        flash('Не удалось подтвердить Google. Попробуйте ещё раз.')
+        return redirect('/profile')
+
+    google_id = idinfo['sub']
+    email = idinfo.get('email')
+
+    conn = get_db()
+    cur = conn.cursor()
+
+    try:
+        cur.execute('SELECT id FROM users WHERE google_id = %s', (google_id,))
+        existing = cur.fetchone()
+
+        if existing and existing['id'] != session['user_id']:
+            flash('Этот Google-аккаунт уже привязан к другому пользователю.')
+            return redirect('/profile')
+
+        cur.execute(
+            'UPDATE users SET google_id = %s, email = COALESCE(email, %s) WHERE id = %s',
+            (google_id, email, session['user_id'])
+        )
+        conn.commit()
+        flash('Google успешно привязан к аккаунту.')
+        return redirect('/profile')
+    finally:
+        cur.close()
+        conn.close()
+
+
+# ============================================================
+# ОТВЯЗКА GOOGLE
+# ============================================================
+
+@auth_bp.route('/unlink/google', methods=['POST'])
+@regs_only
+def unlink_google():
+    conn = get_db()
+    cur = conn.cursor()
+
+    try:
+        cur.execute('SELECT has_password, telegram_id FROM users WHERE id = %s', (session['user_id'],))
+        user = cur.fetchone()
+
+        if not user['has_password'] and not user['telegram_id']:
+            flash('Нельзя отвязать Google — это единственный способ входа. Сначала задайте пароль в настройках или привяжите Telegram.')
+            return redirect('/profile')
+
+        cur.execute('UPDATE users SET google_id = NULL WHERE id = %s', (session['user_id'],))
+        conn.commit()
+        flash('Google отвязан от аккаунта.')
+        return redirect('/profile')
     finally:
         cur.close()
         conn.close()
@@ -232,7 +455,12 @@ def profile():
 
     cur.close()
     conn.close()
-    return render_template('profile.html', username=session['user'], user=user)
+    return render_template(
+        'profile.html',
+        username=session['user'],
+        user=user,
+        google_client_id=GOOGLE_CLIENT_ID
+    )
 
 
 @auth_bp.route('/change_profile', methods=['POST'])
@@ -261,7 +489,9 @@ def change_profile():
         session['user'] = username
 
     if new_password:
-        if not check_password_hash(user['password'], old_password):
+        # Если у пользователя ещё нет настоящего пароля (пришёл через Telegram/Google),
+        # проверка старого пароля не имеет смысла — ему просто нечего было вводить.
+        if user['has_password'] and not check_password_hash(user['password'], old_password):
             flash('Упс! Неверный пароль!')
             cur.close()
             conn.close()
@@ -280,7 +510,7 @@ def change_profile():
             return redirect('/profile')
 
         cur.execute(
-            'UPDATE users SET password = %s WHERE id = %s',
+            'UPDATE users SET password = %s, has_password = TRUE WHERE id = %s',
             (generate_password_hash(new_password, method='pbkdf2:sha256'), session['user_id'])
         )
 

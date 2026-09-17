@@ -180,6 +180,22 @@ def init_db():
             ADD COLUMN IF NOT EXISTS telegram_id BIGINT UNIQUE;
         ''')
 
+        # 9. Вход через Google — свой google_id и email у пользователя
+        cur.execute('''
+            ALTER TABLE users
+            ADD COLUMN IF NOT EXISTS google_id VARCHAR(255) UNIQUE,
+            ADD COLUMN IF NOT EXISTS email VARCHAR(255);
+        ''')
+
+        # 10. Флаг "есть настоящий пароль" — нужен, чтобы не дать пользователю
+        # отвязать Telegram/Google, если это единственный способ входа
+        # (при регистрации через Telegram/Google пароль генерируется случайно
+        # и никогда не показывается пользователю).
+        cur.execute('''
+            ALTER TABLE users
+            ADD COLUMN IF NOT EXISTS has_password BOOLEAN NOT NULL DEFAULT TRUE;
+        ''')
+
         conn.commit()
     finally:
         cur.close()
